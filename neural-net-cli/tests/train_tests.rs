@@ -15,7 +15,7 @@ fn test_train_and_basic() {
     let output_path = temp_dir.path().join("and_model.json");
 
     let output = Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",
@@ -56,7 +56,7 @@ fn test_train_xor_basic() {
     let output_path = temp_dir.path().join("xor_model.json");
 
     let output = Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",
@@ -84,7 +84,7 @@ fn test_train_with_custom_learning_rate() {
     let output_path = temp_dir.path().join("custom_lr_model.json");
 
     let output = Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",
@@ -122,7 +122,7 @@ fn test_train_with_custom_learning_rate() {
 #[test]
 fn test_train_invalid_example() {
     let output = Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",
@@ -150,7 +150,7 @@ fn test_train_invalid_example() {
 #[test]
 fn test_train_without_output_succeeds() {
     let output = Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",
@@ -181,7 +181,7 @@ fn test_train_model_metadata() {
     let output_path = temp_dir.path().join("metadata_test.json");
 
     Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",
@@ -221,7 +221,7 @@ fn test_train_creates_valid_checkpoint() {
     let output_path = temp_dir.path().join("checkpoint_test.json");
 
     Command::new("cargo")
-        .args(&[
+        .args([
             "run",
             "--bin",
             "neural-net-cli",

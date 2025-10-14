@@ -303,10 +303,48 @@ resolver = "2"  # Required for Rust 2024
 
 ---
 
+## Meta-Learning: Using This Document
+
+### CRITICAL MISTAKE (Task 2.1): Not Actually Reviewing Learnings.md
+
+**MISTAKE:** While implementing Task 2.1, I created `checkpoint_tests.rs` using the old timestamp-based temp directory pattern:
+
+```rust
+// ❌ REPEATED THE EXACT SAME MISTAKE FROM TASK 1.5
+fn create_temp_dir() -> PathBuf {
+    let temp_dir = std::env::temp_dir().join(format!(
+        "neural_net_test_{}",
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis()
+    ));
+    fs::create_dir_all(&temp_dir).unwrap();
+    temp_dir
+}
+```
+
+This is **THE EXACT PATTERN** already documented as WRONG in the "Parallel Test Execution and Filesystem Operations" section from Task 1.5.
+
+**ROOT CAUSE:** Failed to review learnings.md before writing similar code. The document exists but wasn't consulted.
+
+**CORRECTION:** Before writing ANY test file that creates temp directories, MUST:
+1. Search learnings.md for "temp" or "tempfile" keywords
+2. Review the documented pattern
+3. Apply the correct pattern from the start
+4. **DO NOT** write code first and fix it later when you realize the mistake
+
+**Additional Mistake:** Was impatient with long-running tests and tried to kill them prematurely instead of letting integration tests complete naturally. Integration tests that spawn `cargo run` commands legitimately take time.
+
+**LESSON:** This document is worthless if not actively consulted. Reviewing it must be a REAL action, not a checkbox to skip.
+
+---
+
 ## Action Items for Every Session
 
 ### Pre-Work Checklist
-- [ ] Read this learnings.md document
+- [ ] Read this learnings.md document **THOROUGHLY**
+- [ ] Search learnings.md for keywords related to current task
 - [ ] Review CLAUDE.md for project-specific guidelines
 - [ ] Check git status
 - [ ] Review recent commits
@@ -316,6 +354,9 @@ resolver = "2"  # Required for Rust 2024
 - [ ] Export new modules in lib.rs immediately
 - [ ] Check derives when nesting structs with serialization
 - [ ] Put dependencies in correct section (dependencies vs dev-dependencies)
+- [ ] **Before writing test files, search learnings.md for similar patterns**
+- [ ] Use tempfile::TempDir for ANY test that needs temp directories
+- [ ] Be patient with integration tests - they can take 60+ seconds legitimately
 - [ ] Run clippy before committing
 
 ### Post-Work Checklist
@@ -380,5 +421,5 @@ As development continues, add sections for:
 
 ---
 
-**Last Updated:** 2025-10-13 (Task 1.3 completion)
-**Next Review:** Start of Task 1.4
+**Last Updated:** 2025-10-13 (Task 2.1: Added meta-learning section after repeating tempfile mistake)
+**Next Review:** Start of Task 2.2

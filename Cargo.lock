@@ -396,6 +396,7 @@ dependencies = [
  "matrix",
  "serde",
  "serde_json",
+ "tempfile",
 ]
 
 [[package]]

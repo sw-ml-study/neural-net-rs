@@ -3,17 +3,12 @@ use neural_network::network::Network;
 use neural_network::activations::SIGMOID;
 use neural_network::checkpoint::CheckpointMetadata;
 use std::fs;
-use std::path::PathBuf;
+use tempfile::TempDir;
 
 // Helper function to create a temporary directory for tests
-fn create_temp_dir() -> PathBuf {
-    let temp_dir = std::env::temp_dir().join(format!("neural_net_test_{}",
-        std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_millis()));
-    fs::create_dir_all(&temp_dir).unwrap();
-    temp_dir
+// Uses tempfile crate to ensure unique directories even in parallel execution
+fn create_temp_dir() -> TempDir {
+    TempDir::new().expect("Failed to create temp directory")
 }
 
 #[test]
@@ -65,7 +60,7 @@ fn test_checkpoint_from_network() {
 #[test]
 fn test_save_and_load_checkpoint() {
     let temp_dir = create_temp_dir();
-    let checkpoint_path = temp_dir.join("test_checkpoint.json");
+    let checkpoint_path = temp_dir.path().join("test_checkpoint.json");
 
     let mut network = Network::new(vec![2, 3, 1], SIGMOID, 0.5);
 
@@ -94,14 +89,13 @@ fn test_save_and_load_checkpoint() {
     assert_eq!(restored_meta.epoch, 100);
     assert_eq!(restored_meta.example, "xor");
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_checkpoint_preserves_predictions() {
     let temp_dir = create_temp_dir();
-    let checkpoint_path = temp_dir.join("predictions_test.json");
+    let checkpoint_path = temp_dir.path().join("predictions_test.json");
 
     let mut network = Network::new(vec![2, 3, 1], SIGMOID, 0.5);
     network.train(vec![vec![0.5, 0.5]], vec![vec![0.5]], 100);
@@ -128,14 +122,13 @@ fn test_checkpoint_preserves_predictions() {
     // Predictions should be identical
     assert_eq!(pred_before.data, pred_after.data);
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_checkpoint_file_format() {
     let temp_dir = create_temp_dir();
-    let checkpoint_path = temp_dir.join("format_test.json");
+    let checkpoint_path = temp_dir.path().join("format_test.json");
 
     let network = Network::new(vec![2, 3, 1], SIGMOID, 0.5);
     let metadata = CheckpointMetadata {
@@ -159,14 +152,13 @@ fn test_checkpoint_file_format() {
     assert_eq!(json["metadata"]["epoch"], 100);
     assert_eq!(json["metadata"]["example"], "xor");
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_invalid_checkpoint_version() {
     let temp_dir = create_temp_dir();
-    let checkpoint_path = temp_dir.join("bad_version.json");
+    let checkpoint_path = temp_dir.path().join("bad_version.json");
 
     // Create checkpoint with unsupported version
     let bad_json = r#"{
@@ -196,27 +188,25 @@ fn test_invalid_checkpoint_version() {
         assert!(e.to_string().contains("version") || e.to_string().contains("Unsupported"));
     }
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_checkpoint_with_corrupted_file() {
     let temp_dir = create_temp_dir();
-    let checkpoint_path = temp_dir.join("corrupted.json");
+    let checkpoint_path = temp_dir.path().join("corrupted.json");
 
     fs::write(&checkpoint_path, "not valid json {{{").unwrap();
 
     let result = Network::load_checkpoint(&checkpoint_path);
     assert!(result.is_err());
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_checkpoint_nonexistent_file() {
-    let checkpoint_path = PathBuf::from("/nonexistent/path/checkpoint.json");
+    let checkpoint_path = std::path::PathBuf::from("/nonexistent/path/checkpoint.json");
     let result = Network::load_checkpoint(&checkpoint_path);
     assert!(result.is_err());
 }
@@ -244,7 +234,7 @@ fn test_checkpoint_metadata_fields() {
 #[test]
 fn test_resume_training_from_checkpoint() {
     let temp_dir = create_temp_dir();
-    let checkpoint_path = temp_dir.join("resume_test.json");
+    let checkpoint_path = temp_dir.path().join("resume_test.json");
 
     let mut network = Network::new(vec![2, 2, 1], SIGMOID, 0.5);
 
@@ -281,15 +271,14 @@ fn test_resume_training_from_checkpoint() {
     let test_pred = restored.feed_forward(neural_network::matrix::Matrix::from(vec![1.0, 1.0]));
     assert!(test_pred.data[0] >= 0.0 && test_pred.data[0] <= 1.0);
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_checkpoint_serialization_is_deterministic() {
     let temp_dir = create_temp_dir();
-    let path1 = temp_dir.join("checkpoint1.json");
-    let path2 = temp_dir.join("checkpoint2.json");
+    let path1 = temp_dir.path().join("checkpoint1.json");
+    let path2 = temp_dir.path().join("checkpoint2.json");
 
     let network = Network::new(vec![2, 3, 1], SIGMOID, 0.5);
     let metadata = CheckpointMetadata {
@@ -310,6 +299,5 @@ fn test_checkpoint_serialization_is_deterministic() {
     // Should produce identical JSON
     assert_eq!(contents1, contents2);
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }

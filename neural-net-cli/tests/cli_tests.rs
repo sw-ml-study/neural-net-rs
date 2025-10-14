@@ -4,7 +4,7 @@ use std::process::Command;
 #[test]
 fn test_cli_help() {
     let output = Command::new("cargo")
-        .args(&["run", "--bin", "neural-net-cli", "--", "--help"])
+        .args(["run", "--bin", "neural-net-cli", "--", "--help"])
         .output()
         .expect("Failed to run CLI");
 
@@ -18,7 +18,7 @@ fn test_cli_help() {
 #[test]
 fn test_cli_version() {
     let output = Command::new("cargo")
-        .args(&["run", "--bin", "neural-net-cli", "--", "--version"])
+        .args(["run", "--bin", "neural-net-cli", "--", "--version"])
         .output()
         .expect("Failed to run CLI");
 
@@ -29,7 +29,7 @@ fn test_cli_version() {
 #[test]
 fn test_list_command() {
     let output = Command::new("cargo")
-        .args(&["run", "--bin", "neural-net-cli", "--", "list"])
+        .args(["run", "--bin", "neural-net-cli", "--", "list"])
         .output()
         .expect("Failed to run CLI");
 
@@ -43,7 +43,7 @@ fn test_list_command() {
 #[test]
 fn test_train_command_requires_example() {
     let output = Command::new("cargo")
-        .args(&["run", "--bin", "neural-net-cli", "--", "train"])
+        .args(["run", "--bin", "neural-net-cli", "--", "train"])
         .output()
         .expect("Failed to run CLI");
 
@@ -58,7 +58,7 @@ fn test_train_command_requires_example() {
 #[test]
 fn test_eval_command_requires_model() {
     let output = Command::new("cargo")
-        .args(&["run", "--bin", "neural-net-cli", "--", "eval"])
+        .args(["run", "--bin", "neural-net-cli", "--", "eval"])
         .output()
         .expect("Failed to run CLI");
 

@@ -4,6 +4,7 @@ pub mod network;
 pub mod activations;
 pub mod examples;
 pub mod checkpoint;
+pub mod training;
 
 pub mod matrix {
 
