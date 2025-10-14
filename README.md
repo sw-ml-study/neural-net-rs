@@ -1,10 +1,10 @@
 # Neural Network Demonstration Platform
 
-A comprehensive educational neural network framework implemented in Rust, featuring a full-featured CLI, REST API web server with real-time training progress streaming, checkpoint/resume functionality, and visual training progress bars.
+A comprehensive educational neural network framework implemented in Rust, featuring a full-featured CLI, REST API web server with real-time training progress streaming, WebAssembly compilation for browser-based training, interactive web UI, checkpoint/resume functionality, and visual training progress bars.
 
 ## Overview
 
-This project demonstrates fundamental neural network concepts through a clean, well-tested Rust implementation. It includes everything needed to train, evaluate, and experiment with neural networks on classic logic gate problems (AND, OR, XOR), with both CLI and web server interfaces.
+This project demonstrates fundamental neural network concepts through a clean, well-tested Rust implementation. It includes everything needed to train, evaluate, and experiment with neural networks on classic logic gate problems (AND, OR, XOR), with CLI, web server, and browser-based WASM interfaces.
 
 ## Features
 
@@ -12,11 +12,13 @@ This project demonstrates fundamental neural network concepts through a clean, w
 - **Interactive CLI**: Full-featured command-line interface for training and evaluation
 - **REST API Server**: Axum-based web server with JSON API endpoints
 - **Real-time Training Streaming**: Server-Sent Events (SSE) for live training progress
+- **WebAssembly Compilation**: Run neural networks directly in the browser
+- **Interactive Web UI**: Modern, responsive interface with dual-mode training (WASM/API)
 - **Checkpoint System**: Save and resume training at any point
 - **Visual Progress Bars**: Real-time training progress with ETA and loss metrics
 - **Training Controller**: Advanced training orchestration with callback support
 - **Example Problems**: Built-in AND, OR, and XOR logic gate training examples
-- **Comprehensive Testing**: 131+ tests with 100% passing rate
+- **Comprehensive Testing**: 136+ tests with 100% passing rate
 - **Zero Clippy Warnings**: Clean, idiomatic Rust code throughout
 
 ## Quick Start
@@ -87,7 +89,15 @@ neural-net-rs/
 │   ├── src/
 │   │   ├── lib.rs         # Server implementation
 │   │   └── main.rs        # Server entry point
+│   ├── static/            # Web UI assets
+│   │   ├── index.html     # Main UI
+│   │   ├── app.js         # Application logic
+│   │   ├── styles.css     # Styling
+│   │   └── wasm/          # WASM module
 │   └── tests/             # Server integration tests
+├── neural-net-wasm/        # WebAssembly bindings
+│   ├── src/lib.rs         # WASM API implementation
+│   └── pkg/               # Built WASM package (gitignored)
 └── consumer_binary/        # Example usage binary
 ```
 
@@ -323,6 +333,85 @@ curl http://localhost:3000/api/models/YOUR-MODEL-ID
 - **CORS**: Permissive CORS for development
 - **Static Files**: Tower-HTTP for serving web UI assets
 
+## Web UI
+
+The project includes a modern, interactive web interface for training and evaluating neural networks directly in your browser.
+
+### Features
+
+**Dual Training Modes:**
+- **Local (WASM)**: Train neural networks directly in the browser using WebAssembly
+  - No server required for training
+  - All computation runs client-side
+  - Full neural network implementation compiled to WASM
+- **Remote (API)**: Train on the server with real-time progress via Server-Sent Events
+  - Live training progress updates
+  - Streaming loss metrics
+  - Progress visualization
+
+**Interactive Features:**
+- Real-time loss chart with Canvas visualization
+- Network architecture display
+- Interactive testing interface
+- Truth table evaluation with error highlighting
+- Training metrics (epoch, loss, elapsed time)
+- Progress bar with percentage completion
+- Example selection (AND, OR, XOR gates)
+- Configurable training parameters (epochs, learning rate)
+
+### Usage
+
+```bash
+# Start the web server
+cargo run --bin neural-net-server
+
+# Open your browser
+open http://localhost:3000
+```
+
+The web UI will load at `http://localhost:3000` and provide:
+1. **Training Configuration Panel**: Select examples, configure parameters, choose training mode
+2. **Training Progress Visualization**: Real-time loss chart and metrics
+3. **Network Testing**: Interactive input/output testing
+4. **Architecture Display**: Visual representation of network layers
+
+### WebAssembly Integration
+
+All neural network logic runs in Rust/WASM:
+- Network creation and initialization
+- Forward propagation
+- Backpropagation and training
+- Gradient computation
+- Weight updates
+
+JavaScript is minimal - only for:
+- WASM module bootstrapping
+- DOM manipulation
+- Canvas chart drawing
+- SSE connection handling
+
+**WASM Module Size**: ~248KB (optimized for size with LTO)
+
+### Example Workflows
+
+**Local WASM Training:**
+1. Select "Local (WASM)" mode
+2. Choose an example (e.g., XOR)
+3. Set epochs (e.g., 1000) and learning rate (e.g., 0.5)
+4. Click "Start Training"
+5. Watch real-time loss chart
+6. Test the network with different inputs
+7. View truth table results
+
+**Remote API Training:**
+1. Select "Remote API (SSE)" mode
+2. Choose an example
+3. Configure parameters
+4. Click "Start Training"
+5. Receive live progress updates from server
+6. View streaming loss metrics
+7. Test the trained network
+
 ## Architecture Details
 
 ### Matrix Library
@@ -426,11 +515,12 @@ cargo doc --no-deps --open
 
 ### Test Coverage
 
-- **Total tests**: 131+
+- **Total tests**: 136+
 - **Matrix tests**: 12 unit tests
-- **Neural network tests**: 50+ integration tests
-- **CLI tests**: 57+ integration tests
+- **Neural network tests**: 62 integration tests
+- **CLI tests**: 57 integration tests
 - **Server tests**: 12 integration tests (2 server + 6 API + 4 SSE)
+- **WASM tests**: 5 unit tests
 - **Test isolation**: Uses `tempfile` crate and unique ports for parallel test safety
 
 ## Examples
@@ -509,6 +599,15 @@ cargo run --bin neural-net-cli -- resume \
   - `uuid`: Model identification
   - `futures`: Stream utilities
   - `reqwest`: HTTP client (testing)
+- **WASM Dependencies**:
+  - `wasm-bindgen`: Rust/JavaScript interop
+  - `serde-wasm-bindgen`: Serde support for WASM
+  - `wasm-pack`: Build toolchain
+  - `getrandom`: Random number generation (with js feature)
+- **Web UI**:
+  - Vanilla JavaScript (ES6 modules)
+  - Canvas API for visualization
+  - Fetch API / EventSource for server communication
 
 ## Testing Philosophy
 
@@ -552,14 +651,19 @@ See LICENSE file for details.
 Completed:
 - [x] Web server with REST API (Axum) - Phase 4.1
 - [x] Real-time training visualization (Server-Sent Events) - Phase 4.2
+- [x] WASM compilation for browser execution - Phase 5
+- [x] Interactive web UI with dual-mode training - Phase 5
 
 Potential areas for expansion:
-- [ ] WASM compilation for browser execution
-- [ ] Web UI for interactive training
-- [ ] Additional activation functions (ReLU, Tanh, etc.)
-- [ ] More complex datasets (MNIST, etc.)
-- [ ] Convolutional and recurrent architectures
-- [ ] GPU acceleration
+- [ ] Web Workers for non-blocking WASM training
+- [ ] Additional activation functions (ReLU, Tanh, Softmax, etc.)
+- [ ] More complex datasets (MNIST, Fashion-MNIST, etc.)
+- [ ] Convolutional neural networks (CNNs)
+- [ ] Recurrent neural networks (RNNs/LSTMs)
+- [ ] GPU acceleration via WebGPU
+- [ ] Model import/export in browser
+- [ ] Network architecture visualization (graph view)
+- [ ] Hyperparameter tuning interface
 
 ---
 
