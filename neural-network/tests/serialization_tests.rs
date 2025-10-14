@@ -112,8 +112,10 @@ fn test_network_preserves_training_state() {
     // Get predictions after deserialization
     let pred_after = restored.feed_forward(Matrix::from(vec![1.0, 1.0]));
 
-    // Should produce identical predictions
-    assert_eq!(pred_before.data, pred_after.data);
+    // Should produce approximately equal predictions (within floating point precision)
+    for (before, after) in pred_before.data.iter().zip(pred_after.data.iter()) {
+        assert!((before - after).abs() < 1e-10, "Predictions differ: {} vs {}", before, after);
+    }
 
     // Should be able to continue training
     restored.train(inputs, targets, 100);

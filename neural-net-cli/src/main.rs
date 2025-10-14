@@ -37,6 +37,21 @@ enum Commands {
         output: Option<String>,
     },
 
+    /// Resume training from a checkpoint
+    Resume {
+        /// Path to checkpoint file
+        #[arg(short, long)]
+        checkpoint: String,
+
+        /// Number of additional training epochs
+        #[arg(short = 'n', long)]
+        epochs: u32,
+
+        /// Output file path for updated model
+        #[arg(short, long)]
+        output: Option<String>,
+    },
+
     /// Evaluate a trained model
     Eval {
         /// Path to trained model file
@@ -63,6 +78,13 @@ fn main() -> anyhow::Result<()> {
             output,
         } => {
             cmd_train(&example, epochs, learning_rate, output)?;
+        }
+        Commands::Resume {
+            checkpoint,
+            epochs,
+            output,
+        } => {
+            cmd_resume(&checkpoint, epochs, output)?;
         }
         Commands::Eval { model, input } => {
             cmd_eval(&model, input)?;
@@ -131,6 +153,56 @@ fn cmd_train(
 
         network.save_checkpoint(Path::new(&output_path), metadata)?;
         println!("Model saved successfully!");
+    }
+
+    Ok(())
+}
+
+/// Resume training from a checkpoint
+fn cmd_resume(checkpoint: &str, epochs: u32, output: Option<String>) -> anyhow::Result<()> {
+    use neural_network::{network::Network, training::{TrainingConfig, TrainingController}};
+    use std::path::Path;
+
+    let checkpoint_path = Path::new(checkpoint);
+
+    println!("Resuming training from checkpoint: {}", checkpoint);
+    println!("Additional epochs: {}", epochs);
+    println!();
+
+    // Load checkpoint to get training data info
+    let (network, metadata) = Network::load_checkpoint(checkpoint_path)?;
+
+    println!("Loaded checkpoint:");
+    println!("  Architecture: {:?}", network.layers);
+    println!("  Previous epochs: {}", metadata.epoch);
+    println!("  Example: {}", metadata.example);
+    println!("  Learning rate: {}", metadata.learning_rate);
+    println!();
+
+    // Get training data from example
+    use neural_network::examples;
+    let ex = examples::get_example(&metadata.example)
+        .ok_or_else(|| anyhow::anyhow!("Example '{}' not found", metadata.example))?;
+
+    // Create training config
+    let config = TrainingConfig {
+        epochs,
+        checkpoint_interval: if output.is_some() { Some(epochs) } else { None },
+        checkpoint_path: output.as_ref().map(|p| Path::new(p).to_path_buf()),
+        verbose: false,
+    };
+
+    // Resume training
+    let mut controller = TrainingController::from_checkpoint(checkpoint_path, config)?;
+
+    println!("Resuming training...");
+    controller.train(ex.inputs.clone(), ex.targets.clone())?;
+    println!("Training complete!");
+
+    // Save if output specified
+    if let Some(output_path) = output {
+        println!();
+        println!("Model saved to: {}", output_path);
     }
 
     Ok(())
