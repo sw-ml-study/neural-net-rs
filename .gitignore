@@ -1,2 +1,6 @@
 .claude/
 target/
+
+# WASM build artifacts
+neural-net-wasm/pkg/
+!neural-net-server/static/wasm/

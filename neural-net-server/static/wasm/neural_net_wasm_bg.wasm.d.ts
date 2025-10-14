@@ -1,0 +1,31 @@
+/* tslint:disable */
+/* eslint-disable */
+export const memory: WebAssembly.Memory;
+export const init: () => void;
+export const __wbg_exampleinfo_free: (a: number, b: number) => void;
+export const __wbg_get_exampleinfo_name: (a: number) => [number, number];
+export const __wbg_set_exampleinfo_name: (a: number, b: number, c: number) => void;
+export const __wbg_get_exampleinfo_description: (a: number) => [number, number];
+export const __wbg_set_exampleinfo_description: (a: number, b: number, c: number) => void;
+export const __wbg_get_exampleinfo_architecture: (a: number) => [number, number];
+export const __wbg_set_exampleinfo_architecture: (a: number, b: number, c: number) => void;
+export const __wbg_neuralnetwork_free: (a: number, b: number) => void;
+export const neuralnetwork_new: (a: number, b: number, c: number) => [number, number, number];
+export const neuralnetwork_fromExample: (a: number, b: number, c: number) => [number, number, number];
+export const neuralnetwork_train: (a: number, b: number, c: number, d: number) => [number, number, number];
+export const neuralnetwork_trainCustom: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => [number, number];
+export const neuralnetwork_evaluate: (a: number, b: number, c: number) => [number, number, number, number];
+export const neuralnetwork_get_architecture: (a: number) => [number, number];
+export const neuralnetwork_getParameterCount: (a: number) => number;
+export const neuralnetwork_toJSON: (a: number) => [number, number, number, number];
+export const neuralnetwork_fromJSON: (a: number, b: number) => [number, number, number];
+export const listExamples: () => [number, number, number];
+export const getExampleInfo: (a: number, b: number) => [number, number, number];
+export const __wbindgen_malloc: (a: number, b: number) => number;
+export const __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+export const __wbindgen_exn_store: (a: number) => void;
+export const __externref_table_alloc: () => number;
+export const __wbindgen_export_4: WebAssembly.Table;
+export const __wbindgen_free: (a: number, b: number, c: number) => void;
+export const __externref_table_dealloc: (a: number) => void;
+export const __wbindgen_start: () => void;
