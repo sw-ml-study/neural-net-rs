@@ -177,15 +177,30 @@ The neural-net-server provides a REST API for training and evaluating neural net
 ### Starting the Server
 
 ```bash
-# Start the server on default port 3000
+# Start the server on default port 3000 (localhost only)
 cargo run --bin neural-net-server
 
-# Or run with release optimizations
-cargo run --release --bin neural-net-server
+# Specify custom port
+cargo run --bin neural-net-server -- --port 8080
+
+# Bind to all interfaces (0.0.0.0) for network access
+cargo run --bin neural-net-server -- --host 0.0.0.0 --port 8080
+
+# Show help
+cargo run --bin neural-net-server -- --help
 ```
 
-The server will start on `http://127.0.0.1:3000` and provide:
+**CLI Options:**
+- `-H, --host <HOST>`: Host address to bind to (default: `127.0.0.1`)
+  - Use `127.0.0.1` for localhost only
+  - Use `0.0.0.0` to allow external connections
+- `-p, --port <PORT>`: Port number to listen on (default: `3000`)
+- `-h, --help`: Print help information
+- `-V, --version`: Print version
+
+The server provides:
 - REST API endpoints at `/api/*`
+- Interactive web UI at `/`
 - Static file serving from `./static/` directory
 - CORS support for cross-origin requests
 
