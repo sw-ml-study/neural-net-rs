@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+<defs>
+  <style>
+    .neuron { fill: #4a90e2; stroke: #2c5aa0; stroke-width: 2; }
+    .neuron:hover { fill: #5ba3ff; cursor: pointer; }
+    .weight-line { stroke-opacity: 0.6; }
+    .weight-line:hover { stroke-opacity: 1.0; stroke-width: 3; }
+    .layer-label { font-family: Arial, sans-serif; font-size: 14px; fill: #333; }
+    .neuron-label { font-family: Arial, sans-serif; font-size: 10px; fill: #666; }
+    .weight-label { font-family: Arial, sans-serif; font-size: 8px; fill: #888; }
+    .title { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #333; }
+    .subtitle { font-family: Arial, sans-serif; font-size: 14px; fill: #666; }
+  </style>
+</defs>
+
+<!-- Background -->
+<rect width="1200" height="800" fill="#f5f7fa"/>
+
+<!-- Title -->
+<text x="600" y="30" class="title" text-anchor="middle">Neural Network Architecture</text>
+<text x="600" y="50" class="subtitle" text-anchor="middle">[2, 3, 1]</text>
+
+<!-- Weight connections -->
+<line x1="80" y1="350" x2="600" y2="320" stroke="rgb(55, 204, 255)" stroke-width="2.74" class="weight-line">
+  <title>Weight: 11.8375 (from L0 N0 to L1 N0)</title>
+</line>
+<line x1="80" y1="350" x2="600" y2="380" stroke="rgb(55, 176, 255)" stroke-width="2.32" class="weight-line">
+  <title>Weight: 11.0169 (from L0 N0 to L1 N1)</title>
+</line>
+<line x1="80" y1="350" x2="600" y2="440" stroke="rgb(55, 255, 255)" stroke-width="3.50" class="weight-line">
+  <title>Weight: 13.3356 (from L0 N0 to L1 N2)</title>
+</line>
+<line x1="80" y1="410" x2="600" y2="320" stroke="rgb(55, 83, 255)" stroke-width="0.93" class="weight-line">
+  <title>Weight: 8.3060 (from L0 N1 to L1 N0)</title>
+</line>
+<line x1="80" y1="410" x2="600" y2="380" stroke="rgb(55, 55, 255)" stroke-width="0.50" class="weight-line">
+  <title>Weight: 7.4586 (from L0 N1 to L1 N1)</title>
+</line>
+<line x1="80" y1="410" x2="600" y2="440" stroke="rgb(255, 112, 112)" stroke-width="1.36" class="weight-line">
+  <title>Weight: -9.1388 (from L0 N1 to L1 N2)</title>
+</line>
+<line x1="600" y1="320" x2="1120" y2="380" stroke="rgb(55, 122, 255)" stroke-width="1.52" class="weight-line">
+  <title>Weight: 2.9003 (from L1 N0 to L2 N0)</title>
+</line>
+<line x1="600" y1="380" x2="1120" y2="380" stroke="rgb(55, 55, 255)" stroke-width="0.50" class="weight-line">
+  <title>Weight: 1.9827 (from L1 N1 to L2 N0)</title>
+</line>
+<line x1="600" y1="440" x2="1120" y2="380" stroke="rgb(255, 255, 255)" stroke-width="3.50" class="weight-line">
+  <title>Weight: -4.6841 (from L1 N2 to L2 N0)</title>
+</line>
+<!-- Neurons -->
+<text x="80" y="320" class="layer-label" text-anchor="middle">Layer 0: Input</text>
+<circle cx="80" cy="350" r="20" class="neuron">
+  <title>L0 N0 - Input node</title>
+</circle>
+<text x="80" y="355" class="neuron-label" text-anchor="middle">0</text>
+<circle cx="80" cy="410" r="20" class="neuron">
+  <title>L0 N1 - Input node</title>
+</circle>
+<text x="80" y="415" class="neuron-label" text-anchor="middle">1</text>
+<text x="600" y="290" class="layer-label" text-anchor="middle">Layer 1: Hidden</text>
+<circle cx="600" cy="320" r="20" class="neuron">
+  <title>L1 N0 - Bias: -3.4291</title>
+</circle>
+<text x="600" y="325" class="neuron-label" text-anchor="middle">0</text>
+<circle cx="600" cy="380" r="20" class="neuron">
+  <title>L1 N1 - Bias: -2.9932</title>
+</circle>
+<text x="600" y="385" class="neuron-label" text-anchor="middle">1</text>
+<circle cx="600" cy="440" r="20" class="neuron">
+  <title>L1 N2 - Bias: 4.6615</title>
+</circle>
+<text x="600" y="445" class="neuron-label" text-anchor="middle">2</text>
+<text x="1120" y="350" class="layer-label" text-anchor="middle">Layer 2: Output</text>
+<circle cx="1120" cy="380" r="20" class="neuron">
+  <title>L2 N0 - Bias: -0.3310</title>
+</circle>
+<text x="1120" y="385" class="neuron-label" text-anchor="middle">0</text>
+
+<!-- Legend -->
+<g transform="translate(80, 700)">
+  <text x="0" y="0" class="layer-label">Legend:</text>
+  <line x1="0" y1="15" x2="50" y2="15" stroke="rgb(55, 155, 255)" stroke-width="3" class="weight-line"/>
+  <text x="60" y="20" class="neuron-label">Positive weight</text>
+  <line x1="0" y1="35" x2="50" y2="35" stroke="rgb(255, 155, 155)" stroke-width="3" class="weight-line"/>
+  <text x="60" y="40" class="neuron-label">Negative weight</text>
+  <text x="0" y="60" class="neuron-label">Line thickness = weight magnitude</text>
+  <text x="0" y="75" class="neuron-label">Hover over elements for details</text>
+</g>
+
+</svg>
