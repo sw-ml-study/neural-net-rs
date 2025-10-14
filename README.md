@@ -44,27 +44,27 @@ cargo run --bin neural-net-cli -- --help
 cargo run --bin neural-net-cli -- train --example xor --epochs 10000
 
 # Save the trained model
-cargo run --bin neural-net-cli -- train --example xor --epochs 10000 --output xor_model.json
+cargo run --bin neural-net-cli -- train --example xor --epochs 10000 --output checkpoints/xor_model.json
 
 # Customize learning rate
-cargo run --bin neural-net-cli -- train --example and --epochs 5000 --learning-rate 0.3 --output and_model.json
+cargo run --bin neural-net-cli -- train --example and --epochs 5000 --learning-rate 0.3 --output checkpoints/and_model.json
 ```
 
 ### Evaluating a Trained Model
 
 ```bash
 # Load and evaluate a trained model
-cargo run --bin neural-net-cli -- eval --model xor_model.json --input 1.0,0.0
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor_model.json --input 1.0,0.0
 
 # View model information
-cargo run --bin neural-net-cli -- info --model xor_model.json
+cargo run --bin neural-net-cli -- info --model checkpoints/xor_model.json
 ```
 
 ### Resuming Training
 
 ```bash
 # Resume training from a checkpoint
-cargo run --bin neural-net-cli -- resume --checkpoint xor_model.json --epochs 5000 --output xor_continued.json
+cargo run --bin neural-net-cli -- resume --checkpoint checkpoints/xor_model.json --epochs 5000 --output checkpoints/xor_continued.json
 ```
 
 ## Project Structure
@@ -151,7 +151,7 @@ Options:
 
 Example:
 ```bash
-cargo run --bin neural-net-cli -- eval --model xor_model.json --input 1.0,0.0
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor_model.json --input 1.0,0.0
 ```
 
 ### `info` - Display Model Information
@@ -576,13 +576,13 @@ cargo run --bin neural-net-cli -- train \
   --example xor \
   --epochs 10000 \
   --learning-rate 0.5 \
-  --output models/xor.json
+  --output checkpoints/xor.json
 
 # Evaluate all combinations
-cargo run --bin neural-net-cli -- eval --model models/xor.json --input 0.0,0.0  # ~0.0
-cargo run --bin neural-net-cli -- eval --model models/xor.json --input 0.0,1.0  # ~1.0
-cargo run --bin neural-net-cli -- eval --model models/xor.json --input 1.0,0.0  # ~1.0
-cargo run --bin neural-net-cli -- eval --model models/xor.json --input 1.0,1.0  # ~0.0
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor.json --input 0.0,0.0  # ~0.0
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor.json --input 0.0,1.0  # ~1.0
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor.json --input 1.0,0.0  # ~1.0
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor.json --input 1.0,1.0  # ~0.0
 ```
 
 ### Long Training with Resume
@@ -592,16 +592,16 @@ cargo run --bin neural-net-cli -- eval --model models/xor.json --input 1.0,1.0  
 cargo run --bin neural-net-cli -- train \
   --example xor \
   --epochs 5000 \
-  --output models/xor_partial.json
+  --output checkpoints/xor_partial.json
 
 # Check progress
-cargo run --bin neural-net-cli -- info --model models/xor_partial.json
+cargo run --bin neural-net-cli -- info --model checkpoints/xor_partial.json
 
 # Resume for another 5000 epochs
 cargo run --bin neural-net-cli -- resume \
-  --checkpoint models/xor_partial.json \
+  --checkpoint checkpoints/xor_partial.json \
   --epochs 5000 \
-  --output models/xor_full.json
+  --output checkpoints/xor_full.json
 ```
 
 ## Built-in Examples
@@ -632,10 +632,10 @@ Visualize trained neural networks with interactive SVG diagrams showing weights,
 
 ```bash
 # Train a network and save checkpoint
-cargo run --bin neural-net-cli -- train --example xor --epochs 10000 --output xor_checkpoint.json
+cargo run --bin neural-net-cli -- train --example xor --epochs 10000 --output checkpoints/xor_checkpoint.json
 
 # Generate interactive SVG visualization
-cargo run --bin visualize -- --checkpoint xor_checkpoint.json --output network.svg
+cargo run --bin visualize -- --checkpoint checkpoints/xor_checkpoint.json --output network.svg
 
 # Open in browser to zoom and interact
 open network.svg

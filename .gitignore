@@ -6,6 +6,7 @@ neural-net-wasm/pkg/
 !neural-net-server/static/wasm/
 
 # Checkpoint and model files
+checkpoints/
 *checkpoint.json
 *model.json
 *.checkpoint
