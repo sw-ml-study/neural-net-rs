@@ -1,25 +1,18 @@
 // Integration tests for train command
 use std::fs;
-use std::path::PathBuf;
 use std::process::Command;
+use tempfile::TempDir;
 
 // Helper function to create a temporary directory for tests
-fn create_temp_dir() -> PathBuf {
-    let temp_dir = std::env::temp_dir().join(format!(
-        "neural_net_cli_test_{}",
-        std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .unwrap()
-            .as_millis()
-    ));
-    fs::create_dir_all(&temp_dir).unwrap();
-    temp_dir
+// Uses tempfile crate to ensure unique directories even in parallel execution
+fn create_temp_dir() -> TempDir {
+    TempDir::new().expect("Failed to create temp directory")
 }
 
 #[test]
 fn test_train_and_basic() {
     let temp_dir = create_temp_dir();
-    let output_path = temp_dir.join("and_model.json");
+    let output_path = temp_dir.path().join("and_model.json");
 
     let output = Command::new("cargo")
         .args(&[
@@ -54,14 +47,13 @@ fn test_train_and_basic() {
     assert!(json_value["metadata"].is_object());
     assert!(json_value["network"].is_object());
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_train_xor_basic() {
     let temp_dir = create_temp_dir();
-    let output_path = temp_dir.join("xor_model.json");
+    let output_path = temp_dir.path().join("xor_model.json");
 
     let output = Command::new("cargo")
         .args(&[
@@ -83,14 +75,13 @@ fn test_train_xor_basic() {
     assert!(output.status.success(), "XOR training should succeed");
     assert!(output_path.exists());
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_train_with_custom_learning_rate() {
     let temp_dir = create_temp_dir();
-    let output_path = temp_dir.join("custom_lr_model.json");
+    let output_path = temp_dir.path().join("custom_lr_model.json");
 
     let output = Command::new("cargo")
         .args(&[
@@ -125,8 +116,7 @@ fn test_train_with_custom_learning_rate() {
         .expect("Learning rate should be present");
     assert!((lr - 0.3).abs() < 0.001, "Learning rate should be 0.3");
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
@@ -188,7 +178,7 @@ fn test_train_without_output_succeeds() {
 #[test]
 fn test_train_model_metadata() {
     let temp_dir = create_temp_dir();
-    let output_path = temp_dir.join("metadata_test.json");
+    let output_path = temp_dir.path().join("metadata_test.json");
 
     Command::new("cargo")
         .args(&[
@@ -222,14 +212,13 @@ fn test_train_model_metadata() {
     assert!(json["network"]["weights"].is_array());
     assert!(json["network"]["biases"].is_array());
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }
 
 #[test]
 fn test_train_creates_valid_checkpoint() {
     let temp_dir = create_temp_dir();
-    let output_path = temp_dir.join("checkpoint_test.json");
+    let output_path = temp_dir.path().join("checkpoint_test.json");
 
     Command::new("cargo")
         .args(&[
@@ -261,6 +250,5 @@ fn test_train_creates_valid_checkpoint() {
     assert_eq!(metadata.epoch, 100);
     assert_eq!(network.layers, vec![2, 2, 1]);
 
-    // Cleanup
-    fs::remove_dir_all(&temp_dir).ok();
+    // TempDir automatically cleans up when dropped
 }

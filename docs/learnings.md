@@ -175,18 +175,55 @@ pub struct Checkpoint {
 
 **ISSUE (Task 1.3):** `test_checkpoint_serialization_is_deterministic` failed when run in parallel but passed when run with `--test-threads=1`.
 
-**CAUSE:** Multiple tests creating directories/files with timestamp-based names can have race conditions.
+**CAUSE:** Multiple tests creating directories/files with timestamp-based names can have race conditions. Using millisecond timestamps like this:
 
-**PARTIAL SOLUTION:** Added `fs::create_dir_all()` in `save_checkpoint()` to ensure parent directory exists.
+```rust
+// ❌ WRONG - can collide in parallel execution
+fn create_temp_dir() -> PathBuf {
+    let temp_dir = std::env::temp_dir().join(format!(
+        "neural_net_test_{}",
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis()  // ← Multiple tests can get same millisecond
+    ));
+    fs::create_dir_all(&temp_dir).unwrap();
+    temp_dir
+}
+```
 
-**REMAINING ISSUE:** Tests still have timing-dependent behavior. This is acceptable for now.
+**SOLUTION (Task 1.5):** Use the `tempfile` crate, which is specifically designed for this:
 
-**FUTURE IMPROVEMENT:** Consider using:
-- More unique temporary directory names (include thread ID + random number)
-- Test fixtures that don't rely on filesystem
-- `#[serial]` attribute from `serial_test` crate for tests that must run sequentially
+```rust
+// ✅ CORRECT - uses OS-level unique IDs
+use tempfile::TempDir;
 
-**Current Workaround:** Document that specific tests may fail in parallel but pass sequentially. This is a test infrastructure issue, not a code bug.
+fn create_temp_dir() -> TempDir {
+    TempDir::new().expect("Failed to create temp directory")
+}
+
+#[test]
+fn test_something() {
+    let temp_dir = create_temp_dir();
+    let file_path = temp_dir.path().join("file.json");
+    // ... use file_path ...
+    // TempDir automatically cleans up when dropped!
+}
+```
+
+**Benefits of `tempfile`:**
+- OS-level unique directory names (no collisions)
+- Thread-safe (designed for parallel tests)
+- Automatic cleanup on drop (no manual `fs::remove_dir_all`)
+- Works reliably on all platforms
+
+**Implementation:**
+- Added `tempfile = "3"` to `[dev-dependencies]`
+- Updated all integration tests to use `TempDir` instead of manual temp dirs
+- Removed manual cleanup code (automatic now)
+- Tests now pass consistently in parallel (tested multiple runs)
+
+**Result:** All tests pass reliably in parallel execution. Issue completely resolved.
 
 ---
 
