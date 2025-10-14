@@ -6,6 +6,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 neural-net-rs is an educational neural network framework implemented in Rust. The project demonstrates fundamental concepts of neural networks through a simple, flexible architecture suitable for learning and experimentation.
 
+## CRITICAL: Review Learnings Document
+
+**⚠️ BEFORE STARTING ANY WORK, READ docs/learnings.md ⚠️**
+
+Since AI assistants cannot learn from experience across sessions, `docs/learnings.md` serves as institutional memory tracking mistakes, corrections, and best practices. Every Claude Code instance MUST:
+
+1. **Read docs/learnings.md** at the start of each session
+2. **Update docs/learnings.md** when new mistakes are discovered or patterns emerge
+3. **Review relevant sections** before performing similar tasks
+
+Key sections in learnings.md:
+- TDD methodology (RED has two components: build AND test phases)
+- Clippy checks to run before committing
+- Module export patterns
+- Dependency management (dependencies vs dev-dependencies)
+- Common Rust compilation errors and fixes
+
+Failing to review learnings.md may result in repeating previously solved mistakes.
+
 ## Workspace Structure
 
 This is a Cargo workspace with three crates:

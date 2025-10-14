@@ -3,7 +3,6 @@
 /// This module provides structures and methods for checkpointing neural network
 /// training sessions. Checkpoints include both the network state (weights, biases)
 /// and metadata about the training session (epoch, timestamp, etc.).
-
 use crate::network::Network;
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};

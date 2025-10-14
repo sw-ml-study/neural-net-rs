@@ -3,7 +3,6 @@
 /// This module provides pre-configured examples of classic machine learning problems:
 /// AND, OR, and XOR logic gates. Each example includes the training data, recommended
 /// architecture, and hyperparameters.
-
 /// Represents a training example with inputs, targets, and recommended configuration
 #[derive(Debug, Clone)]
 pub struct Example {
