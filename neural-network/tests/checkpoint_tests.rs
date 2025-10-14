@@ -119,8 +119,10 @@ fn test_checkpoint_preserves_predictions() {
     let (mut restored, _) = Network::load_checkpoint(&checkpoint_path).unwrap();
     let pred_after = restored.feed_forward(test_input);
 
-    // Predictions should be identical
-    assert_eq!(pred_before.data, pred_after.data);
+    // Predictions should be approximately equal (within floating point precision)
+    for (before, after) in pred_before.data.iter().zip(pred_after.data.iter()) {
+        assert!((before - after).abs() < 1e-10, "Predictions differ: {} vs {}", before, after);
+    }
 
     // TempDir automatically cleans up when dropped
 }

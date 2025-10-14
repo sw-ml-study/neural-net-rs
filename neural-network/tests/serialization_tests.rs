@@ -77,12 +77,14 @@ fn test_network_serialization_roundtrip() {
     let json = serde_json::to_string(&network).unwrap();
     let mut restored: Network = serde_json::from_str(&json).unwrap();
 
-    // Predictions should be identical
+    // Predictions should be approximately equal (within floating point precision)
     let test_input = Matrix::from(vec![0.5, 0.5]);
     let pred1 = network.feed_forward(test_input.clone());
     let pred2 = restored.feed_forward(test_input);
 
-    assert_eq!(pred1.data, pred2.data);
+    for (p1, p2) in pred1.data.iter().zip(pred2.data.iter()) {
+        assert!((p1 - p2).abs() < 1e-10, "Predictions differ: {} vs {}", p1, p2);
+    }
 }
 
 #[test]

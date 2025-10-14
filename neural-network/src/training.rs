@@ -102,4 +102,22 @@ impl TrainingController {
     pub fn network(&self) -> &Network {
         &self.network
     }
+
+    /// Create a training controller from a checkpoint file
+    pub fn from_checkpoint(
+        checkpoint_path: &std::path::Path,
+        config: TrainingConfig,
+    ) -> anyhow::Result<Self> {
+        let (network, _metadata) = Network::load_checkpoint(checkpoint_path)?;
+        Ok(Self {
+            network,
+            config,
+            callbacks: Vec::new(),
+        })
+    }
+
+    /// Consume the controller and return the network
+    pub fn into_network(self) -> Network {
+        self.network
+    }
 }
