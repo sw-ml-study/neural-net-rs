@@ -5,4 +5,4 @@ members = [
     "matrix",
     "neural-network",
     "consumer_binary"
-, "neural-net-cli"]
+, "neural-net-cli", "neural-net-server"]
