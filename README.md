@@ -864,6 +864,83 @@ Input [A1,A0,B1,B0] | A | B | Sum | Output [S2,S1,S0] | Binary
 
 The network learns this without explicit carry bit logic - it discovers binary addition rules purely from examples!
 
+### Iris Flower Classification Visualization
+
+![Iris Classification Network Visualization](images/iris_network.svg)
+
+**Architecture**: [4, 8, 3] - **Total Parameters**: 67 (56 weights + 11 biases)
+
+The **Iris dataset** is one of the most famous datasets in machine learning history, introduced by British statistician and biologist Ronald Fisher in his 1936 paper "The use of multiple measurements in taxonomic problems." It represents the transition from synthetic toy problems to **real-world data** with actual measurements and natural variation.
+
+#### Historical Context
+
+The Iris dataset was collected by botanist Edgar Anderson in the Gaspé Peninsula, Quebec, Canada. Fisher used it to demonstrate linear discriminant analysis, but it has since become the "Hello World" of machine learning - used to teach and benchmark classification algorithms for nearly 90 years.
+
+**Why it's important:**
+- **Real biological measurements**: Not synthetic/constructed data
+- **Natural class separation**: Setosa is linearly separable, but Versicolor/Virginica overlap slightly
+- **Continuous features**: Unlike binary problems, features are real-valued measurements (in centimeters)
+- **Historical significance**: One of the first published datasets for statistical classification
+- **Benchmark standard**: Allows comparison across decades of ML algorithms
+
+#### The Dataset
+
+60 iris flower samples (20 per species) with 4 botanical measurements:
+
+- **Input Features** (4 continuous values in cm):
+  - Sepal length: 4.3-7.9 cm
+  - Sepal width: 2.0-4.4 cm
+  - Petal length: 1.0-6.9 cm
+  - Petal width: 0.1-2.5 cm
+
+- **Classes** (3 species, one-hot encoded):
+  - **Iris setosa**: Small petals (1.0-1.9 cm), easily distinguishable
+  - **Iris versicolor**: Medium petals (3.0-5.1 cm), overlaps with virginica
+  - **Iris virginica**: Large petals (4.5-6.9 cm), overlaps with versicolor
+
+#### Network Architecture
+
+The network learns to classify iris species from measurements:
+
+- **Input Layer** (4 neurons): Receives real-valued botanical measurements
+  - No need to normalize to [0,1] for our sigmoid network
+  - Features have natural scales (centimeters)
+- **Hidden Layer** (8 neurons): Discovers decision boundaries in feature space
+  - Learns which feature combinations distinguish species
+  - Implicitly learns: "small petals → setosa", "petal length/width ratio → versicolor vs virginica"
+  - More neurons than synthetic problems due to continuous feature space
+- **Output Layer** (3 neurons): One-hot encoded species classification
+  - Highest activation indicates predicted species
+  - Network learns probabilistic classification
+
+**Why same parameters as adder2 (67)?** Same architecture [4, 8, 3] but **very different problem**:
+- **Adder2**: Discrete binary logic with deterministic rules
+- **Iris**: Continuous measurements with statistical patterns and class overlap
+- Same parameter count shows architecture isn't everything - **data characteristics matter**
+
+**Key Differences from Previous Examples:**
+1. **Continuous inputs**: First example with real-valued (non-binary) features
+2. **Natural variation**: Real measurements have noise and biological variation
+3. **Overlapping classes**: Versicolor and Virginica aren't perfectly separable
+4. **Real-world problem**: Actual botanical classification, not a toy problem
+5. **More training data**: 60 samples vs 4-16 in previous examples
+
+**Classification Examples:**
+```
+Input [SL, SW, PL, PW] | Species      | Output [Setosa, Versi, Virgin]
+-----------------------+--------------+------------------------------
+[5.1, 3.5, 1.4, 0.2]   | Setosa       | [1, 0, 0]  Small petals
+[7.0, 3.2, 4.7, 1.4]   | Versicolor   | [0, 1, 0]  Medium petals
+[6.3, 3.3, 6.0, 2.5]   | Virginica    | [0, 0, 1]  Large petals
+```
+
+**References:**
+- Fisher, R.A. (1936). "The use of multiple measurements in taxonomic problems". *Annals of Eugenics*. 7 (2): 179–188.
+- Original dataset: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/iris)
+- This implementation uses a 40% sample (60/150) for educational clarity
+
+The Iris dataset demonstrates that neural networks can learn from real-world continuous data, not just binary logic. It bridges the gap between toy problems and practical applications.
+
 ## Technical Stack
 
 - **Language**: Rust 2024 Edition
