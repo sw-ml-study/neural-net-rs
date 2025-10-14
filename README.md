@@ -941,6 +941,108 @@ Input [SL, SW, PL, PW] | Species      | Output [Setosa, Versi, Virgin]
 
 The Iris dataset demonstrates that neural networks can learn from real-world continuous data, not just binary logic. It bridges the gap between toy problems and practical applications.
 
+### 3x3 Pattern Recognition Visualization
+
+![3x3 Pattern Recognition Network Visualization](images/pattern3x3_network.svg)
+
+**Architecture**: [9, 6, 4] - **Total Parameters**: 88 (78 weights + 10 biases)
+
+The 3x3 pattern recognition example demonstrates **visual pattern detection** - the network learns to recognize simple geometric shapes in a 3×3 pixel grid. This is the largest example by parameter count and represents basic image processing, similar to how computer vision systems recognize patterns.
+
+#### The Patterns
+
+The network classifies four distinct visual patterns:
+
+```
+X Pattern (diagonals):    O Pattern (border):     + Pattern (cross):      - Pattern (horizontal):
+ 1 0 1                     1 1 1                   0 1 0                   0 0 0
+ 0 1 0                     1 0 1                   1 1 1                   1 1 1
+ 1 0 1                     1 1 1                   0 1 0                   0 0 0
+```
+
+Each pattern is represented as 9 binary inputs (one per pixel) in row-major order: `[top-left, top-center, top-right, middle-left, center, middle-right, bottom-left, bottom-center, bottom-right]`
+
+#### Network Architecture
+
+This is our largest network, optimized for spatial pattern detection:
+
+- **Input Layer** (9 neurons): Receives 3×3 grid as flattened pixel array
+  - Each neuron corresponds to one pixel position
+  - Binary values: 1 (filled pixel) or 0 (empty pixel)
+  - **Largest input layer** - demonstrates image-like data processing
+- **Hidden Layer** (6 neurons): Learns spatial feature detectors
+  - Each hidden neuron learns to detect specific pixel combinations
+  - Implicitly learns: diagonal detectors, border detectors, cross detectors, line detectors
+  - **Smaller than expected** (6 vs 8-9) because patterns are simple and distinct
+  - Shows efficiency: fewer hidden neurons needed when features are well-separated
+- **Output Layer** (4 neurons): One-hot encoded pattern classification
+  - Output 0: X pattern (diagonals)
+  - Output 1: O pattern (border/frame)
+  - Output 2: + pattern (cross)
+  - Output 3: - pattern (horizontal line)
+
+**Why 88 parameters?** This is the largest network due to the 9-neuron input layer:
+- 9×6 = 54 weights (input to hidden) - **3× larger than iris/adder2**
+- 6 hidden biases
+- 6×4 = 24 weights (hidden to output) - same as adder2
+- 4 output biases
+- Total: 54 + 6 + 24 + 4 = 88 parameters
+
+**Key Insight**: The parameter explosion comes from the **input layer size**. Going from 4 inputs (iris/adder2) to 9 inputs (pattern3x3) increases input-to-hidden weights from 32 to 54 - a **69% increase** just from larger inputs. This shows why high-resolution images require massive networks.
+
+**Comparison with Previous Examples:**
+```
+Example      | Inputs | Hidden | Outputs | Total Params | Input→Hidden Weights
+-------------|--------|--------|---------|--------------|--------------------
+XOR          |   2    |   3    |    1    |     13       |    6  (46%)
+Parity3      |   3    |   4    |    1    |     21       |   12  (57%)
+Quadrant     |   2    |   4    |    4    |     32       |    8  (25%)
+Adder2       |   4    |   8    |    3    |     67       |   32  (48%)
+Iris         |   4    |   8    |    3    |     67       |   32  (48%)
+Pattern3x3   |   9    |   6    |    4    |     88       |   54  (61%)
+```
+
+Notice how Pattern3x3 has the **most input-to-hidden weights** (54) despite having fewer hidden neurons (6) than adder2/iris (8). Input dimensionality dominates parameter count.
+
+**What the Network Learns:**
+
+The hidden neurons learn to detect key features:
+- **Diagonal detectors**: Respond to pixels at (0,0), (1,1), (2,2) or (0,2), (1,1), (2,0)
+- **Border detectors**: Respond to edge pixels (top row, bottom row, left column, right column)
+- **Center detectors**: Respond to middle column or middle row
+- **Corner detectors**: Combinations of corner pixels
+
+The output layer combines these features to classify patterns.
+
+**Pattern Examples:**
+```
+Input Grid    | Pattern | Output [X, O, +, -]
+--------------|---------|--------------------
+[1,0,1,       |    X    | [1, 0, 0, 0]
+ 0,1,0,       |         |
+ 1,0,1]       |         |
+              |         |
+[1,1,1,       |    O    | [0, 1, 0, 0]
+ 1,0,1,       |         |
+ 1,1,1]       |         |
+              |         |
+[0,1,0,       |    +    | [0, 0, 1, 0]
+ 1,1,1,       |         |
+ 0,1,0]       |         |
+              |         |
+[0,0,0,       |    -    | [0, 0, 0, 1]
+ 1,1,1,       |         |
+ 0,0,0]       |         |
+```
+
+**Significance:** This example demonstrates:
+1. **Spatial pattern recognition**: Network learns 2D structure from flattened input
+2. **Feature detection**: Hidden neurons act as learned feature detectors (like edge/corner detectors)
+3. **Scalability challenge**: Parameters grow quadratically with input size (9 inputs = 88 params vs 4 inputs = 67 params)
+4. **Foundation for vision**: This is essentially a tiny convolutional neural network concept without the convolutions
+
+This completes our progression from simple 2-input logic gates (13 params) to 9-input visual patterns (88 params), showing how neural network complexity scales with problem dimensionality.
+
 ## Technical Stack
 
 - **Language**: Rust 2024 Edition

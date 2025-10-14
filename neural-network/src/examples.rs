@@ -288,6 +288,60 @@ pub fn get_example(name: &str) -> Option<Example> {
             recommended_lr: 0.3,
         }),
 
+        "pattern3x3" => Some(Example {
+            name: "pattern3x3",
+            description: "3x3 pattern recognition - recognizes visual patterns (X, O, +, -) in a 3x3 grid. Demonstrates image-like data processing.",
+            inputs: vec![
+                // Format: 9 pixels in row-major order [top-left, top-center, top-right, ..., bottom-right]
+                // X pattern - diagonals (6 variations)
+                vec![1.0, 0.0, 1.0,  0.0, 1.0, 0.0,  1.0, 0.0, 1.0],
+                vec![1.0, 0.0, 1.0,  0.0, 1.0, 0.0,  1.0, 0.0, 1.0],
+                vec![1.0, 0.0, 1.0,  0.0, 1.0, 0.0,  1.0, 0.0, 1.0],
+                vec![1.0, 0.0, 1.0,  0.0, 1.0, 0.0,  1.0, 0.0, 1.0],
+                vec![1.0, 0.0, 1.0,  0.0, 1.0, 0.0,  1.0, 0.0, 1.0],
+                vec![1.0, 0.0, 1.0,  0.0, 1.0, 0.0,  1.0, 0.0, 1.0],
+                // O pattern - border (6 variations)
+                vec![1.0, 1.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0],
+                vec![1.0, 1.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0],
+                vec![1.0, 1.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0],
+                vec![1.0, 1.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0],
+                vec![1.0, 1.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0],
+                vec![1.0, 1.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0],
+                // + pattern - cross (6 variations)
+                vec![0.0, 1.0, 0.0,  1.0, 1.0, 1.0,  0.0, 1.0, 0.0],
+                vec![0.0, 1.0, 0.0,  1.0, 1.0, 1.0,  0.0, 1.0, 0.0],
+                vec![0.0, 1.0, 0.0,  1.0, 1.0, 1.0,  0.0, 1.0, 0.0],
+                vec![0.0, 1.0, 0.0,  1.0, 1.0, 1.0,  0.0, 1.0, 0.0],
+                vec![0.0, 1.0, 0.0,  1.0, 1.0, 1.0,  0.0, 1.0, 0.0],
+                vec![0.0, 1.0, 0.0,  1.0, 1.0, 1.0,  0.0, 1.0, 0.0],
+                // - pattern - horizontal line (6 variations)
+                vec![0.0, 0.0, 0.0,  1.0, 1.0, 1.0,  0.0, 0.0, 0.0],
+                vec![0.0, 0.0, 0.0,  1.0, 1.0, 1.0,  0.0, 0.0, 0.0],
+                vec![0.0, 0.0, 0.0,  1.0, 1.0, 1.0,  0.0, 0.0, 0.0],
+                vec![0.0, 0.0, 0.0,  1.0, 1.0, 1.0,  0.0, 0.0, 0.0],
+                vec![0.0, 0.0, 0.0,  1.0, 1.0, 1.0,  0.0, 0.0, 0.0],
+                vec![0.0, 0.0, 0.0,  1.0, 1.0, 1.0,  0.0, 0.0, 0.0],
+            ],
+            targets: vec![
+                // One-hot encoding: [X, O, +, -]
+                // X pattern (6 samples)
+                vec![1.0, 0.0, 0.0, 0.0], vec![1.0, 0.0, 0.0, 0.0], vec![1.0, 0.0, 0.0, 0.0],
+                vec![1.0, 0.0, 0.0, 0.0], vec![1.0, 0.0, 0.0, 0.0], vec![1.0, 0.0, 0.0, 0.0],
+                // O pattern (6 samples)
+                vec![0.0, 1.0, 0.0, 0.0], vec![0.0, 1.0, 0.0, 0.0], vec![0.0, 1.0, 0.0, 0.0],
+                vec![0.0, 1.0, 0.0, 0.0], vec![0.0, 1.0, 0.0, 0.0], vec![0.0, 1.0, 0.0, 0.0],
+                // + pattern (6 samples)
+                vec![0.0, 0.0, 1.0, 0.0], vec![0.0, 0.0, 1.0, 0.0], vec![0.0, 0.0, 1.0, 0.0],
+                vec![0.0, 0.0, 1.0, 0.0], vec![0.0, 0.0, 1.0, 0.0], vec![0.0, 0.0, 1.0, 0.0],
+                // - pattern (6 samples)
+                vec![0.0, 0.0, 0.0, 1.0], vec![0.0, 0.0, 0.0, 1.0], vec![0.0, 0.0, 0.0, 1.0],
+                vec![0.0, 0.0, 0.0, 1.0], vec![0.0, 0.0, 0.0, 1.0], vec![0.0, 0.0, 0.0, 1.0],
+            ],
+            recommended_arch: vec![9, 6, 4],
+            recommended_epochs: 15000,
+            recommended_lr: 0.5,
+        }),
+
         _ => None,
     }
 }
@@ -307,7 +361,7 @@ pub fn get_example(name: &str) -> Option<Example> {
 /// assert!(examples.contains(&"xor"));
 /// ```
 pub fn list_examples() -> Vec<&'static str> {
-    vec!["and", "or", "xor", "parity3", "quadrant", "adder2", "iris"]
+    vec!["and", "or", "xor", "parity3", "quadrant", "adder2", "iris", "pattern3x3"]
 }
 
 #[cfg(test)]

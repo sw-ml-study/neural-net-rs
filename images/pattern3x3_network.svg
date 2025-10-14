@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+<defs>
+  <style>
+    .neuron { fill: #4a90e2; stroke: #2c5aa0; stroke-width: 2; }
+    .neuron:hover { fill: #5ba3ff; cursor: pointer; }
+    .weight-line { stroke-opacity: 0.6; }
+    .weight-line:hover { stroke-opacity: 1.0; stroke-width: 3; }
+    .layer-label { font-family: Arial, sans-serif; font-size: 14px; fill: #333; }
+    .neuron-label { font-family: Arial, sans-serif; font-size: 10px; fill: #666; }
+    .weight-label { font-family: Arial, sans-serif; font-size: 8px; fill: #888; }
+    .title { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #333; }
+    .subtitle { font-family: Arial, sans-serif; font-size: 14px; fill: #666; }
+  </style>
+</defs>
+
+<!-- Background -->
+<rect width="1200" height="800" fill="#f5f7fa"/>
+
+<!-- Title -->
+<text x="600" y="30" class="title" text-anchor="middle">Neural Network Architecture</text>
+<text x="600" y="50" class="subtitle" text-anchor="middle">[9, 6, 4]</text>
+
+<!-- Weight connections -->
+<line x1="80" y1="140" x2="600" y2="230" stroke="rgb(55, 121, 255)" stroke-width="1.50" class="weight-line">
+  <title>Weight: 2.7093 (from L0 N0 to L1 N0)</title>
+</line>
+<line x1="80" y1="140" x2="600" y2="290" stroke="rgb(255, 146, 146)" stroke-width="1.88" class="weight-line">
+  <title>Weight: -3.7305 (from L0 N0 to L1 N1)</title>
+</line>
+<line x1="80" y1="140" x2="600" y2="350" stroke="rgb(255, 71, 71)" stroke-width="0.75" class="weight-line">
+  <title>Weight: -0.6803 (from L0 N0 to L1 N2)</title>
+</line>
+<line x1="80" y1="140" x2="600" y2="410" stroke="rgb(255, 141, 141)" stroke-width="1.80" class="weight-line">
+  <title>Weight: -3.5245 (from L0 N0 to L1 N3)</title>
+</line>
+<line x1="80" y1="140" x2="600" y2="470" stroke="rgb(255, 106, 106)" stroke-width="1.27" class="weight-line">
+  <title>Weight: -2.0834 (from L0 N0 to L1 N4)</title>
+</line>
+<line x1="80" y1="140" x2="600" y2="530" stroke="rgb(55, 77, 255)" stroke-width="0.84" class="weight-line">
+  <title>Weight: 0.9340 (from L0 N0 to L1 N5)</title>
+</line>
+<line x1="80" y1="200" x2="600" y2="230" stroke="rgb(55, 255, 255)" stroke-width="3.50" class="weight-line">
+  <title>Weight: 8.1013 (from L0 N1 to L1 N0)</title>
+</line>
+<line x1="80" y1="200" x2="600" y2="290" stroke="rgb(55, 62, 255)" stroke-width="0.61" class="weight-line">
+  <title>Weight: 0.3244 (from L0 N1 to L1 N1)</title>
+</line>
+<line x1="80" y1="200" x2="600" y2="350" stroke="rgb(255, 96, 96)" stroke-width="1.13" class="weight-line">
+  <title>Weight: -1.7025 (from L0 N1 to L1 N2)</title>
+</line>
+<line x1="80" y1="200" x2="600" y2="410" stroke="rgb(55, 125, 255)" stroke-width="1.56" class="weight-line">
+  <title>Weight: 2.8727 (from L0 N1 to L1 N3)</title>
+</line>
+<line x1="80" y1="200" x2="600" y2="470" stroke="rgb(55, 122, 255)" stroke-width="1.51" class="weight-line">
+  <title>Weight: 2.7394 (from L0 N1 to L1 N4)</title>
+</line>
+<line x1="80" y1="200" x2="600" y2="530" stroke="rgb(255, 236, 236)" stroke-width="3.23" class="weight-line">
+  <title>Weight: -7.3710 (from L0 N1 to L1 N5)</title>
+</line>
+<line x1="80" y1="260" x2="600" y2="230" stroke="rgb(55, 111, 255)" stroke-width="1.35" class="weight-line">
+  <title>Weight: 2.2964 (from L0 N2 to L1 N0)</title>
+</line>
+<line x1="80" y1="260" x2="600" y2="290" stroke="rgb(255, 132, 132)" stroke-width="1.66" class="weight-line">
+  <title>Weight: -3.1521 (from L0 N2 to L1 N1)</title>
+</line>
+<line x1="80" y1="260" x2="600" y2="350" stroke="rgb(255, 71, 71)" stroke-width="0.74" class="weight-line">
+  <title>Weight: -0.6643 (from L0 N2 to L1 N2)</title>
+</line>
+<line x1="80" y1="260" x2="600" y2="410" stroke="rgb(255, 132, 132)" stroke-width="1.67" class="weight-line">
+  <title>Weight: -3.1683 (from L0 N2 to L1 N3)</title>
+</line>
+<line x1="80" y1="260" x2="600" y2="470" stroke="rgb(255, 109, 109)" stroke-width="1.32" class="weight-line">
+  <title>Weight: -2.2157 (from L0 N2 to L1 N4)</title>
+</line>
+<line x1="80" y1="260" x2="600" y2="530" stroke="rgb(55, 64, 255)" stroke-width="0.64" class="weight-line">
+  <title>Weight: 0.4070 (from L0 N2 to L1 N5)</title>
+</line>
+<line x1="80" y1="320" x2="600" y2="230" stroke="rgb(255, 135, 135)" stroke-width="1.71" class="weight-line">
+  <title>Weight: -3.2734 (from L0 N3 to L1 N0)</title>
+</line>
+<line x1="80" y1="320" x2="600" y2="290" stroke="rgb(55, 78, 255)" stroke-width="0.86" class="weight-line">
+  <title>Weight: 0.9776 (from L0 N3 to L1 N1)</title>
+</line>
+<line x1="80" y1="320" x2="600" y2="350" stroke="rgb(55, 67, 255)" stroke-width="0.69" class="weight-line">
+  <title>Weight: 0.5405 (from L0 N3 to L1 N2)</title>
+</line>
+<line x1="80" y1="320" x2="600" y2="410" stroke="rgb(255, 61, 61)" stroke-width="0.60" class="weight-line">
+  <title>Weight: -0.2993 (from L0 N3 to L1 N3)</title>
+</line>
+<line x1="80" y1="320" x2="600" y2="470" stroke="rgb(55, 181, 255)" stroke-width="2.40" class="weight-line">
+  <title>Weight: 5.1305 (from L0 N3 to L1 N4)</title>
+</line>
+<line x1="80" y1="320" x2="600" y2="530" stroke="rgb(55, 55, 255)" stroke-width="0.50" class="weight-line">
+  <title>Weight: 0.0166 (from L0 N3 to L1 N5)</title>
+</line>
+<line x1="80" y1="380" x2="600" y2="230" stroke="rgb(255, 76, 76)" stroke-width="0.82" class="weight-line">
+  <title>Weight: -0.8677 (from L0 N4 to L1 N0)</title>
+</line>
+<line x1="80" y1="380" x2="600" y2="290" stroke="rgb(55, 142, 255)" stroke-width="1.81" class="weight-line">
+  <title>Weight: 3.5512 (from L0 N4 to L1 N1)</title>
+</line>
+<line x1="80" y1="380" x2="600" y2="350" stroke="rgb(55, 65, 255)" stroke-width="0.66" class="weight-line">
+  <title>Weight: 0.4416 (from L0 N4 to L1 N2)</title>
+</line>
+<line x1="80" y1="380" x2="600" y2="410" stroke="rgb(55, 103, 255)" stroke-width="1.23" class="weight-line">
+  <title>Weight: 1.9958 (from L0 N4 to L1 N3)</title>
+</line>
+<line x1="80" y1="380" x2="600" y2="470" stroke="rgb(255, 103, 103)" stroke-width="1.22" class="weight-line">
+  <title>Weight: -1.9633 (from L0 N4 to L1 N4)</title>
+</line>
+<line x1="80" y1="380" x2="600" y2="530" stroke="rgb(55, 175, 255)" stroke-width="2.31" class="weight-line">
+  <title>Weight: 4.8948 (from L0 N4 to L1 N5)</title>
+</line>
+<line x1="80" y1="440" x2="600" y2="230" stroke="rgb(255, 116, 116)" stroke-width="1.43" class="weight-line">
+  <title>Weight: -2.5144 (from L0 N5 to L1 N0)</title>
+</line>
+<line x1="80" y1="440" x2="600" y2="290" stroke="rgb(55, 93, 255)" stroke-width="1.08" class="weight-line">
+  <title>Weight: 1.5865 (from L0 N5 to L1 N1)</title>
+</line>
+<line x1="80" y1="440" x2="600" y2="350" stroke="rgb(55, 56, 255)" stroke-width="0.52" class="weight-line">
+  <title>Weight: 0.0839 (from L0 N5 to L1 N2)</title>
+</line>
+<line x1="80" y1="440" x2="600" y2="410" stroke="rgb(255, 56, 56)" stroke-width="0.52" class="weight-line">
+  <title>Weight: -0.0599 (from L0 N5 to L1 N3)</title>
+</line>
+<line x1="80" y1="440" x2="600" y2="470" stroke="rgb(55, 168, 255)" stroke-width="2.21" class="weight-line">
+  <title>Weight: 4.6120 (from L0 N5 to L1 N4)</title>
+</line>
+<line x1="80" y1="440" x2="600" y2="530" stroke="rgb(255, 55, 55)" stroke-width="0.51" class="weight-line">
+  <title>Weight: -0.0318 (from L0 N5 to L1 N5)</title>
+</line>
+<line x1="80" y1="500" x2="600" y2="230" stroke="rgb(55, 116, 255)" stroke-width="1.43" class="weight-line">
+  <title>Weight: 2.5161 (from L0 N6 to L1 N0)</title>
+</line>
+<line x1="80" y1="500" x2="600" y2="290" stroke="rgb(255, 134, 134)" stroke-width="1.69" class="weight-line">
+  <title>Weight: -3.2262 (from L0 N6 to L1 N1)</title>
+</line>
+<line x1="80" y1="500" x2="600" y2="350" stroke="rgb(255, 86, 86)" stroke-width="0.97" class="weight-line">
+  <title>Weight: -1.2726 (from L0 N6 to L1 N2)</title>
+</line>
+<line x1="80" y1="500" x2="600" y2="410" stroke="rgb(255, 148, 148)" stroke-width="1.90" class="weight-line">
+  <title>Weight: -3.7907 (from L0 N6 to L1 N3)</title>
+</line>
+<line x1="80" y1="500" x2="600" y2="470" stroke="rgb(255, 88, 88)" stroke-width="1.00" class="weight-line">
+  <title>Weight: -1.3762 (from L0 N6 to L1 N4)</title>
+</line>
+<line x1="80" y1="500" x2="600" y2="530" stroke="rgb(55, 62, 255)" stroke-width="0.62" class="weight-line">
+  <title>Weight: 0.3330 (from L0 N6 to L1 N5)</title>
+</line>
+<line x1="80" y1="560" x2="600" y2="230" stroke="rgb(55, 241, 255)" stroke-width="3.30" class="weight-line">
+  <title>Weight: 7.5546 (from L0 N7 to L1 N0)</title>
+</line>
+<line x1="80" y1="560" x2="600" y2="290" stroke="rgb(55, 82, 255)" stroke-width="0.91" class="weight-line">
+  <title>Weight: 1.1133 (from L0 N7 to L1 N1)</title>
+</line>
+<line x1="80" y1="560" x2="600" y2="350" stroke="rgb(255, 84, 84)" stroke-width="0.94" class="weight-line">
+  <title>Weight: -1.2133 (from L0 N7 to L1 N2)</title>
+</line>
+<line x1="80" y1="560" x2="600" y2="410" stroke="rgb(55, 127, 255)" stroke-width="1.59" class="weight-line">
+  <title>Weight: 2.9492 (from L0 N7 to L1 N3)</title>
+</line>
+<line x1="80" y1="560" x2="600" y2="470" stroke="rgb(55, 130, 255)" stroke-width="1.64" class="weight-line">
+  <title>Weight: 3.0877 (from L0 N7 to L1 N4)</title>
+</line>
+<line x1="80" y1="560" x2="600" y2="530" stroke="rgb(255, 239, 239)" stroke-width="3.27" class="weight-line">
+  <title>Weight: -7.4796 (from L0 N7 to L1 N5)</title>
+</line>
+<line x1="80" y1="620" x2="600" y2="230" stroke="rgb(55, 124, 255)" stroke-width="1.54" class="weight-line">
+  <title>Weight: 2.8060 (from L0 N8 to L1 N0)</title>
+</line>
+<line x1="80" y1="620" x2="600" y2="290" stroke="rgb(255, 146, 146)" stroke-width="1.88" class="weight-line">
+  <title>Weight: -3.7301 (from L0 N8 to L1 N1)</title>
+</line>
+<line x1="80" y1="620" x2="600" y2="350" stroke="rgb(255, 88, 88)" stroke-width="1.00" class="weight-line">
+  <title>Weight: -1.3558 (from L0 N8 to L1 N2)</title>
+</line>
+<line x1="80" y1="620" x2="600" y2="410" stroke="rgb(255, 132, 132)" stroke-width="1.67" class="weight-line">
+  <title>Weight: -3.1657 (from L0 N8 to L1 N3)</title>
+</line>
+<line x1="80" y1="620" x2="600" y2="470" stroke="rgb(255, 91, 91)" stroke-width="1.05" class="weight-line">
+  <title>Weight: -1.4872 (from L0 N8 to L1 N4)</title>
+</line>
+<line x1="80" y1="620" x2="600" y2="530" stroke="rgb(55, 75, 255)" stroke-width="0.81" class="weight-line">
+  <title>Weight: 0.8611 (from L0 N8 to L1 N5)</title>
+</line>
+<line x1="600" y1="230" x2="1120" y2="290" stroke="rgb(55, 83, 255)" stroke-width="0.92" class="weight-line">
+  <title>Weight: 1.2824 (from L1 N0 to L2 N0)</title>
+</line>
+<line x1="600" y1="230" x2="1120" y2="350" stroke="rgb(55, 83, 255)" stroke-width="0.92" class="weight-line">
+  <title>Weight: 1.2854 (from L1 N0 to L2 N1)</title>
+</line>
+<line x1="600" y1="230" x2="1120" y2="410" stroke="rgb(55, 130, 255)" stroke-width="1.63" class="weight-line">
+  <title>Weight: 3.1356 (from L1 N0 to L2 N2)</title>
+</line>
+<line x1="600" y1="230" x2="1120" y2="470" stroke="rgb(255, 255, 255)" stroke-width="3.50" class="weight-line">
+  <title>Weight: -8.0628 (from L1 N0 to L2 N3)</title>
+</line>
+<line x1="600" y1="290" x2="1120" y2="290" stroke="rgb(255, 135, 135)" stroke-width="1.71" class="weight-line">
+  <title>Weight: -3.3550 (from L1 N1 to L2 N0)</title>
+</line>
+<line x1="600" y1="290" x2="1120" y2="350" stroke="rgb(255, 196, 196)" stroke-width="2.62" class="weight-line">
+  <title>Weight: -5.7593 (from L1 N1 to L2 N1)</title>
+</line>
+<line x1="600" y1="290" x2="1120" y2="410" stroke="rgb(55, 181, 255)" stroke-width="2.40" class="weight-line">
+  <title>Weight: 5.1621 (from L1 N1 to L2 N2)</title>
+</line>
+<line x1="600" y1="290" x2="1120" y2="470" stroke="rgb(55, 91, 255)" stroke-width="1.05" class="weight-line">
+  <title>Weight: 1.6092 (from L1 N1 to L2 N3)</title>
+</line>
+<line x1="600" y1="350" x2="1120" y2="290" stroke="rgb(55, 68, 255)" stroke-width="0.70" class="weight-line">
+  <title>Weight: 0.7089 (from L1 N2 to L2 N0)</title>
+</line>
+<line x1="600" y1="350" x2="1120" y2="350" stroke="rgb(255, 55, 55)" stroke-width="0.50" class="weight-line">
+  <title>Weight: -0.1764 (from L1 N2 to L2 N1)</title>
+</line>
+<line x1="600" y1="350" x2="1120" y2="410" stroke="rgb(55, 64, 255)" stroke-width="0.65" class="weight-line">
+  <title>Weight: 0.5597 (from L1 N2 to L2 N2)</title>
+</line>
+<line x1="600" y1="350" x2="1120" y2="470" stroke="rgb(55, 80, 255)" stroke-width="0.89" class="weight-line">
+  <title>Weight: 1.1956 (from L1 N2 to L2 N3)</title>
+</line>
+<line x1="600" y1="410" x2="1120" y2="290" stroke="rgb(255, 115, 115)" stroke-width="1.41" class="weight-line">
+  <title>Weight: -2.5593 (from L1 N3 to L2 N0)</title>
+</line>
+<line x1="600" y1="410" x2="1120" y2="350" stroke="rgb(255, 184, 184)" stroke-width="2.44" class="weight-line">
+  <title>Weight: -5.2743 (from L1 N3 to L2 N1)</title>
+</line>
+<line x1="600" y1="410" x2="1120" y2="410" stroke="rgb(55, 194, 255)" stroke-width="2.60" class="weight-line">
+  <title>Weight: 5.6850 (from L1 N3 to L2 N2)</title>
+</line>
+<line x1="600" y1="410" x2="1120" y2="470" stroke="rgb(55, 106, 255)" stroke-width="1.28" class="weight-line">
+  <title>Weight: 2.2199 (from L1 N3 to L2 N3)</title>
+</line>
+<line x1="600" y1="470" x2="1120" y2="290" stroke="rgb(255, 181, 181)" stroke-width="2.39" class="weight-line">
+  <title>Weight: -5.1479 (from L1 N4 to L2 N0)</title>
+</line>
+<line x1="600" y1="470" x2="1120" y2="350" stroke="rgb(55, 141, 255)" stroke-width="1.79" class="weight-line">
+  <title>Weight: 3.5759 (from L1 N4 to L2 N1)</title>
+</line>
+<line x1="600" y1="470" x2="1120" y2="410" stroke="rgb(255, 150, 150)" stroke-width="1.94" class="weight-line">
+  <title>Weight: -3.9601 (from L1 N4 to L2 N2)</title>
+</line>
+<line x1="600" y1="470" x2="1120" y2="470" stroke="rgb(255, 55, 55)" stroke-width="0.51" class="weight-line">
+  <title>Weight: -0.2081 (from L1 N4 to L2 N3)</title>
+</line>
+<line x1="600" y1="530" x2="1120" y2="290" stroke="rgb(55, 209, 255)" stroke-width="2.81" class="weight-line">
+  <title>Weight: 6.2588 (from L1 N5 to L2 N0)</title>
+</line>
+<line x1="600" y1="530" x2="1120" y2="350" stroke="rgb(255, 239, 239)" stroke-width="3.27" class="weight-line">
+  <title>Weight: -7.4625 (from L1 N5 to L2 N1)</title>
+</line>
+<line x1="600" y1="530" x2="1120" y2="410" stroke="rgb(255, 232, 232)" stroke-width="3.16" class="weight-line">
+  <title>Weight: -7.1697 (from L1 N5 to L2 N2)</title>
+</line>
+<line x1="600" y1="530" x2="1120" y2="470" stroke="rgb(55, 136, 255)" stroke-width="1.73" class="weight-line">
+  <title>Weight: 3.3970 (from L1 N5 to L2 N3)</title>
+</line>
+<!-- Neurons -->
+<text x="80" y="110" class="layer-label" text-anchor="middle">Layer 0: Input</text>
+<circle cx="80" cy="140" r="20" class="neuron">
+  <title>L0 N0 - Input node</title>
+</circle>
+<text x="80" y="145" class="neuron-label" text-anchor="middle">0</text>
+<circle cx="80" cy="200" r="20" class="neuron">
+  <title>L0 N1 - Input node</title>
+</circle>
+<text x="80" y="205" class="neuron-label" text-anchor="middle">1</text>
+<circle cx="80" cy="260" r="20" class="neuron">
+  <title>L0 N2 - Input node</title>
+</circle>
+<text x="80" y="265" class="neuron-label" text-anchor="middle">2</text>
+<circle cx="80" cy="320" r="20" class="neuron">
+  <title>L0 N3 - Input node</title>
+</circle>
+<text x="80" y="325" class="neuron-label" text-anchor="middle">3</text>
+<circle cx="80" cy="380" r="20" class="neuron">
+  <title>L0 N4 - Input node</title>
+</circle>
+<text x="80" y="385" class="neuron-label" text-anchor="middle">4</text>
+<circle cx="80" cy="440" r="20" class="neuron">
+  <title>L0 N5 - Input node</title>
+</circle>
+<text x="80" y="445" class="neuron-label" text-anchor="middle">5</text>
+<circle cx="80" cy="500" r="20" class="neuron">
+  <title>L0 N6 - Input node</title>
+</circle>
+<text x="80" y="505" class="neuron-label" text-anchor="middle">6</text>
+<circle cx="80" cy="560" r="20" class="neuron">
+  <title>L0 N7 - Input node</title>
+</circle>
+<text x="80" y="565" class="neuron-label" text-anchor="middle">7</text>
+<circle cx="80" cy="620" r="20" class="neuron">
+  <title>L0 N8 - Input node</title>
+</circle>
+<text x="80" y="625" class="neuron-label" text-anchor="middle">8</text>
+<text x="600" y="200" class="layer-label" text-anchor="middle">Layer 1: Hidden</text>
+<circle cx="600" cy="230" r="20" class="neuron">
+  <title>L1 N0 - Bias: -1.0555</title>
+</circle>
+<text x="600" y="235" class="neuron-label" text-anchor="middle">0</text>
+<circle cx="600" cy="290" r="20" class="neuron">
+  <title>L1 N1 - Bias: 1.0116</title>
+</circle>
+<text x="600" y="295" class="neuron-label" text-anchor="middle">1</text>
+<circle cx="600" cy="350" r="20" class="neuron">
+  <title>L1 N2 - Bias: -0.8396</title>
+</circle>
+<text x="600" y="355" class="neuron-label" text-anchor="middle">2</text>
+<circle cx="600" cy="410" r="20" class="neuron">
+  <title>L1 N3 - Bias: -0.4572</title>
+</circle>
+<text x="600" y="415" class="neuron-label" text-anchor="middle">3</text>
+<circle cx="600" cy="470" r="20" class="neuron">
+  <title>L1 N4 - Bias: 0.8790</title>
+</circle>
+<text x="600" y="475" class="neuron-label" text-anchor="middle">4</text>
+<circle cx="600" cy="530" r="20" class="neuron">
+  <title>L1 N5 - Bias: 2.3133</title>
+</circle>
+<text x="600" y="535" class="neuron-label" text-anchor="middle">5</text>
+<text x="1120" y="260" class="layer-label" text-anchor="middle">Layer 2: Output</text>
+<circle cx="1120" cy="290" r="20" class="neuron">
+  <title>L2 N0 - Bias: -1.9867</title>
+</circle>
+<text x="1120" y="295" class="neuron-label" text-anchor="middle">0</text>
+<circle cx="1120" cy="350" r="20" class="neuron">
+  <title>L2 N1 - Bias: 0.4862</title>
+</circle>
+<text x="1120" y="355" class="neuron-label" text-anchor="middle">1</text>
+<circle cx="1120" cy="410" r="20" class="neuron">
+  <title>L2 N2 - Bias: -4.6199</title>
+</circle>
+<text x="1120" y="415" class="neuron-label" text-anchor="middle">2</text>
+<circle cx="1120" cy="470" r="20" class="neuron">
+  <title>L2 N3 - Bias: -1.4249</title>
+</circle>
+<text x="1120" y="475" class="neuron-label" text-anchor="middle">3</text>
+
+<!-- Legend -->
+<g transform="translate(80, 700)">
+  <text x="0" y="0" class="layer-label">Legend:</text>
+  <line x1="0" y1="15" x2="50" y2="15" stroke="rgb(55, 155, 255)" stroke-width="3" class="weight-line"/>
+  <text x="60" y="20" class="neuron-label">Positive weight</text>
+  <line x1="0" y1="35" x2="50" y2="35" stroke="rgb(255, 155, 155)" stroke-width="3" class="weight-line"/>
+  <text x="60" y="40" class="neuron-label">Negative weight</text>
+  <text x="0" y="60" class="neuron-label">Line thickness = weight magnitude</text>
+  <text x="0" y="75" class="neuron-label">Hover over elements for details</text>
+</g>
+
+</svg>
