@@ -39,9 +39,9 @@ export class NeuralNetwork {
   static fromExample(example_name: string, learning_rate: number): NeuralNetwork;
   /**
    * Train the network on a built-in example
-   * Returns array of training progress updates
+   * Accepts an optional JavaScript callback for progress updates
    */
-  train(example_name: string, epochs: number): any;
+  train(example_name: string, epochs: number, progress_callback?: Function | null): void;
   /**
    * Train with custom inputs and targets
    */
@@ -83,7 +83,7 @@ export interface InitOutput {
   readonly __wbg_neuralnetwork_free: (a: number, b: number) => void;
   readonly neuralnetwork_new: (a: number, b: number, c: number) => [number, number, number];
   readonly neuralnetwork_fromExample: (a: number, b: number, c: number) => [number, number, number];
-  readonly neuralnetwork_train: (a: number, b: number, c: number, d: number) => [number, number, number];
+  readonly neuralnetwork_train: (a: number, b: number, c: number, d: number, e: number) => [number, number];
   readonly neuralnetwork_trainCustom: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => [number, number];
   readonly neuralnetwork_evaluate: (a: number, b: number, c: number) => [number, number, number, number];
   readonly neuralnetwork_get_architecture: (a: number) => [number, number];

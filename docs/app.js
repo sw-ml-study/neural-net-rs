@@ -162,9 +162,14 @@ async function startWasmTraining() {
         // Update timer
         trainingInterval = setInterval(updateTrainingTime, 100);
 
+        // Create progress callback for WASM training
+        const progressCallback = (epoch, loss) => {
+            updateTrainingProgress(epoch, loss, epochs);
+        };
+
         // Train network (blocking - runs in main thread)
         // Note: In production, this should run in a Web Worker
-        await currentNetwork.train(exampleName, epochs);
+        await currentNetwork.train(exampleName, epochs, progressCallback);
 
         // Training complete
         completeTraining();

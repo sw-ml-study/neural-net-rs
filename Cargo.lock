@@ -1104,6 +1104,7 @@ name = "neural-net-wasm"
 version = "0.1.0"
 dependencies = [
  "getrandom 0.2.9",
+ "js-sys",
  "neural-network",
  "serde",
  "serde-wasm-bindgen",

@@ -12,7 +12,7 @@ export const __wbg_set_exampleinfo_architecture: (a: number, b: number, c: numbe
 export const __wbg_neuralnetwork_free: (a: number, b: number) => void;
 export const neuralnetwork_new: (a: number, b: number, c: number) => [number, number, number];
 export const neuralnetwork_fromExample: (a: number, b: number, c: number) => [number, number, number];
-export const neuralnetwork_train: (a: number, b: number, c: number, d: number) => [number, number, number];
+export const neuralnetwork_train: (a: number, b: number, c: number, d: number, e: number) => [number, number];
 export const neuralnetwork_trainCustom: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => [number, number];
 export const neuralnetwork_evaluate: (a: number, b: number, c: number) => [number, number, number, number];
 export const neuralnetwork_get_architecture: (a: number) => [number, number];

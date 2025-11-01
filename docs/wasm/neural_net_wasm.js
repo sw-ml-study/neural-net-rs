@@ -342,19 +342,18 @@ export class NeuralNetwork {
     }
     /**
      * Train the network on a built-in example
-     * Returns array of training progress updates
+     * Accepts an optional JavaScript callback for progress updates
      * @param {string} example_name
      * @param {number} epochs
-     * @returns {any}
+     * @param {Function | null} [progress_callback]
      */
-    train(example_name, epochs) {
+    train(example_name, epochs, progress_callback) {
         const ptr0 = passStringToWasm0(example_name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.neuralnetwork_train(this.__wbg_ptr, ptr0, len0, epochs);
-        if (ret[2]) {
-            throw takeFromExternrefTable0(ret[1]);
+        const ret = wasm.neuralnetwork_train(this.__wbg_ptr, ptr0, len0, epochs, isLikeNone(progress_callback) ? 0 : addToExternrefTable0(progress_callback));
+        if (ret[1]) {
+            throw takeFromExternrefTable0(ret[0]);
         }
-        return takeFromExternrefTable0(ret[0]);
     }
     /**
      * Train with custom inputs and targets
@@ -498,6 +497,10 @@ function __wbg_get_imports() {
     };
     imports.wbg.__wbg_call_13410aac570ffff7 = function() { return handleError(function (arg0, arg1) {
         const ret = arg0.call(arg1);
+        return ret;
+    }, arguments) };
+    imports.wbg.__wbg_call_641db1bb5db5a579 = function() { return handleError(function (arg0, arg1, arg2, arg3) {
+        const ret = arg0.call(arg1, arg2, arg3);
         return ret;
     }, arguments) };
     imports.wbg.__wbg_call_a5400b25a865cfd8 = function() { return handleError(function (arg0, arg1, arg2) {

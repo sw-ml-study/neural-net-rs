@@ -63,16 +63,13 @@ impl NeuralNetwork {
     }
 
     /// Train the network on a built-in example
-    /// Returns array of training progress updates
-    pub fn train(&mut self, example_name: &str, epochs: u32) -> Result<JsValue, JsValue> {
+    /// Accepts an optional JavaScript callback for progress updates
+    pub fn train(&mut self, example_name: &str, epochs: u32, progress_callback: Option<js_sys::Function>) -> Result<(), JsValue> {
         let example = examples::get_example(example_name)
             .ok_or_else(|| JsValue::from_str(&format!("Unknown example: {}", example_name)))?;
 
         // Store example name
         self.example_name = Some(example_name.to_string());
-
-        // Collect progress updates
-        let progress_updates: Vec<TrainingProgress> = Vec::new();
 
         // Create training config
         let config = TrainingConfig {
@@ -85,11 +82,17 @@ impl NeuralNetwork {
 
         let mut controller = TrainingController::new(self.network.clone(), config);
 
-        // Add callback to collect progress (every 100 epochs)
-        controller.add_callback(Box::new(|_epoch, _loss, _network| {
-            // Progress updates would be collected here if using a different pattern
-            // For blocking training, we return after completion
-        }));
+        // Add callback to call JavaScript progress function
+        if let Some(callback) = progress_callback {
+            controller.add_callback(Box::new(move |epoch, loss, _network| {
+                let this = JsValue::null();
+                let epoch_js = JsValue::from_f64(epoch as f64);
+                let loss_js = JsValue::from_f64(loss);
+
+                // Call the JavaScript callback with (epoch, loss)
+                let _ = callback.call2(&this, &epoch_js, &loss_js);
+            }));
+        }
 
         // Train the network
         controller
@@ -99,12 +102,7 @@ impl NeuralNetwork {
         // Update internal network
         self.network = controller.into_network();
 
-        // For now, return empty array since we need a different approach for callbacks
-        // In a real implementation, we'd use JS callbacks or async
-        let result = serde_wasm_bindgen::to_value(&progress_updates)
-            .map_err(|e| JsValue::from_str(&e.to_string()))?;
-
-        Ok(result)
+        Ok(())
     }
 
     /// Train with custom inputs and targets
