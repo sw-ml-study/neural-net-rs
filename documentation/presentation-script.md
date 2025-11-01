@@ -23,7 +23,7 @@
 
 ### Quick Overview
 
-> "Neural networks learn by adjusting internal weights through a process called backpropagation. We'll train networks on three logic gates: AND, OR, and XOR. The first two are simple, but XOR is special—it's not linearly separable, meaning you need a hidden layer to solve it."
+> "Neural networks learn by adjusting internal weights through a process called backpropagation. We'll train networks on three logic gates: AND, OR, and XOR. The first two are simple, but XOR is special--it's not linearly separable, meaning you need a hidden layer to solve it."
 
 ### What Makes This Interesting
 
@@ -93,16 +93,16 @@ Final loss: 0.0234
 Accuracy: 100.00%
 
 Test results:
-  [0.0, 0.0] → 0.021 (expected: 0.0) ✓
-  [0.0, 1.0] → 0.019 (expected: 0.0) ✓
-  [1.0, 0.0] → 0.023 (expected: 0.0) ✓
-  [1.0, 1.0] → 0.981 (expected: 1.0) ✓
+  [0.0, 0.0] -> 0.021 (expected: 0.0) [OK]
+  [0.0, 1.0] -> 0.019 (expected: 0.0) [OK]
+  [1.0, 0.0] -> 0.023 (expected: 0.0) [OK]
+  [1.0, 1.0] -> 0.981 (expected: 1.0) [OK]
 
 Model saved to: and_model.json
 ```
 
 **What to say:**
-> "That trained quickly—5,000 epochs in just a few seconds. Notice how the predictions are very close to the expected outputs. The network learned that only 1,1 should output 1."
+> "That trained quickly--5,000 epochs in just a few seconds. Notice how the predictions are very close to the expected outputs. The network learned that only 1,1 should output 1."
 
 ### Step 4: Evaluate the Model
 
@@ -127,7 +127,7 @@ Output: [0.981]
 ### Step 5: Train XOR Gate (Complex)
 
 **What to say:**
-> "XOR is famous in neural network history because it can't be solved with a single layer—you need a hidden layer. This is what led to the development of backpropagation in the 1980s."
+> "XOR is famous in neural network history because it can't be solved with a single layer--you need a hidden layer. This is what led to the development of backpropagation in the 1980s."
 
 **Command:**
 ```bash
@@ -156,10 +156,10 @@ Final loss: 0.0219
 Accuracy: 100.00%
 
 Test results:
-  [0.0, 0.0] → 0.019 (expected: 0.0) ✓
-  [0.0, 1.0] → 0.992 (expected: 1.0) ✓
-  [1.0, 0.0] → 0.991 (expected: 1.0) ✓
-  [1.0, 1.0] → 0.012 (expected: 0.0) ✓
+  [0.0, 0.0] -> 0.019 (expected: 0.0) [OK]
+  [0.0, 1.0] -> 0.992 (expected: 1.0) [OK]
+  [1.0, 0.0] -> 0.991 (expected: 1.0) [OK]
+  [1.0, 1.0] -> 0.012 (expected: 0.0) [OK]
 
 Model saved to: xor_model.json
 ```
@@ -319,7 +319,7 @@ WebSocket connections: 0
    - **Color coding:** "Green checkmarks appear when predictions are accurate"
 
 6. **Wait for Completion**
-   > "There we go—100% accuracy! The network has learned the XOR function."
+   > "There we go--100% accuracy! The network has learned the XOR function."
 
 ### Step 11: Try Different Example
 
@@ -329,7 +329,7 @@ WebSocket connections: 0
 **[Select OR from dropdown, click Start Training]**
 
 **What to say:**
-> "Watch how quickly this converges—OR is linearly separable, so it learns much faster. Done in just a few thousand epochs!"
+> "Watch how quickly this converges--OR is linearly separable, so it learns much faster. Done in just a few thousand epochs!"
 
 ### Step 12: Close Server
 
@@ -356,7 +356,7 @@ Server stopped.
 > "4. **Web-based visualization** showing learning in real-time"
 > "5. **All powered by Rust** for performance and safety, with WebAssembly bringing it to the browser"
 >
-> "This project is designed for education—helping people understand how neural networks learn through hands-on experimentation."
+> "This project is designed for education--helping people understand how neural networks learn through hands-on experimentation."
 
 ---
 
@@ -370,23 +370,23 @@ A: "Through backpropagation. After each prediction, we calculate how wrong we we
 
 **Q: Why does XOR need a hidden layer?**
 
-A: "XOR is not linearly separable—you can't draw a single straight line to separate the outputs. The hidden layer creates a non-linear transformation that makes the problem solvable. This was a major breakthrough in the 1980s that revived interest in neural networks."
+A: "XOR is not linearly separable--you can't draw a single straight line to separate the outputs. The hidden layer creates a non-linear transformation that makes the problem solvable. This was a major breakthrough in the 1980s that revived interest in neural networks."
 
 **Q: How would this scale to real problems like image recognition?**
 
-A: "The principles are identical—you'd just have many more layers and neurons. For images, you'd use convolutional layers to detect features. This framework is intentionally simple for education, but modern libraries like PyTorch and TensorFlow use the same fundamental concepts."
+A: "The principles are identical--you'd just have many more layers and neurons. For images, you'd use convolutional layers to detect features. This framework is intentionally simple for education, but modern libraries like PyTorch and TensorFlow use the same fundamental concepts."
 
 **Q: Why Rust instead of Python?**
 
-A: "Great question! Python is dominant in ML for good reasons—ecosystem and ease of use. This project uses Rust to demonstrate: 1) that ML algorithms are just math and can be implemented in any language, 2) Rust's performance and safety benefits, and 3) how Rust can target both native binaries and WebAssembly for diverse deployment."
+A: "Great question! Python is dominant in ML for good reasons--ecosystem and ease of use. This project uses Rust to demonstrate: 1) that ML algorithms are just math and can be implemented in any language, 2) Rust's performance and safety benefits, and 3) how Rust can target both native binaries and WebAssembly for diverse deployment."
 
 **Q: Can I add my own examples?**
 
-A: "Absolutely! The code is designed to be educational. You can add new examples by defining the input/output datasets. Check the `examples.rs` module—it's straightforward to extend."
+A: "Absolutely! The code is designed to be educational. You can add new examples by defining the input/output datasets. Check the `examples.rs` module--it's straightforward to extend."
 
 **Q: How accurate is this compared to real neural network libraries?**
 
-A: "The algorithms are mathematically identical to what's in production libraries. The main differences are optimizations—production libraries use GPU acceleration, optimized BLAS routines, and more sophisticated algorithms. But for learning small problems like these, there's no difference."
+A: "The algorithms are mathematically identical to what's in production libraries. The main differences are optimizations--production libraries use GPU acceleration, optimized BLAS routines, and more sophisticated algorithms. But for learning small problems like these, there's no difference."
 
 ---
 
@@ -412,7 +412,7 @@ A: "The algorithms are mathematically identical to what's in production librarie
 
 ### If Network Doesn't Converge
 
-**Say:** "This is actually interesting—it shows that hyperparameters matter. Let me adjust the learning rate."
+**Say:** "This is actually interesting--it shows that hyperparameters matter. Let me adjust the learning rate."
 
 **Command:** Try `--learning-rate 0.3` or `--learning-rate 0.7`
 
@@ -431,7 +431,7 @@ A: "The algorithms are mathematically identical to what's in production librarie
 ### For Non-Technical Audiences (10 min)
 
 - Skip CLI details, focus on web UI
-- Use simpler language ("weights" → "connections")
+- Use simpler language ("weights" -> "connections")
 - Emphasize visual learning
 - Relate to everyday examples ("like training a dog")
 - More time on the "wow" factor of watching learning happen
@@ -482,8 +482,8 @@ A: "The algorithms are mathematically identical to what's in production librarie
 
 ### Plan C: If Everything Fails
 
-1. Show architecture diagrams from `docs/architecture.md`
-2. Discuss TDD approach from `docs/plan.md`
+1. Show architecture diagrams from `documentation/architecture.md`
+2. Discuss TDD approach from `documentation/plan.md`
 3. Live Q&A about neural networks in general
 
 ---
@@ -553,7 +553,7 @@ A: "The algorithms are mathematically identical to what's in production librarie
 > "Raise your hand if you think a single-layer network can solve XOR."
 
 **During web UI:**
-> "Watch the bottom-left prediction—when will it turn green?"
+> "Watch the bottom-left prediction--when will it turn green?"
 
 ### Pause Points
 
@@ -593,4 +593,4 @@ You've nailed the presentation if:
 
 ---
 
-**Good luck with your presentation! 🚀**
+**Good luck with your presentation! [ROCKET]**

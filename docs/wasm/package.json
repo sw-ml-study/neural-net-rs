@@ -1,0 +1,15 @@
+{
+  "name": "neural-net-wasm",
+  "type": "module",
+  "version": "0.1.0",
+  "files": [
+    "neural_net_wasm_bg.wasm",
+    "neural_net_wasm.js",
+    "neural_net_wasm.d.ts"
+  ],
+  "main": "neural_net_wasm.js",
+  "types": "neural_net_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

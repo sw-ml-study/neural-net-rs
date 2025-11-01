@@ -90,19 +90,19 @@ neural-net --version           # Show version
 
 **FR-2.1: AND Gate**
 - Inputs: All combinations of 2 binary inputs
-- Output: Logical AND (only 1,1 → 1)
+- Output: Logical AND (only 1,1 -> 1)
 - Architecture: [2, 2, 1] (simpler, linearly separable)
 - Expected convergence: ~5,000 epochs
 
 **FR-2.2: OR Gate**
 - Inputs: All combinations of 2 binary inputs
-- Output: Logical OR (any 1 → 1)
+- Output: Logical OR (any 1 -> 1)
 - Architecture: [2, 2, 1] (simpler, linearly separable)
 - Expected convergence: ~5,000 epochs
 
 **FR-2.3: XOR Gate**
 - Inputs: All combinations of 2 binary inputs
-- Output: Logical XOR (different → 1)
+- Output: Logical XOR (different -> 1)
 - Architecture: [2, 3, 1] (needs hidden layer, non-linear)
 - Expected convergence: ~20,000 epochs
 

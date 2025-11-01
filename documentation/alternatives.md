@@ -7,17 +7,17 @@ Key Educational Insights Demonstrated:
   - The scalability challenge of high-dimensional inputs
 
   The project now showcases a complete educational journey from simple 2-input logic gates to 9-input visual pattern
-  recognition! 🎉
+  recognition! [PARTY]
 
 > so this project uses one kind of neural-network.  There are other kinds.  How hard would it be to evolve to demoing other 
 kinds?  ELI5 the choices, and include more esoteric ones, like SNN. 
 
-⏺ Great question! Let me break down the landscape of neural networks and assess how hard it would be to evolve this project to
+* Great question! Let me break down the landscape of neural networks and assess how hard it would be to evolve this project to
    demo other types.
 
   What You Have Now: Feedforward Neural Network
 
-  ELI5: Like a factory assembly line where information flows in one direction: inputs → hidden layers → outputs. Each neuron
+  ELI5: Like a factory assembly line where information flows in one direction: inputs -> hidden layers -> outputs. Each neuron
   does a simple calculation, and there's no loops or memory.
 
   Characteristics:
@@ -29,7 +29,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   ---
   Other Neural Network Types (Difficulty to Add)
 
-  🟢 Easy to Add (Same Basic Structure)
+  [GREEN] Easy to Add (Same Basic Structure)
 
   1. Autoencoders
 
@@ -38,10 +38,10 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
 
   What's Different:
   - Training objective: minimize reconstruction error (not classification)
-  - Architecture: "hourglass" shape (wide → narrow → wide)
+  - Architecture: "hourglass" shape (wide -> narrow -> wide)
   - Unsupervised learning
 
-  Difficulty: 🟢 EASY
+  Difficulty: [GREEN] EASY
   - Reuse existing feedforward architecture
   - Just change the loss function
   - Make output layer same size as input layer
@@ -64,13 +64,13 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Leaky ReLU: ReLU but allows small negative values
   - Softmax: For probability distributions across classes
 
-  Difficulty: 🟢 VERY EASY
+  Difficulty: [GREEN] VERY EASY
   - Already have sigmoid implemented
   - Just add more functions to activations.rs
   - ~50 lines per activation function
 
   ---
-  🟡 Medium Difficulty (New Architecture Patterns)
+  [YELLOW] Medium Difficulty (New Architecture Patterns)
 
   3. Convolutional Neural Networks (CNNs)
 
@@ -83,10 +83,10 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Weight sharing: Same filter used everywhere
   - Perfect for images
 
-  Difficulty: 🟡 MEDIUM
+  Difficulty: [YELLOW] MEDIUM
   - Need to implement convolution operations
   - Need pooling (max pool, average pool)
-  - Need to handle multi-dimensional data (height × width × channels)
+  - Need to handle multi-dimensional data (height x width x channels)
   - But same backpropagation principles
 
   Code Changes Needed:
@@ -114,7 +114,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Processes sequences (variable length input)
   - Backpropagation through time (BPTT)
 
-  Difficulty: 🟡 MEDIUM-HARD
+  Difficulty: [YELLOW] MEDIUM-HARD
   - Need to track state across time
   - Need to unroll network through time
   - LSTM gates are complex
@@ -140,7 +140,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Preserves topology (similar things stay near each other)
   - 2D grid of neurons
 
-  Difficulty: 🟡 MEDIUM
+  Difficulty: [YELLOW] MEDIUM
   - Different learning algorithm (no backprop)
   - Winner-takes-all competition
   - Neighborhood functions
@@ -155,7 +155,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   Example Use Case: Cluster iris flowers without knowing species labels.
 
   ---
-  🔴 Hard (Fundamentally Different)
+  [RED] Hard (Fundamentally Different)
 
   6. Generative Adversarial Networks (GANs)
 
@@ -168,7 +168,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Generator creates new data
   - Training is notoriously unstable
 
-  Difficulty: 🔴 HARD
+  Difficulty: [RED] HARD
   - Need two separate networks
   - Complex training dynamics
   - Mode collapse issues
@@ -196,7 +196,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Multi-head attention
   - No recurrence needed for sequences
 
-  Difficulty: 🔴 HARD
+  Difficulty: [RED] HARD
   - Complex attention calculations (Q, K, V matrices)
   - Multi-head attention
   - Positional embeddings
@@ -212,7 +212,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   Why Popular: State-of-the-art for language (GPT, BERT), but overkill for your current examples.
 
   ---
-  🔴 Very Hard / Esoteric (Different Computation Model)
+  [RED] Very Hard / Esoteric (Different Computation Model)
 
   8. Spiking Neural Networks (SNNs)
 
@@ -231,7 +231,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Izhikevich model (more realistic)
   - Hodgkin-Huxley (very detailed, computationally expensive)
 
-  Difficulty: 🔴 VERY HARD
+  Difficulty: [RED] VERY HARD
   - Completely different computation model
   - Continuous time simulation (differential equations)
   - Spike-timing-dependent plasticity (STDP) for learning
@@ -273,7 +273,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Content-addressable memory
   - No hidden layers
 
-  Difficulty: 🔴 HARD
+  Difficulty: [RED] HARD
   - Different architecture (fully recurrent)
   - Energy function minimization
   - Hebbian learning rule (not backprop)
@@ -300,7 +300,7 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   - Only train output weights
   - Good for temporal processing
 
-  Difficulty: 🔴 HARD
+  Difficulty: [RED] HARD
   - Need recurrent reservoir (~500 lines)
   - Sparse random connections (~300 lines)
   - Reservoir state management (~400 lines)
@@ -312,16 +312,16 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
 
   Type                  | Difficulty | Lines of Code | Current Arch Reuse | Use Case
   ----------------------|------------|---------------|-------------------|------------------
-  Autoencoders          | 🟢 Easy    |     ~200     | High (~80%)       | Compression
-  New Activations       | 🟢 Easy    |     ~50      | High (~90%)       | Better training
-  CNNs                  | 🟡 Medium  |    ~1000     | Medium (~40%)     | Images
-  RNNs/LSTMs            | 🟡 Medium+ |    ~1500     | Medium (~40%)     | Sequences
-  SOMs                  | 🟡 Medium  |     ~900     | Low (~20%)        | Clustering
-  GANs                  | 🔴 Hard    |    ~2200     | Medium (~50%)     | Generation
-  Transformers          | 🔴 Hard    |    ~2000     | Low (~30%)        | Language/Seq
-  SNNs                  | 🔴 V.Hard  |    ~2200+    | Very Low (~10%)   | Temporal/Events
-  Hopfield              | 🔴 Hard    |    ~1200     | Very Low (~15%)   | Memory
-  LSM/ESN               | 🔴 Hard    |    ~1400     | Low (~25%)        | Temporal
+  Autoencoders          | [GREEN] Easy    |     ~200     | High (~80%)       | Compression
+  New Activations       | [GREEN] Easy    |     ~50      | High (~90%)       | Better training
+  CNNs                  | [YELLOW] Medium  |    ~1000     | Medium (~40%)     | Images
+  RNNs/LSTMs            | [YELLOW] Medium+ |    ~1500     | Medium (~40%)     | Sequences
+  SOMs                  | [YELLOW] Medium  |     ~900     | Low (~20%)        | Clustering
+  GANs                  | [RED] Hard    |    ~2200     | Medium (~50%)     | Generation
+  Transformers          | [RED] Hard    |    ~2000     | Low (~30%)        | Language/Seq
+  SNNs                  | [RED] V.Hard  |    ~2200+    | Very Low (~10%)   | Temporal/Events
+  Hopfield              | [RED] Hard    |    ~1200     | Very Low (~15%)   | Memory
+  LSM/ESN               | [RED] Hard    |    ~1400     | Low (~25%)        | Temporal
 
   ---
   My Recommendations (in order)
@@ -366,12 +366,12 @@ kinds?  ELI5 the choices, and include more esoteric ones, like SNN.
   Evolution Strategy
 
   Incremental Path:
-  1. ✅ Current: Feedforward with sigmoid
-  2. 🟢 Add ReLU: Better training, modern standard
-  3. 🟢 Autoencoders: New training objective, same architecture
-  4. 🟡 CNNs: Spatial processing (natural for your 3x3 patterns!)
-  5. 🟡 RNNs: Temporal processing
-  6. 🔴 SNNs: Biological realism (if you want to go esoteric)
+  1. [OK] Current: Feedforward with sigmoid
+  2. [GREEN] Add ReLU: Better training, modern standard
+  3. [GREEN] Autoencoders: New training objective, same architecture
+  4. [YELLOW] CNNs: Spatial processing (natural for your 3x3 patterns!)
+  5. [YELLOW] RNNs: Temporal processing
+  6. [RED] SNNs: Biological realism (if you want to go esoteric)
 
   Why SNNs are Special:
   - Most different from what you have

@@ -36,61 +36,61 @@ The platform consists of four major components:
 ## Architecture Diagram
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        User Interaction                      │
-└───────────────┬────────────────────────┬────────────────────┘
-                │                        │
-        ┌───────▼────────┐      ┌───────▼────────┐
-        │   CLI Commands │      │   Web Browser  │
-        │   (clap)       │      │   (localhost)  │
-        └───────┬────────┘      └───────┬────────┘
-                │                        │
-                │                ┌───────▼────────┐
-                │                │  Static Files  │
-                │                │  (embedded)    │
-                │                └───────┬────────┘
-        ┌───────▼────────────────────────▼────────┐
-        │         CLI Application                  │
-        │  ┌────────────────────────────────────┐ │
-        │  │  Command Handlers                   │ │
-        │  │  - train    - serve                 │ │
-        │  │  - eval     - list                  │ │
-        │  │  - info                             │ │
-        │  └─────────┬──────────────────────────┘ │
-        │            │                             │
-        │  ┌─────────▼──────────────────────────┐ │
-        │  │  Training Controller                │ │
-        │  │  - Progress tracking                │ │
-        │  │  - Checkpoint management            │ │
-        │  │  - Event emission                   │ │
-        │  └─────────┬──────────────────────────┘ │
-        │            │                             │
-        │  ┌─────────▼──────────────────────────┐ │
-        │  │  Web Server (Optional)              │ │
-        │  │  - HTTP endpoints                   │ │
-        │  │  - SSE event stream                 │ │
-        │  │  - WASM/JS/HTML serving            │ │
-        │  └─────────┬──────────────────────────┘ │
-        └────────────┼──────────────────────────────┘
-                     │
-        ┌────────────▼──────────────────────────┐
-        │      Core Neural Network Library      │
-        │  ┌──────────────────────────────────┐ │
-        │  │  Examples (AND, OR, XOR)          │ │
-        │  │  - Dataset definitions            │ │
-        │  │  - Recommended architectures      │ │
-        │  └──────────────────────────────────┘ │
-        │  ┌──────────────────────────────────┐ │
-        │  │  Network + Serialization          │ │
-        │  │  - Training loop                  │ │
-        │  │  - Checkpointing (serde)          │ │
-        │  │  - Model I/O                      │ │
-        │  └──────────────────────────────────┘ │
-        │  ┌──────────────────────────────────┐ │
-        │  │  Matrix Operations                │ │
-        │  │  - Linear algebra                 │ │
-        │  └──────────────────────────────────┘ │
-        └───────────────────────────────────────┘
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++                        User Interaction                      +
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                +                        +
+        ++++++++>+++++++++      ++++++++>+++++++++
+        +   CLI Commands +      +   Web Browser  +
+        +   (clap)       +      +   (localhost)  +
+        ++++++++++++++++++      ++++++++++++++++++
+                +                        +
+                +                ++++++++>+++++++++
+                +                +  Static Files  +
+                +                +  (embedded)    +
+                +                ++++++++++++++++++
+        ++++++++>++++++++++++++++++++++++>+++++++++
+        +         CLI Application                  +
+        +  ++++++++++++++++++++++++++++++++++++++ +
+        +  +  Command Handlers                   + +
+        +  +  - train    - serve                 + +
+        +  +  - eval     - list                  + +
+        +  +  - info                             + +
+        +  ++++++++++++++++++++++++++++++++++++++ +
+        +            +                             +
+        +  ++++++++++>+++++++++++++++++++++++++++ +
+        +  +  Training Controller                + +
+        +  +  - Progress tracking                + +
+        +  +  - Checkpoint management            + +
+        +  +  - Event emission                   + +
+        +  ++++++++++++++++++++++++++++++++++++++ +
+        +            +                             +
+        +  ++++++++++>+++++++++++++++++++++++++++ +
+        +  +  Web Server (Optional)              + +
+        +  +  - HTTP endpoints                   + +
+        +  +  - SSE event stream                 + +
+        +  +  - WASM/JS/HTML serving            + +
+        +  ++++++++++++++++++++++++++++++++++++++ +
+        +++++++++++++++++++++++++++++++++++++++++++++
+                     +
+        +++++++++++++>+++++++++++++++++++++++++++
+        +      Core Neural Network Library      +
+        +  ++++++++++++++++++++++++++++++++++++ +
+        +  +  Examples (AND, OR, XOR)          + +
+        +  +  - Dataset definitions            + +
+        +  +  - Recommended architectures      + +
+        +  ++++++++++++++++++++++++++++++++++++ +
+        +  ++++++++++++++++++++++++++++++++++++ +
+        +  +  Network + Serialization          + +
+        +  +  - Training loop                  + +
+        +  +  - Checkpointing (serde)          + +
+        +  +  - Model I/O                      + +
+        +  ++++++++++++++++++++++++++++++++++++ +
+        +  ++++++++++++++++++++++++++++++++++++ +
+        +  +  Matrix Operations                + +
+        +  +  - Linear algebra                 + +
+        +  ++++++++++++++++++++++++++++++++++++ +
+        +++++++++++++++++++++++++++++++++++++++++
 ```
 
 ## Component Design
@@ -174,27 +174,27 @@ impl TrainingController {
 **Structure:**
 ```
 neural-net-cli/
-├── src/
-│   ├── main.rs              # Entry point, CLI setup
-│   ├── commands/
-│   │   ├── mod.rs
-│   │   ├── train.rs         # Train command handler
-│   │   ├── eval.rs          # Eval command handler
-│   │   ├── serve.rs         # Serve command handler
-│   │   ├── list.rs          # List command handler
-│   │   └── info.rs          # Info command handler
-│   ├── callbacks/
-│   │   ├── mod.rs
-│   │   ├── progress.rs      # Terminal progress bar
-│   │   └── sse.rs           # Server-sent events emitter
-│   ├── server/
-│   │   ├── mod.rs
-│   │   ├── routes.rs        # HTTP endpoints
-│   │   ├── state.rs         # Shared server state
-│   │   └── static_files.rs  # Embedded assets
-│   └── error.rs             # Error types
-├── Cargo.toml
-└── build.rs                 # Embed static files at compile time
++++ src/
++   +++ main.rs              # Entry point, CLI setup
++   +++ commands/
++   +   +++ mod.rs
++   +   +++ train.rs         # Train command handler
++   +   +++ eval.rs          # Eval command handler
++   +   +++ serve.rs         # Serve command handler
++   +   +++ list.rs          # List command handler
++   +   +++ info.rs          # Info command handler
++   +++ callbacks/
++   +   +++ mod.rs
++   +   +++ progress.rs      # Terminal progress bar
++   +   +++ sse.rs           # Server-sent events emitter
++   +++ server/
++   +   +++ mod.rs
++   +   +++ routes.rs        # HTTP endpoints
++   +   +++ state.rs         # Shared server state
++   +   +++ static_files.rs  # Embedded assets
++   +++ error.rs             # Error types
++++ Cargo.toml
++++ build.rs                 # Embed static files at compile time
 ```
 
 **CLI Commands Definition:**
@@ -327,16 +327,16 @@ enum TrainingStatus {
 **Structure:**
 ```
 neural-net-wasm/
-├── src/
-│   ├── lib.rs               # WASM bindings
-│   ├── network_wrapper.rs   # Network interface for JS
-│   └── utils.rs             # WASM utilities
-├── web/
-│   ├── index.html           # Main page
-│   ├── app.js               # Application logic
-│   ├── chart.js             # Chart rendering (vanilla JS)
-│   └── styles.css           # Styling
-└── Cargo.toml
++++ src/
++   +++ lib.rs               # WASM bindings
++   +++ network_wrapper.rs   # Network interface for JS
++   +++ utils.rs             # WASM utilities
++++ web/
++   +++ index.html           # Main page
++   +++ app.js               # Application logic
++   +++ chart.js             # Chart rendering (vanilla JS)
++   +++ styles.css           # Styling
++++ Cargo.toml
 ```
 
 **WASM API:**
@@ -401,33 +401,33 @@ pub fn get_example_data(example: &str) -> JsValue;
 
 ```
 User Input (CLI args)
-    ↓
+    ->
 Parse & Validate
-    ↓
+    ->
 Load Example Data
-    ↓
+    ->
 Create/Load Network
-    ↓
+    ->
 Configure TrainingController
-    ↓
+    ->
 Attach Callbacks (Progress, Checkpoint)
-    ↓
-Start Training Loop ─────────┐
-    ↓                        │
-Epoch Iteration             │
-    ↓                        │
-Callback: on_epoch_end      │
-    ↓                        │
-Update Progress Bar         │
-    ↓                        │
-Save Checkpoint? ───────────┘
-    ↓
+    ->
+Start Training Loop ++++++++++
+    ->                        +
+Epoch Iteration             +
+    ->                        +
+Callback: on_epoch_end      +
+    ->                        +
+Update Progress Bar         +
+    ->                        +
+Save Checkpoint? ++++++++++++
+    ->
 Training Complete
-    ↓
+    ->
 Callback: on_training_end
-    ↓
+    ->
 Save Model (if requested)
-    ↓
+    ->
 Display Results
 ```
 
@@ -435,33 +435,33 @@ Display Results
 
 ```
 User Action (UI Button)
-    ↓
+    ->
 Fetch POST /api/train/start
-    ↓
+    ->
 Server: Validate & Create Session
-    ↓
+    ->
 Server: Start Training in Background Task
-    ↓
+    ->
 Client: Connect to SSE /api/events
-    ↓
+    ->
 Server: Emit TrainingStarted Event
-    ↓
-Training Loop ────────────────┐
-    ↓                         │
-Epoch Complete               │
-    ↓                         │
-Emit EpochComplete Event     │
-    ↓                         │
-Client: Receive SSE Event    │
-    ↓                         │
-Update UI (progress, chart)  │
-    ↓                         │
-Continue? ───────────────────┘
-    ↓
+    ->
+Training Loop +++++++++++++++++
+    ->                         +
+Epoch Complete               +
+    ->                         +
+Emit EpochComplete Event     +
+    ->                         +
+Client: Receive SSE Event    +
+    ->                         +
+Update UI (progress, chart)  +
+    ->                         +
+Continue? ++++++++++++++++++++
+    ->
 Training Complete
-    ↓
+    ->
 Emit TrainingComplete Event
-    ↓
+    ->
 Client: Update UI (final results)
 ```
 
@@ -469,9 +469,9 @@ Client: Update UI (final results)
 
 ```
 Training in Progress
-    ↓
+    ->
 Checkpoint Interval Reached
-    ↓
+    ->
 Serialize Network State
     {
         metadata: { epoch, example, timestamp, ... },
@@ -480,23 +480,23 @@ Serialize Network State
         architecture: [2, 3, 1],
         ...
     }
-    ↓
+    ->
 Write to File (JSON)
-    ↓
+    ->
 Continue Training
 
 --- Resume ---
 
 User: --resume checkpoint.json
-    ↓
+    ->
 Load & Parse File
-    ↓
+    ->
 Validate Architecture
-    ↓
+    ->
 Deserialize Network State
-    ↓
+    ->
 Restore Network
-    ↓
+    ->
 Continue from Checkpoint Epoch
 ```
 
@@ -612,18 +612,18 @@ data: {"session_id":"...","final_accuracy":0.995}
 **Test Organization:**
 ```
 tests/
-├── unit/
-│   ├── examples_tests.rs
-│   ├── checkpoint_tests.rs
-│   ├── training_controller_tests.rs
-│   └── serialization_tests.rs
-├── integration/
-│   ├── cli_tests.rs
-│   ├── server_tests.rs
-│   └── end_to_end_tests.rs
-└── fixtures/
-    ├── checkpoints/
-    └── models/
++++ unit/
++   +++ examples_tests.rs
++   +++ checkpoint_tests.rs
++   +++ training_controller_tests.rs
++   +++ serialization_tests.rs
++++ integration/
++   +++ cli_tests.rs
++   +++ server_tests.rs
++   +++ end_to_end_tests.rs
++++ fixtures/
+    +++ checkpoints/
+    +++ models/
 ```
 
 **Key Test Cases:**

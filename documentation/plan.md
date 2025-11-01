@@ -250,7 +250,7 @@ fn test_serialization_roundtrip() {
 2. Derive `Serialize`, `Deserialize` for `Matrix`
 3. Add `serde` to `neural-network` crate
 4. Derive `Serialize`, `Deserialize` for `Network`
-5. Handle `Activation` serialization (function pointers → string)
+5. Handle `Activation` serialization (function pointers -> string)
 6. Run tests - all should pass
 7. Commit: "Add serde serialization for Network and Matrix"
 
@@ -1312,7 +1312,7 @@ fn test_serialization() {
 
 #[test]
 fn test_complete_training_workflow() {
-    // Train → Save → Eval
+    // Train -> Save -> Eval
     let temp_dir = tempdir::TempDir::new("e2e").unwrap();
     let model_path = temp_dir.path().join("model.json");
 
@@ -1414,7 +1414,7 @@ fn test_checkpoint_resume_workflow() {
 #### Task 6.2: Presentation Script
 
 **Implementation Steps:**
-1. Create `docs/presentation-script.md`
+1. Create `documentation/presentation-script.md`
 2. Write step-by-step demo script
 3. Include expected outputs
 4. Add troubleshooting tips

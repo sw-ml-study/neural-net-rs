@@ -73,32 +73,32 @@ This is a Cargo workspace with multiple crates:
 
 ```
 neural-net-rs/
-├── matrix/                 # Core linear algebra library
-├── neural-network/         # Neural network implementation
-│   ├── src/
-│   │   ├── network.rs     # Network architecture
-│   │   ├── activations.rs # Activation functions
-│   │   ├── checkpoint.rs  # Save/load functionality
-│   │   ├── training.rs    # Training controller
-│   │   └── examples.rs    # Built-in examples
-│   └── tests/             # Integration tests
-├── neural-net-cli/         # Command-line interface
-│   ├── src/main.rs        # CLI implementation
-│   └── tests/             # CLI integration tests
-├── neural-net-server/      # REST API web server
-│   ├── src/
-│   │   ├── lib.rs         # Server implementation
-│   │   └── main.rs        # Server entry point
-│   ├── static/            # Web UI assets
-│   │   ├── index.html     # Main UI
-│   │   ├── app.js         # Application logic
-│   │   ├── styles.css     # Styling
-│   │   └── wasm/          # WASM module
-│   └── tests/             # Server integration tests
-├── neural-net-wasm/        # WebAssembly bindings
-│   ├── src/lib.rs         # WASM API implementation
-│   └── pkg/               # Built WASM package (gitignored)
-└── consumer_binary/        # Example usage binary
+  matrix/                   # Core linear algebra library
+  neural-network/           # Neural network implementation
+    src/
+      network.rs            # Network architecture
+      activations.rs        # Activation functions
+      checkpoint.rs         # Save/load functionality
+      training.rs           # Training controller
+      examples.rs           # Built-in examples
+    tests/                  # Integration tests
+  neural-net-cli/           # Command-line interface
+    src/main.rs             # CLI implementation
+    tests/                  # CLI integration tests
+  neural-net-server/        # REST API web server
+    src/
+      lib.rs                # Server implementation
+      main.rs               # Server entry point
+    static/                 # Web UI assets
+      index.html            # Main UI
+      app.js                # Application logic
+      styles.css            # Styling
+      wasm/                 # WASM module
+    tests/                  # Server integration tests
+  neural-net-wasm/          # WebAssembly bindings
+    src/lib.rs              # WASM API implementation
+    pkg/                    # Built WASM package (gitignored)
+  consumer_binary/          # Example usage binary
 ```
 
 ## CLI Commands
@@ -431,6 +431,10 @@ JavaScript is minimal - only for:
 
 The interactive web UI provides a comprehensive interface for training and evaluating neural networks:
 
+**Main Interface**
+![Web UI Main View](images/screenshot.png)
+*Modern web interface for training and evaluating neural networks with dual-mode support (WASM/API)*
+
 **Initial Interface**
 ![Web UI Initial View](images/01-web-ui-initial-2025-10-14T01-35-30-210Z.png)
 *Clean, modern interface with training configuration, visualization panels, and network testing*
@@ -755,12 +759,12 @@ The network learns to count active inputs modulo 2:
   - Outputs 0 for even counts: (0,0,0), (0,1,1), (1,0,1), (1,1,0)
 
 **Why 21 parameters?** With 3 inputs instead of 2, the network needs:
-- 3×4 = 12 weights (input to hidden) vs 2×3 = 6 for XOR
+- 3x4 = 12 weights (input to hidden) vs 2x3 = 6 for XOR
 - 4 hidden layer biases vs 3 for XOR
-- 4×1 = 4 weights (hidden to output) vs 3×1 = 3 for XOR
+- 4x1 = 4 weights (hidden to output) vs 3x1 = 3 for XOR
 - 1 output bias (same as XOR)
 
-This demonstrates how parameter count scales: adding just one more input bit requires **60% more parameters** (13 → 21) to maintain the non-linear decision boundary.
+This demonstrates how parameter count scales: adding just one more input bit requires **60% more parameters** (13 -> 21) to maintain the non-linear decision boundary.
 
 **Truth Table:**
 ```
@@ -798,13 +802,13 @@ This demonstrates a key architectural change: **multiple output neurons** instea
   - The network learns to activate exactly one output neuron for each input
 
 **Why 32 parameters?** The parameter count comes from:
-- 2×4 = 8 weights (input to hidden layer)
+- 2x4 = 8 weights (input to hidden layer)
 - 4 hidden layer biases
-- 4×4 = 16 weights (hidden to output layer) - **This is the key increase**
+- 4x4 = 16 weights (hidden to output layer) - **This is the key increase**
 - 4 output biases
 - Total: 8 + 4 + 16 + 4 = 32 parameters
 
-**Key Insight**: Moving from 1 output (binary classification) to 4 outputs (multi-class) increases parameters significantly. The hidden-to-output weights go from 4×1 = 4 (in XOR) to 4×4 = 16 (in quadrant), a **4× increase** in that layer alone.
+**Key Insight**: Moving from 1 output (binary classification) to 4 outputs (multi-class) increases parameters significantly. The hidden-to-output weights go from 4x1 = 4 (in XOR) to 4x4 = 16 (in quadrant), a **4x increase** in that layer alone.
 
 **Classification Examples:**
 ```
@@ -829,7 +833,7 @@ The 2-bit binary adder demonstrates **arithmetic learning** - the network learns
 The network adds two 2-bit numbers (A and B, each 0-3) to produce a 3-bit sum (0-6):
 
 - **Input Layer** (4 neurons): Receives two 2-bit numbers [A1, A0, B1, B0]
-  - A = A1×2 + A0, B = B1×2 + B0
+  - A = A1x2 + A0, B = B1x2 + B0
   - Example: [1, 0, 1, 1] represents 2 + 3 = 5
 - **Hidden Layer** (8 neurons): Learns arithmetic patterns and carry logic
   - Must detect when carry bits propagate (e.g., 1+1 = 10 in binary)
@@ -837,13 +841,13 @@ The network adds two 2-bit numbers (A and B, each 0-3) to produce a 3-bit sum (0
   - More neurons needed than previous examples to capture arithmetic complexity
   - Hidden neurons implicitly learn: bit-wise XOR, bit-wise AND, carry propagation
 - **Output Layer** (3 neurons): Produces 3-bit binary sum [S2, S1, S0]
-  - Maximum sum: 3 + 3 = 6 = 110₂, requiring 3 output bits
+  - Maximum sum: 3 + 3 = 6 = 1102, requiring 3 output bits
   - Each output neuron represents a bit position in the result
 
 **Why 67 parameters?** This is more than double the quadrant classifier:
-- 4×8 = 32 weights (input to hidden) - **4× increase from XOR's input layer**
-- 8 hidden biases - **2× increase from quadrant**
-- 8×3 = 24 weights (hidden to output) - **1.5× increase from quadrant**
+- 4x8 = 32 weights (input to hidden) - **4x increase from XOR's input layer**
+- 8 hidden biases - **2x increase from quadrant**
+- 8x3 = 24 weights (hidden to output) - **1.5x increase from quadrant**
 - 3 output biases
 - Total: 32 + 8 + 24 + 3 = 67 parameters
 
@@ -874,7 +878,7 @@ The **Iris dataset** is one of the most famous datasets in machine learning hist
 
 #### Historical Context
 
-The Iris dataset was collected by botanist Edgar Anderson in the Gaspé Peninsula, Quebec, Canada. Fisher used it to demonstrate linear discriminant analysis, but it has since become the "Hello World" of machine learning - used to teach and benchmark classification algorithms for nearly 90 years.
+The Iris dataset was collected by botanist Edgar Anderson in the Gaspe Peninsula, Quebec, Canada. Fisher used it to demonstrate linear discriminant analysis, but it has since become the "Hello World" of machine learning - used to teach and benchmark classification algorithms for nearly 90 years.
 
 **Why it's important:**
 - **Real biological measurements**: Not synthetic/constructed data
@@ -907,7 +911,7 @@ The network learns to classify iris species from measurements:
   - Features have natural scales (centimeters)
 - **Hidden Layer** (8 neurons): Discovers decision boundaries in feature space
   - Learns which feature combinations distinguish species
-  - Implicitly learns: "small petals → setosa", "petal length/width ratio → versicolor vs virginica"
+  - Implicitly learns: "small petals -> setosa", "petal length/width ratio -> versicolor vs virginica"
   - More neurons than synthetic problems due to continuous feature space
 - **Output Layer** (3 neurons): One-hot encoded species classification
   - Highest activation indicates predicted species
@@ -935,7 +939,7 @@ Input [SL, SW, PL, PW] | Species      | Output [Setosa, Versi, Virgin]
 ```
 
 **References:**
-- Fisher, R.A. (1936). "The use of multiple measurements in taxonomic problems". *Annals of Eugenics*. 7 (2): 179–188.
+- Fisher, R.A. (1936). "The use of multiple measurements in taxonomic problems". *Annals of Eugenics*. 7 (2): 179--188.
 - Original dataset: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/iris)
 - This implementation uses a 40% sample (60/150) for educational clarity
 
@@ -947,7 +951,7 @@ The Iris dataset demonstrates that neural networks can learn from real-world con
 
 **Architecture**: [9, 6, 4] - **Total Parameters**: 88 (78 weights + 10 biases)
 
-The 3x3 pattern recognition example demonstrates **visual pattern detection** - the network learns to recognize simple geometric shapes in a 3×3 pixel grid. This is the largest example by parameter count and represents basic image processing, similar to how computer vision systems recognize patterns.
+The 3x3 pattern recognition example demonstrates **visual pattern detection** - the network learns to recognize simple geometric shapes in a 3x3 pixel grid. This is the largest example by parameter count and represents basic image processing, similar to how computer vision systems recognize patterns.
 
 #### The Patterns
 
@@ -966,7 +970,7 @@ Each pattern is represented as 9 binary inputs (one per pixel) in row-major orde
 
 This is our largest network, optimized for spatial pattern detection:
 
-- **Input Layer** (9 neurons): Receives 3×3 grid as flattened pixel array
+- **Input Layer** (9 neurons): Receives 3x3 grid as flattened pixel array
   - Each neuron corresponds to one pixel position
   - Binary values: 1 (filled pixel) or 0 (empty pixel)
   - **Largest input layer** - demonstrates image-like data processing
@@ -982,9 +986,9 @@ This is our largest network, optimized for spatial pattern detection:
   - Output 3: - pattern (horizontal line)
 
 **Why 88 parameters?** This is the largest network due to the 9-neuron input layer:
-- 9×6 = 54 weights (input to hidden) - **3× larger than iris/adder2**
+- 9x6 = 54 weights (input to hidden) - **3x larger than iris/adder2**
 - 6 hidden biases
-- 6×4 = 24 weights (hidden to output) - same as adder2
+- 6x4 = 24 weights (hidden to output) - same as adder2
 - 4 output biases
 - Total: 54 + 6 + 24 + 4 = 88 parameters
 
@@ -992,7 +996,7 @@ This is our largest network, optimized for spatial pattern detection:
 
 **Comparison with Previous Examples:**
 ```
-Example      | Inputs | Hidden | Outputs | Total Params | Input→Hidden Weights
+Example      | Inputs | Hidden | Outputs | Total Params | Input->Hidden Weights
 -------------|--------|--------|---------|--------------|--------------------
 XOR          |   2    |   3    |    1    |     13       |    6  (46%)
 Parity3      |   3    |   4    |    1    |     21       |   12  (57%)
@@ -1106,7 +1110,7 @@ See LICENSE file for details.
 
 - **Original README**: See `ORIG-README.md` for the initial project description
 - **Development Guide**: See `CLAUDE.md` for development guidelines
-- **Lessons Learned**: See `docs/learnings.md` for documented patterns and solutions
+- **Lessons Learned**: See `documentation/learnings.md` for documented patterns and solutions
 
 ## Future Enhancements
 
@@ -1129,4 +1133,4 @@ Potential areas for expansion:
 
 ---
 
-Built with ❤️ as an educational demonstration of neural networks in Rust.
+Built with [love] as an educational demonstration of neural networks in Rust.
