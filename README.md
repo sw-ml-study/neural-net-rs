@@ -6,6 +6,8 @@ A comprehensive educational neural network framework implemented in Rust, featur
 
 This project demonstrates fundamental neural network concepts through a clean, well-tested Rust implementation. It includes everything needed to train, evaluate, and experiment with neural networks on classic logic gate problems (AND, OR, XOR), with CLI, web server, and browser-based WASM interfaces.
 
+**[Live Demo](https://wrightmikea.github.io/neural-net-rs/)** - Try the interactive web UI in your browser!
+
 ## Features
 
 - **Feed-forward Neural Networks**: Configurable architecture with backpropagation training
