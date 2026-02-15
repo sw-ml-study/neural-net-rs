@@ -7,7 +7,7 @@ import init, {
     listExamples,
     getExampleInfo,
     getExampleData
-} from './wasm/neural_net_wasm.js?ts=1771160891000';
+} from './wasm/neural_net_wasm.js?ts=1771161312000';
 
 // Application state
 let wasmModule;
@@ -600,7 +600,18 @@ async function startApiTraining() {
 
     } catch (error) {
         console.error('API training failed:', error);
-        updateStatus(`API training failed: ${error.message}`, 'error');
+
+        // Check if this is a network error (likely running on GitHub Pages live demo)
+        const isNetworkError = error.name === 'TypeError' ||
+                               error.message.includes('Failed to fetch') ||
+                               error.message.includes('NetworkError') ||
+                               error.message.includes('404');
+
+        if (isNetworkError) {
+            updateStatus('⚠️ SSE not available for live demo; run locally with: cargo run -p neural-net-server', 'error');
+        } else {
+            updateStatus(`API training failed: ${error.message}`, 'error');
+        }
         stopTraining();
     }
 }
