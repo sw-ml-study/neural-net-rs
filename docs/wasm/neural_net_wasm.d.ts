@@ -13,6 +13,10 @@ export function listExamples(): any;
  */
 export function getExampleInfo(name: string): any;
 /**
+ * Get full example data including training inputs and targets
+ */
+export function getExampleData(name: string): any;
+/**
  * Example information for JavaScript
  */
 export class ExampleInfo {
@@ -31,12 +35,14 @@ export class NeuralNetwork {
   [Symbol.dispose](): void;
   /**
    * Create a new neural network with specified architecture
+   * If seed is provided, uses seeded random initialization for reproducibility
    */
-  constructor(layers: Uint32Array, learning_rate: number);
+  constructor(layers: Uint32Array, learning_rate: number, seed?: bigint | null);
   /**
    * Create a network from a built-in example
+   * If seed is provided, uses seeded random initialization for reproducibility
    */
-  static fromExample(example_name: string, learning_rate: number): NeuralNetwork;
+  static fromExample(example_name: string, learning_rate: number, seed?: bigint | null): NeuralNetwork;
   /**
    * Train the network on a built-in example
    * Accepts an optional JavaScript callback for progress updates
@@ -81,8 +87,8 @@ export interface InitOutput {
   readonly __wbg_get_exampleinfo_architecture: (a: number) => [number, number];
   readonly __wbg_set_exampleinfo_architecture: (a: number, b: number, c: number) => void;
   readonly __wbg_neuralnetwork_free: (a: number, b: number) => void;
-  readonly neuralnetwork_new: (a: number, b: number, c: number) => [number, number, number];
-  readonly neuralnetwork_fromExample: (a: number, b: number, c: number) => [number, number, number];
+  readonly neuralnetwork_new: (a: number, b: number, c: number, d: number, e: bigint) => [number, number, number];
+  readonly neuralnetwork_fromExample: (a: number, b: number, c: number, d: number, e: bigint) => [number, number, number];
   readonly neuralnetwork_train: (a: number, b: number, c: number, d: number, e: number) => [number, number];
   readonly neuralnetwork_trainCustom: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => [number, number];
   readonly neuralnetwork_evaluate: (a: number, b: number, c: number) => [number, number, number, number];
@@ -92,6 +98,7 @@ export interface InitOutput {
   readonly neuralnetwork_fromJSON: (a: number, b: number) => [number, number, number];
   readonly listExamples: () => [number, number, number];
   readonly getExampleInfo: (a: number, b: number) => [number, number, number];
+  readonly getExampleData: (a: number, b: number) => [number, number, number];
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_exn_store: (a: number) => void;

@@ -197,6 +197,21 @@ export function getExampleInfo(name) {
     return takeFromExternrefTable0(ret[0]);
 }
 
+/**
+ * Get full example data including training inputs and targets
+ * @param {string} name
+ * @returns {any}
+ */
+export function getExampleData(name) {
+    const ptr0 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ret = wasm.getExampleData(ptr0, len0);
+    if (ret[2]) {
+        throw takeFromExternrefTable0(ret[1]);
+    }
+    return takeFromExternrefTable0(ret[0]);
+}
+
 const ExampleInfoFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_exampleinfo_free(ptr >>> 0, 1));
@@ -311,13 +326,15 @@ export class NeuralNetwork {
     }
     /**
      * Create a new neural network with specified architecture
+     * If seed is provided, uses seeded random initialization for reproducibility
      * @param {Uint32Array} layers
      * @param {number} learning_rate
+     * @param {bigint | null} [seed]
      */
-    constructor(layers, learning_rate) {
+    constructor(layers, learning_rate, seed) {
         const ptr0 = passArray32ToWasm0(layers, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.neuralnetwork_new(ptr0, len0, learning_rate);
+        const ret = wasm.neuralnetwork_new(ptr0, len0, learning_rate, !isLikeNone(seed), isLikeNone(seed) ? BigInt(0) : seed);
         if (ret[2]) {
             throw takeFromExternrefTable0(ret[1]);
         }
@@ -327,14 +344,16 @@ export class NeuralNetwork {
     }
     /**
      * Create a network from a built-in example
+     * If seed is provided, uses seeded random initialization for reproducibility
      * @param {string} example_name
      * @param {number} learning_rate
+     * @param {bigint | null} [seed]
      * @returns {NeuralNetwork}
      */
-    static fromExample(example_name, learning_rate) {
+    static fromExample(example_name, learning_rate, seed) {
         const ptr0 = passStringToWasm0(example_name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.neuralnetwork_fromExample(ptr0, len0, learning_rate);
+        const ret = wasm.neuralnetwork_fromExample(ptr0, len0, learning_rate, !isLikeNone(seed), isLikeNone(seed) ? BigInt(0) : seed);
         if (ret[2]) {
             throw takeFromExternrefTable0(ret[1]);
         }

@@ -24,6 +24,76 @@ The screenshot above shows the **QUADRANT Gate (2-4-4)** example, which demonstr
 
 This example demonstrates how the platform handles complex classification problems beyond simple logic gates. The UI seamlessly supports all eight built-in examples, from simple 2-input gates to complex 9-input pattern recognition, automatically adapting the interface to match each problem's requirements.
 
+## Understanding Neural Networks
+
+This project implements a **Feed-Forward Neural Network** (also called Multi-Layer Perceptron or MLP), the foundational architecture that underlies modern deep learning.
+
+### What is a Neural Network?
+
+A neural network is a computational model inspired by biological neurons. It learns to map inputs to outputs by adjusting internal weights through a process called **training**. The key components are:
+
+- **Neurons (Nodes)**: Process inputs by applying weights, summing, and passing through an activation function
+- **Layers**: Groups of neurons organized sequentially (input → hidden → output)
+- **Weights**: Learnable parameters that determine how strongly neurons connect
+- **Activation Functions**: Non-linear functions (like sigmoid) that enable learning complex patterns
+- **Backpropagation**: Algorithm that calculates how to adjust weights to reduce prediction errors
+
+### Feed-Forward Neural Networks (This Project)
+
+In a **feed-forward network**, information flows in one direction: from input to output. This is the simplest neural network architecture and serves as the foundation for understanding more complex models.
+
+```
+Input Layer → Hidden Layer(s) → Output Layer
+    [x₁]           [h₁]            [y₁]
+    [x₂]    →      [h₂]      →     [y₂]
+    [x₃]           [h₃]            ...
+```
+
+**Characteristics:**
+- No cycles or loops - data flows forward only
+- Each layer is fully connected to the next
+- Universal approximation: can learn any continuous function (with enough neurons)
+- Trained using gradient descent and backpropagation
+
+**Best suited for:**
+- Classification problems (categorizing inputs)
+- Regression (predicting continuous values)
+- Function approximation
+- Pattern recognition on fixed-size inputs
+
+### Comparison with Other Neural Network Types
+
+| Architecture | Structure | Best For | Example Uses |
+|-------------|-----------|----------|--------------|
+| **Feed-Forward (MLP)** | Layers connected forward only | Classification, regression, fixed-size patterns | This project, tabular data, basic image classification |
+| **Convolutional (CNN)** | Sliding filters over spatial data | Images, spatial patterns | Image recognition, object detection, medical imaging |
+| **Recurrent (RNN/LSTM)** | Loops allow memory of past inputs | Sequences, time series | Language models, speech recognition, stock prediction |
+| **Transformer** | Attention mechanisms, parallel processing | Language, long sequences | GPT, BERT, ChatGPT, machine translation |
+| **Autoencoder** | Encodes to compressed representation | Dimensionality reduction, denoising | Image compression, anomaly detection |
+| **GAN** | Generator vs discriminator networks | Generating new data | Image generation, deepfakes, art creation |
+
+### Why Feed-Forward for This Demo?
+
+Feed-forward networks are ideal for learning because:
+
+1. **Conceptually simple**: Easy to understand information flow
+2. **Mathematically tractable**: Clear gradient computation via backpropagation
+3. **Historically significant**: XOR problem demonstrated the need for hidden layers (1969)
+4. **Foundation for understanding**: Concepts transfer directly to more complex architectures
+5. **Sufficient for many problems**: Logic gates, classification, pattern recognition
+
+### What This Demo Teaches
+
+| Example | Concept Demonstrated |
+|---------|---------------------|
+| AND, OR | Linearly separable problems - single line can separate classes |
+| XOR | Non-linear problems - requires hidden layer (the classic neural network proof) |
+| Parity | Scaling XOR - more inputs require more hidden neurons |
+| Quadrant | Multi-class output with one-hot encoding |
+| Adder | Learning arithmetic operations from examples |
+| Iris | Real-world data with natural variation and class overlap |
+| Pattern3x3 | Image-like input - foundation of computer vision |
+
 ## Features
 
 - **Feed-forward Neural Networks**: Configurable architecture with backpropagation training

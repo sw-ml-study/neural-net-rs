@@ -7,6 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Neural Network Training - Rust WASM Demo</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -23,12 +24,17 @@
                     <h2>Training Configuration</h2>
 
                     <div class="form-group">
-                        <label for="example-select">Example Problem</label>
-                        <select id="example-select">
-                            <option value="and">AND Gate (Linear)</option>
-                            <option value="or">OR Gate (Linear)</option>
-                            <option value="xor" selected>XOR Gate (Non-linear)</option>
-                        </select>
+                        <label for="example-select">
+                            Choose an Example
+                            <button id="info-button" class="info-button" title="Learn about this example">?</button>
+                        </label>
+                        <div class="example-selector-wrapper">
+                            <select id="example-select">
+                                <option value="and">AND Gate (Linear)</option>
+                                <option value="or">OR Gate (Linear)</option>
+                                <option value="xor" selected>XOR Gate (Non-linear)</option>
+                            </select>
+                        </div>
                         <p id="example-description" class="help-text">Loading...</p>
                     </div>
 
@@ -42,6 +48,12 @@
                         <label for="learning-rate-input">Learning Rate</label>
                         <input type="number" id="learning-rate-input" value="0.5" min="0.01" max="1.0" step="0.1">
                         <p class="help-text">Step size for gradient descent</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="seed-input">Random Seed (optional)</label>
+                        <input type="number" id="seed-input" value="" min="0" placeholder="Leave empty for random">
+                        <p class="help-text">Set a seed for reproducible training results</p>
                     </div>
 
                     <div class="form-group">
@@ -151,7 +163,7 @@
         </main>
 
         <footer>
-            <p>Copyright (c) 2025 Michael A. Wright</p>
+            <p>Copyright (c) 2025-2026 Michael A. Wright</p>
             <p>Built with Rust, WebAssembly, and Axum</p>
             <p class="footer-links">
                 <a href="https://github.com/wrightmikea/neural-net-rs" target="_blank">View on GitHub</a>
@@ -159,11 +171,24 @@
                 <a href="/api/examples" target="_blank">API Documentation</a>
             </p>
             <p class="build-info">
-                <small>Build: a34f231 | Host: mighty | 2025-11-01 16:27:08 UTC</small>
+                <small>Build: 00c3809 | Host: mighty | 2026-02-15 13:08:11 UTC</small>
             </p>
         </footer>
     </div>
 
-    <script type="module" src="app.js"></script>
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">About This Example</h2>
+                <button id="modal-close" class="modal-close">&times;</button>
+            </div>
+            <div id="modal-body" class="modal-body">
+                <!-- Content populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js?ts=1771160891000"></script>
 </body>
 </html>

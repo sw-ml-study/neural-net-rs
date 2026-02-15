@@ -1,15 +1,27 @@
+# Claude Code local settings (user-specific)
 .claude/
+
+# Rust build artifacts
 target/
 
-# WASM build artifacts
+# WASM build artifacts (intermediate)
 neural-net-wasm/pkg/
-!neural-net-server/static/wasm/
+
+# Server static wasm files (copied from pkg, not needed in repo)
+neural-net-server/static/wasm/*.wasm
+neural-net-server/static/wasm/*.js
+neural-net-server/static/wasm/*.d.ts
+
+# Keep docs/wasm tracked for GitHub Pages live demo
+# (no ignore rules for docs/)
 
 # Checkpoint and model files
 checkpoints/
 *checkpoint.json
 *model.json
 *.checkpoint
+
+# Keep these tracked
 !Cargo.lock
 !package.json
 !tsconfig.json

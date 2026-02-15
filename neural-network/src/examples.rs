@@ -131,8 +131,8 @@ pub fn get_example(name: &str) -> Option<Example> {
                 vec![0.0], // 2 ones -> even
                 vec![1.0], // 3 ones -> odd
             ],
-            recommended_arch: vec![3, 4, 1],
-            recommended_epochs: 15000,
+            recommended_arch: vec![3, 6, 1],
+            recommended_epochs: 20000,
             recommended_lr: 0.5,
         }),
 

@@ -25,6 +25,16 @@ pub struct ExampleInfo {
     pub architecture: Vec<usize>,
 }
 
+/// Full example data including training inputs and targets
+#[derive(Serialize, Deserialize)]
+pub struct ExampleData {
+    pub name: String,
+    pub description: String,
+    pub architecture: Vec<usize>,
+    pub inputs: Vec<Vec<f64>>,
+    pub targets: Vec<Vec<f64>>,
+}
+
 /// Training progress update
 #[derive(Serialize, Deserialize, Clone)]
 pub struct TrainingProgress {
@@ -42,22 +52,32 @@ pub struct NeuralNetwork {
 #[wasm_bindgen]
 impl NeuralNetwork {
     /// Create a new neural network with specified architecture
+    /// If seed is provided, uses seeded random initialization for reproducibility
     #[wasm_bindgen(constructor)]
-    pub fn new(layers: Vec<usize>, learning_rate: f64) -> Result<NeuralNetwork, JsValue> {
+    pub fn new(layers: Vec<usize>, learning_rate: f64, seed: Option<u64>) -> Result<NeuralNetwork, JsValue> {
+        let network = match seed {
+            Some(s) => Network::new_seeded(layers, SIGMOID, learning_rate, s),
+            None => Network::new(layers, SIGMOID, learning_rate),
+        };
         Ok(NeuralNetwork {
-            network: Network::new(layers, SIGMOID, learning_rate),
+            network,
             example_name: None,
         })
     }
 
     /// Create a network from a built-in example
+    /// If seed is provided, uses seeded random initialization for reproducibility
     #[wasm_bindgen(js_name = fromExample)]
-    pub fn from_example(example_name: &str, learning_rate: f64) -> Result<NeuralNetwork, JsValue> {
+    pub fn from_example(example_name: &str, learning_rate: f64, seed: Option<u64>) -> Result<NeuralNetwork, JsValue> {
         let example = examples::get_example(example_name)
             .ok_or_else(|| JsValue::from_str(&format!("Unknown example: {}", example_name)))?;
 
+        let network = match seed {
+            Some(s) => Network::new_seeded(example.recommended_arch, SIGMOID, learning_rate, s),
+            None => Network::new(example.recommended_arch, SIGMOID, learning_rate),
+        };
         Ok(NeuralNetwork {
-            network: Network::new(example.recommended_arch, SIGMOID, learning_rate),
+            network,
             example_name: Some(example_name.to_string()),
         })
     }
@@ -239,21 +259,51 @@ pub fn get_example_info(name: &str) -> Result<JsValue, JsValue> {
         .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
+/// Get full example data including training inputs and targets
+#[wasm_bindgen(js_name = getExampleData)]
+pub fn get_example_data(name: &str) -> Result<JsValue, JsValue> {
+    let example = examples::get_example(name)
+        .ok_or_else(|| JsValue::from_str(&format!("Unknown example: {}", name)))?;
+
+    let data = ExampleData {
+        name: example.name.to_string(),
+        description: example.description.to_string(),
+        architecture: example.recommended_arch.clone(),
+        inputs: example.inputs.clone(),
+        targets: example.targets.clone(),
+    };
+
+    serde_wasm_bindgen::to_value(&data)
+        .map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_create_network() {
-        let network = NeuralNetwork::new(vec![2, 3, 1], 0.5);
+        let network = NeuralNetwork::new(vec![2, 3, 1], 0.5, None);
         assert!(network.is_ok());
         let net = network.unwrap();
         assert_eq!(net.get_architecture(), vec![2, 3, 1]);
     }
 
     #[test]
+    fn test_create_network_seeded() {
+        // Test that seeded networks are reproducible
+        let network1 = NeuralNetwork::new(vec![2, 3, 1], 0.5, Some(12345));
+        let network2 = NeuralNetwork::new(vec![2, 3, 1], 0.5, Some(12345));
+        assert!(network1.is_ok());
+        assert!(network2.is_ok());
+        let json1 = network1.unwrap().to_json().unwrap();
+        let json2 = network2.unwrap().to_json().unwrap();
+        assert_eq!(json1, json2);
+    }
+
+    #[test]
     fn test_from_example() {
-        let network = NeuralNetwork::from_example("xor", 0.5);
+        let network = NeuralNetwork::from_example("xor", 0.5, None);
         assert!(network.is_ok());
         let net = network.unwrap();
         assert_eq!(net.example_name, Some("xor".to_string()));
@@ -261,7 +311,7 @@ mod tests {
 
     #[test]
     fn test_evaluate() {
-        let mut network = NeuralNetwork::new(vec![2, 3, 1], 0.5).unwrap();
+        let mut network = NeuralNetwork::new(vec![2, 3, 1], 0.5, None).unwrap();
         let result = network.evaluate(vec![1.0, 0.0]);
         assert!(result.is_ok());
         let output = result.unwrap();
@@ -270,7 +320,7 @@ mod tests {
 
     #[test]
     fn test_parameter_count() {
-        let network = NeuralNetwork::new(vec![2, 3, 1], 0.5).unwrap();
+        let network = NeuralNetwork::new(vec![2, 3, 1], 0.5, None).unwrap();
         // Weights: 2->3 = 6, 3->1 = 3
         // Biases: 3 + 1 = 4
         // Total = 6 + 3 + 4 = 13
@@ -279,7 +329,7 @@ mod tests {
 
     #[test]
     fn test_serialization() {
-        let network = NeuralNetwork::new(vec![2, 3, 1], 0.5).unwrap();
+        let network = NeuralNetwork::new(vec![2, 3, 1], 0.5, None).unwrap();
         let json = network.to_json();
         assert!(json.is_ok());
 

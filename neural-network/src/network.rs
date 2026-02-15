@@ -1,4 +1,6 @@
 use matrix::matrix::Matrix;
+use rand::SeedableRng;
+use rand::rngs::StdRng;
 use serde::{Serialize, Deserialize};
 
 use crate::activations::Activation;
@@ -17,7 +19,7 @@ pub struct Network {
 
 impl Network {
 
-    pub fn new(layers: Vec<usize>,activation:Activation,learning_rate:f64 ) -> Self { 
+    pub fn new(layers: Vec<usize>,activation:Activation,learning_rate:f64 ) -> Self {
 
         let mut weights = vec![];
 
@@ -29,16 +31,37 @@ impl Network {
         }
 
 
-        Network { 
-            layers, 
-            weights, 
-            biases, 
+        Network {
+            layers,
+            weights,
+            biases,
             data: vec![],
             activation,
             learning_rate
         }
 
 
+    }
+
+    /// Create a new network with a specific seed for reproducible initialization
+    pub fn new_seeded(layers: Vec<usize>, activation: Activation, learning_rate: f64, seed: u64) -> Self {
+        let mut rng = StdRng::seed_from_u64(seed);
+        let mut weights = vec![];
+        let mut biases = vec![];
+
+        for i in 0..layers.len() - 1 {
+            weights.push(Matrix::random_seeded(layers[i+1], layers[i], &mut rng));
+            biases.push(Matrix::random_seeded(layers[i+1], 1, &mut rng));
+        }
+
+        Network {
+            layers,
+            weights,
+            biases,
+            data: vec![],
+            activation,
+            learning_rate,
+        }
     }
 
     pub fn feed_forward(&mut self, inputs: Matrix) -> Matrix {

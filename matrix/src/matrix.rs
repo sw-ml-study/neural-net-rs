@@ -1,5 +1,7 @@
 use std::fmt;
 use rand::Rng;
+use rand::SeedableRng;
+use rand::rngs::StdRng;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -43,6 +45,23 @@ impl Matrix {
 
         Matrix{rows,cols,data:buffer}
 
+    }
+
+    /// Create a random matrix using a seeded RNG for reproducibility
+    pub fn random_seeded(rows: usize, cols: usize, rng: &mut impl Rng) -> Matrix {
+        let mut buffer = Vec::<f64>::with_capacity(rows * cols);
+
+        for _ in 0..rows*cols {
+            let num = rng.gen_range(0.0..1.0);
+            buffer.push(num);
+        }
+
+        Matrix{rows,cols,data:buffer}
+    }
+
+    /// Create a seeded RNG from a u64 seed
+    pub fn create_rng(seed: u64) -> StdRng {
+        StdRng::seed_from_u64(seed)
     }
 
     pub fn new(rows: usize, cols: usize, data: Vec<f64>) -> Matrix {

@@ -64,6 +64,8 @@ struct TrainRequest {
     example: String,
     epochs: u32,
     learning_rate: f64,
+    /// Optional seed for reproducible training (random if not specified)
+    seed: Option<u64>,
 }
 
 /// Train response
@@ -136,8 +138,11 @@ async fn train(
             )
         })?;
 
-    // Create network
-    let network = Network::new(example.recommended_arch.clone(), SIGMOID, req.learning_rate);
+    // Create network (seeded if seed provided, random otherwise)
+    let network = match req.seed {
+        Some(seed) => Network::new_seeded(example.recommended_arch.clone(), SIGMOID, req.learning_rate, seed),
+        None => Network::new(example.recommended_arch.clone(), SIGMOID, req.learning_rate),
+    };
 
     // Create training config
     let config = TrainingConfig {
@@ -261,14 +266,18 @@ async fn train_stream(
     let example_name = req.example.clone();
     let epochs = req.epochs;
     let learning_rate = req.learning_rate;
+    let seed = req.seed;
     let state_clone = state.clone();
     let inputs = example.inputs.clone();
     let targets = example.targets.clone();
     let arch = example.recommended_arch.clone();
 
     tokio::task::spawn_blocking(move || {
-        // Create network
-        let network = Network::new(arch, SIGMOID, learning_rate);
+        // Create network (seeded if seed provided, random otherwise)
+        let network = match seed {
+            Some(s) => Network::new_seeded(arch, SIGMOID, learning_rate, s),
+            None => Network::new(arch, SIGMOID, learning_rate),
+        };
 
         // Create training config
         let config = TrainingConfig {
