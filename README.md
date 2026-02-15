@@ -6,7 +6,7 @@ A comprehensive educational neural network framework implemented in Rust, featur
 
 This project demonstrates fundamental neural network concepts through a clean, well-tested Rust implementation. It includes everything needed to train, evaluate, and experiment with neural networks on classic logic gate problems (AND, OR, XOR), with CLI, web server, and browser-based WASM interfaces.
 
-**[Live Demo](https://wrightmikea.github.io/neural-net-rs/)** - Try the interactive web UI in your browser!
+**[Live Demo](https://sw-ml-study.github.io/neural-net-rs/)** - Try the interactive web UI in your browser!
 
 ![Neural Network Training Platform](images/screenshot-v3.png)
 *Interactive web interface demonstrating QUADRANT multi-class classification with dynamic inputs, training loss curve, and evaluation results*
@@ -191,72 +191,23 @@ neural-net-rs/
 
 ## CLI Commands
 
-### `list` - List Available Examples
+| Command | Description |
+|---------|-------------|
+| `list` | List available training examples |
+| `train` | Train a new network with progress bar |
+| `resume` | Resume training from checkpoint |
+| `eval` | Evaluate a trained model |
+| `info` | Display model information |
 
 ```bash
-cargo run --bin neural-net-cli -- list
+# Quick start: train XOR
+cargo run --bin neural-net-cli -- train --example xor --epochs 10000 --output checkpoints/xor.json
+
+# Evaluate the model
+cargo run --bin neural-net-cli -- eval --model checkpoints/xor.json --input 1.0,0.0
 ```
 
-Shows all built-in training examples with descriptions.
-
-### `train` - Train a New Network
-
-```bash
-cargo run --bin neural-net-cli -- train [OPTIONS]
-
-Options:
-  -e, --example <EXAMPLE>          Example to train on (and, or, xor)
-  -n, --epochs <EPOCHS>            Number of training epochs [default: 10000]
-  -l, --learning-rate <RATE>       Learning rate [default: 0.5]
-  -o, --output <FILE>              Output file path for trained model
-```
-
-Features:
-- Visual progress bar with ETA
-- Real-time loss tracking
-- Automatic checkpoint saving
-
-### `resume` - Resume Training from Checkpoint
-
-```bash
-cargo run --bin neural-net-cli -- resume [OPTIONS]
-
-Options:
-  -c, --checkpoint <FILE>          Path to checkpoint file
-  -n, --epochs <EPOCHS>            Number of additional training epochs
-  -o, --output <FILE>              Output file path for updated model
-```
-
-### `eval` - Evaluate a Trained Model
-
-```bash
-cargo run --bin neural-net-cli -- eval [OPTIONS]
-
-Options:
-  -m, --model <FILE>               Path to trained model file
-  -i, --input <VALUES>             Input values (comma-separated)
-```
-
-Example:
-```bash
-cargo run --bin neural-net-cli -- eval --model checkpoints/xor_model.json --input 1.0,0.0
-```
-
-### `info` - Display Model Information
-
-```bash
-cargo run --bin neural-net-cli -- info [OPTIONS]
-
-Options:
-  -m, --model <FILE>               Path to model file
-```
-
-Displays:
-- Model metadata (version, example, epochs, learning rate, timestamp)
-- Network architecture (layers, neurons)
-- Weight matrix dimensions
-- Bias vector dimensions
-- Total parameter count
+**See [documentation/cli.md](documentation/cli.md) for full command reference and examples.**
 
 ## Web Server
 
@@ -446,114 +397,23 @@ curl http://localhost:2421/api/models/YOUR-MODEL-ID
 
 ## Web UI
 
-The project includes a modern, interactive web interface for training and evaluating neural networks directly in your browser.
+The project includes a modern, interactive web interface for training and evaluating neural networks directly in your browser. Features include:
 
-### Features
-
-**Dual Training Modes:**
-- **Local (WASM)**: Train neural networks directly in the browser using WebAssembly
-  - No server required for training
-  - All computation runs client-side
-  - Full neural network implementation compiled to WASM
-- **Remote (API)**: Train on the server with real-time progress via Server-Sent Events
-  - Live training progress updates
-  - Streaming loss metrics
-  - Progress visualization
-
-**Interactive Features:**
-- Real-time loss chart with Canvas visualization
-- Network architecture display
-- Interactive testing interface
-- Truth table evaluation with error highlighting
-- Training metrics (epoch, loss, elapsed time)
-- Progress bar with percentage completion
-- Example selection (AND, OR, XOR gates)
-- Configurable training parameters (epochs, learning rate)
-
-### Usage
+- **Dual Training Modes**: Local WASM (browser-only) or Remote API with SSE streaming
+- **Real-time Visualization**: Live loss charts and training progress
+- **Interactive Testing**: Input values and see network predictions instantly
+- **Truth Table Display**: Compare expected vs. predicted outputs
 
 ```bash
-# Start the web server
-cargo run --bin neural-net-server
+# Start the web server (recommended)
+./scripts/run.sh
 
-# Open your browser
-open http://localhost:2421
+# Or start directly
+cargo run --bin neural-net-server
+# Open http://localhost:2421
 ```
 
-The web UI will load at `http://localhost:2421` and provide:
-1. **Training Configuration Panel**: Select examples, configure parameters, choose training mode
-2. **Training Progress Visualization**: Real-time loss chart and metrics
-3. **Network Testing**: Interactive input/output testing
-4. **Architecture Display**: Visual representation of network layers
-
-### WebAssembly Integration
-
-All neural network logic runs in Rust/WASM:
-- Network creation and initialization
-- Forward propagation
-- Backpropagation and training
-- Gradient computation
-- Weight updates
-
-JavaScript is minimal - only for:
-- WASM module bootstrapping
-- DOM manipulation
-- Canvas chart drawing
-- SSE connection handling
-
-**WASM Module Size**: ~248KB (optimized for size with LTO)
-
-### Example Workflows
-
-**Local WASM Training:**
-1. Select "Local (WASM)" mode
-2. Choose an example (e.g., XOR)
-3. Set epochs (e.g., 1000) and learning rate (e.g., 0.5)
-4. Click "Start Training"
-5. Watch real-time loss chart
-6. Test the network with different inputs
-7. View truth table results
-
-**Remote API Training:**
-1. Select "Remote API (SSE)" mode
-2. Choose an example
-3. Configure parameters
-4. Click "Start Training"
-5. Receive live progress updates from server
-6. View streaming loss metrics
-7. Test the trained network
-
-### Screenshots
-
-The interactive web UI provides a comprehensive interface for training and evaluating neural networks:
-
-**Main Interface**
-![Web UI Main View](images/screenshot.png)
-*Modern web interface for training and evaluating neural networks with dual-mode support (WASM/API)*
-
-**Initial Interface**
-![Web UI Initial View](images/01-web-ui-initial-2025-10-14T01-35-30-210Z.png)
-*Clean, modern interface with training configuration, visualization panels, and network testing*
-
-**Remote API Training Mode**
-![Configuration with Remote API](images/02-configuration-remote-2025-10-14T01-36-46-614Z.png)
-*Select between local WASM training or remote server training with SSE streaming*
-
-**Training in Progress**
-![Training in Progress](images/03-training-in-progress-2025-10-14T01-36-58-428Z.png)
-*Real-time loss chart updates as training progresses on the server*
-
-**Training Completed**
-![Training Completed](images/04-training-completed-2025-10-14T01-37-02-116Z.png)
-*Complete training history with loss curve and final metrics*
-
-**Network Testing & Truth Table**
-![Network Testing](images/05-network-testing-2025-10-14T01-37-10-849Z.png)
-*Interactive testing interface with truth table showing all input combinations and prediction accuracy*
-
-**Local WASM Mode**
-![WASM Mode Configuration](images/06-wasm-mode-config-2025-10-14T01-37-20-298Z.png)
-*Train directly in the browser using WebAssembly - no server required for training*
+**See [documentation/web-ui.md](documentation/web-ui.md) for detailed screenshots and usage guide.**
 
 ## Architecture Details
 
@@ -1240,7 +1100,7 @@ This is an educational project demonstrating neural network concepts. When contr
 
 ## Acknowledgements
 
-This project was forked from [codemoonsxyz/neural-net-rs](https://github.com/codemoonsxyz/neural-net-rs) and significantly extended with additional features including the web server, WASM compilation, interactive UI, and educational content.
+This project was originally forked from [codemoonsxyz/neural-net-rs](https://github.com/codemoonsxyz/neural-net-rs) and has been significantly extended with additional features including the web server, WASM compilation, interactive UI, and educational content. It is now maintained by the [sw-ml-study](https://github.com/sw-ml-study) organization.
 
 ## License
 
@@ -1248,9 +1108,11 @@ See LICENSE file for details.
 
 ## Resources
 
-- **Original README**: See `ORIG-README.md` for the initial project description
+- **Web UI Guide**: See [documentation/web-ui.md](documentation/web-ui.md) for screenshots and usage
+- **CLI Reference**: See [documentation/cli.md](documentation/cli.md) for full command documentation
 - **Development Guide**: See `CLAUDE.md` for development guidelines
 - **Lessons Learned**: See `documentation/learnings.md` for documented patterns and solutions
+- **Original README**: See `ORIG-README.md` for the initial project description
 
 ## Future Enhancements
 
