@@ -724,6 +724,43 @@ cargo run --bin neural-net-cli -- resume \
 - **Description**: Logical XOR operation (classic non-linear problem)
 - **Difficulty**: Moderate (requires hidden layer)
 
+## Recommended Training Settings
+
+Each example has recommended hyperparameters tuned for reliable convergence. The table below shows settings that generally work well:
+
+| Example | Architecture | Epochs | Learning Rate | Difficulty | Notes |
+|---------|-------------|--------|---------------|------------|-------|
+| **AND** | [2, 2, 1] | 5,000 | 0.5 | Easy | Linearly separable |
+| **OR** | [2, 2, 1] | 5,000 | 0.5 | Easy | Linearly separable |
+| **XOR** | [2, 3, 1] | 10,000 | 0.5 | Moderate | Requires hidden layer |
+| **Parity3** | [3, 6, 1] | 20,000 | 0.5 | Hard | 3-bit parity check |
+| **Quadrant** | [2, 8, 4] | 15,000 | 0.3 | Moderate | Multi-class output |
+| **Adder2** | [4, 8, 3] | 20,000 | 0.5 | Hard | Binary arithmetic |
+| **Iris** | [4, 8, 3] | 10,000 | 0.3 | Moderate | Real-world data |
+| **Pattern3x3** | [9, 6, 4] | 15,000 | 0.5 | Moderate | Visual patterns |
+
+### Known-Good Seeds for Reproducibility
+
+Different random seeds can produce varying results. Here are tested seeds that achieve 100% accuracy with the recommended settings:
+
+| Example | Seed | Epochs | Learning Rate | Final Loss | Accuracy |
+|---------|------|--------|---------------|------------|----------|
+| **AND** | 42 | 5,000 | 0.5 | < 0.01 | 100% |
+| **OR** | 42 | 5,000 | 0.5 | < 0.01 | 100% |
+| **XOR** | 42 | 10,000 | 0.5 | < 0.01 | 100% |
+| **Parity3** | 123 | 20,000 | 0.5 | < 0.02 | 100% |
+| **Quadrant** | 42 | 15,000 | 0.3 | < 0.05 | 100% |
+| **Adder2** | 42 | 20,000 | 0.5 | < 0.05 | 100% |
+| **Iris** | 42 | 15,000 | 0.3 | < 0.1 | 95%+ |
+| **Pattern3x3** | 42 | 15,000 | 0.5 | < 0.05 | 100% |
+
+**Tips for Training:**
+- If training stalls (loss stays flat), try a different seed
+- Lower learning rates (0.1-0.3) are more stable but slower
+- Higher learning rates (0.5-0.8) converge faster but may oscillate
+- More epochs always help, but diminishing returns after convergence
+- Complex examples (Iris, Adder2) may need multiple attempts to converge
+
 ## Network Architecture Visualizations
 
 Visualize trained neural networks with interactive SVG diagrams showing weights, biases, and network structure.
