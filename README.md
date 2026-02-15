@@ -741,25 +741,28 @@ Each example has recommended hyperparameters tuned for reliable convergence. The
 
 ### Known-Good Seeds for Reproducibility
 
-Different random seeds can produce varying results. Here are tested seeds that achieve 100% accuracy with the recommended settings:
+Different random seeds can produce varying results. Here are tested seeds that achieve reliable accuracy:
 
-| Example | Seed | Epochs | Learning Rate | Final Loss | Accuracy |
-|---------|------|--------|---------------|------------|----------|
-| **AND** | 42 | 5,000 | 0.5 | < 0.01 | 100% |
-| **OR** | 42 | 5,000 | 0.5 | < 0.01 | 100% |
-| **XOR** | 42 | 10,000 | 0.5 | < 0.01 | 100% |
-| **Parity3** | 123 | 20,000 | 0.5 | < 0.02 | 100% |
-| **Quadrant** | 42 | 15,000 | 0.3 | < 0.05 | 100% |
-| **Adder2** | 42 | 20,000 | 0.5 | < 0.05 | 100% |
-| **Iris** | 42 | 15,000 | 0.3 | < 0.1 | 95%+ |
-| **Pattern3x3** | 42 | 15,000 | 0.5 | < 0.05 | 100% |
+| Example | Seed | Epochs | Learning Rate | Accuracy | Notes |
+|---------|------|--------|---------------|----------|-------|
+| **AND** | 42 | 5,000 | 0.5 | 100% | Easy - converges quickly |
+| **OR** | 42 | 5,000 | 0.5 | 100% | Easy - converges quickly |
+| **XOR** | 42 | 10,000 | 0.5 | 100% | Classic non-linear problem |
+| **Parity3** | 123 | 20,000 | 0.5 | ~87% | Challenging - may need tuning |
+| **Quadrant** | 42 | 15,000 | 0.3 | 100% | Multi-class classification |
+| **Adder2** | 42 | 20,000 | 0.5 | ~75% | Challenging - arithmetic is hard |
+| **Iris** | 42 | 15,000 | 0.3 | ~95%+ | Real-world data variation |
+| **Pattern3x3** | 42 | 15,000 | 0.5 | 100% | Visual pattern recognition |
 
 **Tips for Training:**
 - If training stalls (loss stays flat), try a different seed
 - Lower learning rates (0.1-0.3) are more stable but slower
 - Higher learning rates (0.5-0.8) converge faster but may oscillate
 - More epochs always help, but diminishing returns after convergence
-- Complex examples (Iris, Adder2) may need multiple attempts to converge
+- Complex examples (Parity3, Adder2) represent genuinely hard problems for small networks
+
+**Batch Testing:**
+Run `./scripts/batch-test.sh` to test all examples with their recommended settings and verify accuracy.
 
 ## Network Architecture Visualizations
 

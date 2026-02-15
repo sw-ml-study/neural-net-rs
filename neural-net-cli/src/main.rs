@@ -32,6 +32,10 @@ enum Commands {
         #[arg(short, long, default_value = "0.5")]
         learning_rate: f64,
 
+        /// Random seed for reproducible training
+        #[arg(short, long)]
+        seed: Option<u64>,
+
         /// Output file path for trained model
         #[arg(short, long)]
         output: Option<String>,
@@ -58,8 +62,8 @@ enum Commands {
         #[arg(short, long)]
         model: String,
 
-        /// Input values (comma-separated)
-        #[arg(short, long)]
+        /// Input values (comma-separated, e.g., "0.5,1.0" or "-1.0,0.5")
+        #[arg(short, long, allow_hyphen_values = true)]
         input: Option<String>,
     },
 
@@ -82,9 +86,10 @@ fn main() -> anyhow::Result<()> {
             example,
             epochs,
             learning_rate,
+            seed,
             output,
         } => {
-            cmd_train(&example, epochs, learning_rate, output)?;
+            cmd_train(&example, epochs, learning_rate, seed, output)?;
         }
         Commands::Resume {
             checkpoint,
@@ -124,6 +129,7 @@ fn cmd_train(
     example: &str,
     epochs: u32,
     learning_rate: f64,
+    seed: Option<u64>,
     output: Option<String>,
 ) -> anyhow::Result<()> {
     use indicatif::{ProgressBar, ProgressStyle};
@@ -138,10 +144,17 @@ fn cmd_train(
     println!("Architecture: {:?}", ex.recommended_arch);
     println!("Epochs: {}", epochs);
     println!("Learning rate: {}", learning_rate);
+    if let Some(s) = seed {
+        println!("Seed: {}", s);
+    }
     println!();
 
     // Create network with recommended architecture
-    let network = Network::new(ex.recommended_arch.clone(), SIGMOID, learning_rate);
+    let network = if let Some(s) = seed {
+        Network::new_seeded(ex.recommended_arch.clone(), SIGMOID, learning_rate, s)
+    } else {
+        Network::new(ex.recommended_arch.clone(), SIGMOID, learning_rate)
+    };
 
     // Create training config
     let config = TrainingConfig {
