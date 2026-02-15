@@ -7,7 +7,7 @@ import init, {
     listExamples,
     getExampleInfo,
     getExampleData
-} from './wasm/neural_net_wasm.js?ts=1771162511000';
+} from './wasm/neural_net_wasm.js?ts=1771162789000';
 
 // Application state
 let wasmModule;

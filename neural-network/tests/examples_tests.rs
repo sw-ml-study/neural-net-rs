@@ -27,10 +27,15 @@ fn test_get_xor_example() {
 #[test]
 fn test_list_examples() {
     let examples = list_examples();
-    assert_eq!(examples.len(), 3);
+    assert_eq!(examples.len(), 8);
     assert!(examples.contains(&"and"));
     assert!(examples.contains(&"or"));
     assert!(examples.contains(&"xor"));
+    assert!(examples.contains(&"parity3"));
+    assert!(examples.contains(&"quadrant"));
+    assert!(examples.contains(&"adder2"));
+    assert!(examples.contains(&"iris"));
+    assert!(examples.contains(&"pattern3x3"));
 }
 
 #[test]

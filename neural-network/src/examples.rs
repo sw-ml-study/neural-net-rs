@@ -175,9 +175,9 @@ pub fn get_example(name: &str) -> Option<Example> {
                 vec![0.0, 0.0, 0.0, 1.0],
                 vec![0.0, 0.0, 0.0, 1.0],
             ],
-            recommended_arch: vec![2, 4, 4],
-            recommended_epochs: 10000,
-            recommended_lr: 0.5,
+            recommended_arch: vec![2, 8, 4],
+            recommended_epochs: 15000,
+            recommended_lr: 0.3,
         }),
 
         "adder2" => Some(Example {
