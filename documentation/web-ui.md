@@ -98,45 +98,45 @@ JavaScript is minimal - only for:
 
 ### Main Interface
 
-![Neural Network Training Platform](../images/screenshot-v3.png)
+![Neural Network Training Platform](../images/main-quadrant-2026-02-15T14-43-05-642Z.png?ts=1771166656000)
 *Interactive web interface demonstrating QUADRANT multi-class classification with dynamic inputs, training loss curve, and evaluation results*
 
 ### Demonstrated Use Case: Multi-Class Classification
 
-The screenshot above shows the **QUADRANT Gate (2-4-4)** example, which demonstrates several advanced features:
+The screenshot above shows the **QUADRANT Gate (2-8-4)** example, which demonstrates several advanced features:
 
 - **Multi-Class Classification**: Unlike simple binary outputs (AND, OR, XOR), this network classifies 2D points into one of four quadrants using one-hot encoding
 - **Dynamic UI Adaptation**: The interface automatically adjusts input fields and output displays based on the selected example's architecture
-- **Training Visualization**: The loss curve shows convergence from ~1.09 to ~0.002 over 1000 epochs, demonstrating successful learning
-- **Real-Time Evaluation**: Testing inputs (0.8, 0.8) correctly predicts "Class 1" with 98.1% confidence, corresponding to Quadrant I (positive x, positive y)
+- **Training Visualization**: The loss curve shows convergence over 1000 epochs, demonstrating successful learning
+- **Real-Time Evaluation**: Testing inputs (0.8, 0.8) correctly predicts the quadrant with high confidence
 - **Truth Table Analysis**: All four quadrant classifications are displayed with expected vs. predicted classes and confidence scores
-- **Architecture Display**: Visual representation shows the 2-4-4 network structure (2 inputs, 4 hidden neurons, 4 output classes)
+- **Architecture Display**: Visual representation shows the 2-8-4 network structure (2 inputs, 8 hidden neurons, 4 output classes)
 
 ### UI Walkthrough
 
 **Initial Interface**
-![Web UI Initial View](../images/01-web-ui-initial-2025-10-14T01-35-30-210Z.png)
+![Web UI Initial View](../images/01-initial-2026-02-15T14-40-23-021Z.png?ts=1771166656000)
 *Clean, modern interface with training configuration, visualization panels, and network testing*
 
-**Remote API Training Mode**
-![Configuration with Remote API](../images/02-configuration-remote-2025-10-14T01-36-46-614Z.png)
-*Select between local WASM training or remote server training with SSE streaming*
+**XOR Configuration**
+![Configuration with XOR](../images/02-config-xor-2026-02-15T14-40-33-693Z.png?ts=1771166656000)
+*Select an example and configure training parameters*
 
 **Training in Progress**
-![Training in Progress](../images/03-training-in-progress-2025-10-14T01-36-58-428Z.png)
-*Real-time loss chart updates as training progresses on the server*
+![Training in Progress](../images/03-training-progress-2026-02-15T14-41-25-943Z.png?ts=1771166656000)
+*Real-time loss chart updates as training progresses*
 
 **Training Completed**
-![Training Completed](../images/04-training-completed-2025-10-14T01-37-02-116Z.png)
+![Training Completed](../images/04-training-complete-2026-02-15T14-41-35-172Z.png?ts=1771166656000)
 *Complete training history with loss curve and final metrics*
 
 **Network Testing & Truth Table**
-![Network Testing](../images/05-network-testing-2025-10-14T01-37-10-849Z.png)
+![Network Testing](../images/05-network-testing-2026-02-15T14-42-39-239Z.png?ts=1771166656000)
 *Interactive testing interface with truth table showing all input combinations and prediction accuracy*
 
-**Local WASM Mode**
-![WASM Mode Configuration](../images/06-wasm-mode-config-2025-10-14T01-37-20-298Z.png)
-*Train directly in the browser using WebAssembly - no server required for training*
+**Remote API Mode**
+![Remote API Mode](../images/06-api-mode-2026-02-15T14-43-15-555Z.png?ts=1771166656000)
+*Select Remote API mode for server-side training with SSE streaming*
 
 ## Technical Implementation
 

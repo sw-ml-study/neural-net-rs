@@ -8,7 +8,7 @@ This project demonstrates fundamental neural network concepts through a clean, w
 
 **[Live Demo](https://sw-ml-study.github.io/neural-net-rs/)** - Try the interactive web UI in your browser!
 
-![Neural Network Training Platform](images/screenshot-v3.png)
+![Neural Network Training Platform](images/main-quadrant-2026-02-15T14-43-05-642Z.png?ts=1771166656000)
 *Interactive web interface demonstrating QUADRANT multi-class classification with dynamic inputs, training loss curve, and evaluation results*
 
 ### Demonstrated Use Case: Multi-Class Classification
