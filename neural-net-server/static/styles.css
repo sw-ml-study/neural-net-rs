@@ -679,3 +679,91 @@ footer {
 .training-warning strong {
     color: #664d03;
 }
+
+/* Accuracy summary for complex examples */
+.accuracy-summary {
+    text-align: center;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.accuracy-perfect {
+    background-color: #d4edda;
+    border: 1px solid #28a745;
+}
+
+.accuracy-good {
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+}
+
+.accuracy-poor {
+    background-color: #f8d7da;
+    border: 1px solid #dc3545;
+}
+
+.accuracy-value {
+    font-size: 2rem;
+    font-weight: bold;
+    display: block;
+}
+
+.accuracy-perfect .accuracy-value { color: #155724; }
+.accuracy-good .accuracy-value { color: #856404; }
+.accuracy-poor .accuracy-value { color: #721c24; }
+
+.accuracy-label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.sample-predictions {
+    margin-top: 15px;
+}
+
+.sample-predictions h4 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.mini-table {
+    width: 100%;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+}
+
+.mini-table th,
+.mini-table td {
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mini-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.mini-table .input-cell {
+    font-family: monospace;
+    font-size: 0.8rem;
+}
+
+.status-correct {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-wrong {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.more-rows {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}

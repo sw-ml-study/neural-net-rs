@@ -7,7 +7,7 @@ import init, {
     listExamples,
     getExampleInfo,
     getExampleData
-} from './wasm/neural_net_wasm.js?ts=1771162427000';
+} from './wasm/neural_net_wasm.js?ts=1771162511000';
 
 // Application state
 let wasmModule;
@@ -725,17 +725,114 @@ function evaluateNetwork() {
     }
 }
 
+// Show accuracy summary for complex examples (>3 inputs)
+function showAccuracySummary(section) {
+    const exampleName = elements.exampleSelect.value;
+    const example = window.exampleCache?.[exampleName];
+
+    if (!example || !example.inputs) {
+        section.innerHTML = '<h3>Results Summary</h3><p>No training data available</p>';
+        return;
+    }
+
+    let correct = 0;
+    let total = example.inputs.length;
+    let results = [];
+
+    for (let i = 0; i < example.inputs.length; i++) {
+        const input = example.inputs[i];
+        const target = example.targets[i];
+
+        try {
+            const output = currentNetwork.evaluate(input);
+
+            // Determine if prediction is correct
+            let isCorrect = false;
+            let predictedStr, expectedStr;
+
+            if (target.length === 1) {
+                // Single output - check if rounded value matches
+                const predicted = output[0] > 0.5 ? 1 : 0;
+                const expected = target[0] > 0.5 ? 1 : 0;
+                isCorrect = predicted === expected;
+                predictedStr = output[0].toFixed(3);
+                expectedStr = target[0].toFixed(1);
+            } else {
+                // Multi-output - check if argmax matches
+                const predictedClass = output.indexOf(Math.max(...output));
+                const expectedClass = target.indexOf(Math.max(...target));
+                isCorrect = predictedClass === expectedClass;
+                predictedStr = `Class ${predictedClass + 1}`;
+                expectedStr = `Class ${expectedClass + 1}`;
+            }
+
+            if (isCorrect) correct++;
+            results.push({ input, expected: expectedStr, predicted: predictedStr, correct: isCorrect });
+        } catch (e) {
+            results.push({ input, expected: '?', predicted: 'Error', correct: false });
+        }
+    }
+
+    const accuracy = ((correct / total) * 100).toFixed(1);
+    const accuracyClass = correct === total ? 'accuracy-perfect' : (correct / total >= 0.8 ? 'accuracy-good' : 'accuracy-poor');
+
+    // Build summary HTML
+    let html = `
+        <h3>Results Summary</h3>
+        <div class="accuracy-summary ${accuracyClass}">
+            <span class="accuracy-value">${accuracy}%</span>
+            <span class="accuracy-label">Accuracy (${correct}/${total} correct)</span>
+        </div>
+        <div class="sample-predictions">
+            <h4>Sample Predictions</h4>
+            <table class="mini-table">
+                <thead><tr><th>Input</th><th>Expected</th><th>Predicted</th><th>Status</th></tr></thead>
+                <tbody>
+    `;
+
+    // Show up to 6 sample predictions
+    const samplesToShow = Math.min(6, results.length);
+    for (let i = 0; i < samplesToShow; i++) {
+        const r = results[i];
+        const inputStr = r.input.map(v => v.toFixed(1)).join(', ');
+        const statusClass = r.correct ? 'status-correct' : 'status-wrong';
+        const statusIcon = r.correct ? '✓' : '✗';
+        html += `<tr>
+            <td class="input-cell">[${inputStr}]</td>
+            <td>${r.expected}</td>
+            <td>${r.predicted}</td>
+            <td class="${statusClass}">${statusIcon}</td>
+        </tr>`;
+    }
+
+    if (results.length > samplesToShow) {
+        html += `<tr><td colspan="4" class="more-rows">... and ${results.length - samplesToShow} more</td></tr>`;
+    }
+
+    html += '</tbody></table></div>';
+
+    // Add warning if not perfect
+    if (correct < total) {
+        html += `<div class="training-warning" style="margin-top: 10px;">
+            <strong>Tip:</strong> Training results depend on random initialization, epochs, and learning rate. Try adjusting parameters or use a specific seed.
+        </div>`;
+    }
+
+    section.innerHTML = html;
+}
+
 // Update truth table
 function updateTruthTable() {
     if (!currentNetwork || !currentExampleInfo) return;
 
     const inputSize = currentExampleInfo.architecture[0];
     const outputSize = currentExampleInfo.architecture[currentExampleInfo.architecture.length - 1];
-
-    // Hide truth table for complex examples (>3 inputs or >4 outputs)
     const truthTableSection = document.getElementById('truth-table');
-    if (inputSize > 3 || outputSize > 4) {
-        truthTableSection.style.display = 'none';
+
+    // For complex examples (>3 inputs), show accuracy summary instead of full table
+    if (inputSize > 3) {
+        truthTableSection.style.display = 'block';
+        showAccuracySummary(truthTableSection);
         return;
     }
     truthTableSection.style.display = 'block';
