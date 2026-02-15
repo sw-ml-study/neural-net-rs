@@ -88,17 +88,30 @@ cargo run --bin neural-net-cli -- list
 # CLI: Evaluate trained model
 cargo run --bin neural-net-cli -- eval --model checkpoints/model.json --input 1.0,0.0
 
-# Server: Start web server (default localhost:3000)
+# Server: Use the run script (RECOMMENDED - builds WASM, updates cache-busting, starts server)
+./scripts/run.sh
+
+# Server: Start web server directly (default localhost:2421)
 cargo run --bin neural-net-server
 
 # Server: Custom host/port
-cargo run --bin neural-net-server -- --host 0.0.0.0 --port 2421
+cargo run --bin neural-net-server -- --host 0.0.0.0 --port 8080
 
 # Visualize: Generate network SVG
 cargo run --bin visualize -- --checkpoint checkpoints/xor.json --output network.svg
 ```
 
 ## WASM Build
+
+The recommended way to build and run is via the run script:
+
+```bash
+./scripts/run.sh
+```
+
+This script handles everything: builds WASM, copies to static directories, updates cache-busting timestamps, and starts the server on port 2421.
+
+For manual WASM builds:
 
 ```bash
 # Install wasm-pack if needed
@@ -108,7 +121,10 @@ cargo install wasm-pack
 cd neural-net-wasm && wasm-pack build --target web
 
 # Copy to server static directory
-cp neural-net-wasm/pkg/* neural-net-server/static/wasm/
+cp -r neural-net-wasm/pkg/* neural-net-server/static/wasm/
+
+# Copy to docs directory (for GitHub Pages)
+cp -r neural-net-wasm/pkg/* docs/wasm/
 ```
 
 ## Build Info & Cache Busting

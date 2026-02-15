@@ -204,6 +204,31 @@ impl NeuralNetwork {
         total
     }
 
+    /// Get all layer activations from the last evaluate() call
+    /// Returns array of arrays, one per layer (including input)
+    #[wasm_bindgen(js_name = getActivations)]
+    pub fn get_activations(&self) -> Result<JsValue, JsValue> {
+        let activations = self.network.get_activations();
+        serde_wasm_bindgen::to_value(&activations)
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    /// Get weight matrices as flat arrays
+    #[wasm_bindgen(js_name = getWeights)]
+    pub fn get_weights(&self) -> Result<JsValue, JsValue> {
+        let weights = self.network.get_weights();
+        serde_wasm_bindgen::to_value(&weights)
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
+    /// Get weight matrix shapes [(rows, cols), ...]
+    #[wasm_bindgen(js_name = getWeightShapes)]
+    pub fn get_weight_shapes(&self) -> Result<JsValue, JsValue> {
+        let shapes = self.network.get_weight_shapes();
+        serde_wasm_bindgen::to_value(&shapes)
+            .map_err(|e| JsValue::from_str(&e.to_string()))
+    }
+
     /// Serialize the network to JSON string
     #[wasm_bindgen(js_name = toJSON)]
     pub fn to_json(&self) -> Result<String, JsValue> {

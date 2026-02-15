@@ -65,6 +65,19 @@ export class NeuralNetwork {
    */
   getParameterCount(): number;
   /**
+   * Get all layer activations from the last evaluate() call
+   * Returns array of arrays, one per layer (including input)
+   */
+  getActivations(): any;
+  /**
+   * Get weight matrices as flat arrays
+   */
+  getWeights(): any;
+  /**
+   * Get weight matrix shapes [(rows, cols), ...]
+   */
+  getWeightShapes(): any;
+  /**
    * Serialize the network to JSON string
    */
   toJSON(): string;
@@ -94,6 +107,9 @@ export interface InitOutput {
   readonly neuralnetwork_evaluate: (a: number, b: number, c: number) => [number, number, number, number];
   readonly neuralnetwork_get_architecture: (a: number) => [number, number];
   readonly neuralnetwork_getParameterCount: (a: number) => number;
+  readonly neuralnetwork_getActivations: (a: number) => [number, number, number];
+  readonly neuralnetwork_getWeights: (a: number) => [number, number, number];
+  readonly neuralnetwork_getWeightShapes: (a: number) => [number, number, number];
   readonly neuralnetwork_toJSON: (a: number) => [number, number, number, number];
   readonly neuralnetwork_fromJSON: (a: number, b: number) => [number, number, number];
   readonly listExamples: () => [number, number, number];

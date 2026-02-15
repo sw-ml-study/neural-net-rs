@@ -17,6 +17,9 @@ export const neuralnetwork_trainCustom: (a: number, b: number, c: number, d: num
 export const neuralnetwork_evaluate: (a: number, b: number, c: number) => [number, number, number, number];
 export const neuralnetwork_get_architecture: (a: number) => [number, number];
 export const neuralnetwork_getParameterCount: (a: number) => number;
+export const neuralnetwork_getActivations: (a: number) => [number, number, number];
+export const neuralnetwork_getWeights: (a: number) => [number, number, number];
+export const neuralnetwork_getWeightShapes: (a: number) => [number, number, number];
 export const neuralnetwork_toJSON: (a: number) => [number, number, number, number];
 export const neuralnetwork_fromJSON: (a: number, b: number) => [number, number, number];
 export const listExamples: () => [number, number, number];

@@ -67,12 +67,10 @@ impl Network {
     pub fn feed_forward(&mut self, inputs: Matrix) -> Matrix {
 
         assert!(self.layers[0] == inputs.data.len(), "Invalid Number of Inputs");
-     //   println!("{:?} {:?}",self.weights[0],inputs);
-     //   println!("{:?}",self.weights[0].dot_multiply(&inputs).add(&self.biases[0]));
-   
+
         let mut current = inputs;
 
-            self.data = vec![current.clone()];
+        self.data = vec![current.clone()];
 
 
       for i in 0..self.layers.len() -1 {
@@ -86,6 +84,22 @@ impl Network {
 
        current
 
+    }
+
+    /// Get all layer activations from the last feed_forward call
+    /// Returns a vector of vectors, one per layer (including input layer)
+    pub fn get_activations(&self) -> Vec<Vec<f64>> {
+        self.data.iter().map(|m| m.data.clone()).collect()
+    }
+
+    /// Get the weight matrices
+    pub fn get_weights(&self) -> Vec<Vec<f64>> {
+        self.weights.iter().map(|m| m.data.clone()).collect()
+    }
+
+    /// Get weight matrix dimensions (rows, cols) for each layer
+    pub fn get_weight_shapes(&self) -> Vec<(usize, usize)> {
+        self.weights.iter().map(|m| (m.rows, m.cols)).collect()
     }
 
     pub fn back_propogate(&mut self, inputs:Matrix, targets:Matrix) {

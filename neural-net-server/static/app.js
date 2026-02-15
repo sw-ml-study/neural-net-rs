@@ -7,7 +7,7 @@ import init, {
     listExamples,
     getExampleInfo,
     getExampleData
-} from './wasm/neural_net_wasm.js?ts=1771161312000';
+} from './wasm/neural_net_wasm.js?ts=1771162427000';
 
 // Application state
 let wasmModule;
@@ -292,6 +292,9 @@ const elements = {
     architectureDisplay: document.getElementById('architecture-display'),
     truthTableBody: document.getElementById('truth-table-body'),
     lossChart: document.getElementById('loss-chart'),
+    networkDiagram: document.getElementById('network-diagram'),
+    decisionBoundary: document.getElementById('decision-boundary'),
+    decisionBoundarySection: document.getElementById('decision-boundary-section'),
 };
 
 // Chart context
@@ -400,6 +403,10 @@ function updateExampleInfo() {
 
         // Update input/output UI
         updateTestingUI(info.architecture);
+
+        // Reset network and update visualizations for new example
+        currentNetwork = null;
+        initializeVisualizations();
 
     } catch (error) {
         console.error('Failed to update example info:', error);
@@ -646,8 +653,9 @@ function completeTraining() {
         trainingInterval = null;
     }
 
-    // Update truth table
+    // Update truth table and visualizations
     updateTruthTable();
+    updateVisualizations();
 }
 
 // Stop training
@@ -707,6 +715,9 @@ function evaluateNetwork() {
             const maxIdx = outputs.indexOf(Math.max(...outputs));
             elements.outputDisplay.textContent = `Class ${maxIdx + 1} (${outputs[maxIdx].toFixed(3)})`;
         }
+
+        // Update network diagram to show current activations
+        drawNetworkDiagram();
 
     } catch (error) {
         console.error('Evaluation failed:', error);
@@ -810,6 +821,23 @@ function updateTruthTable() {
         row += '</tr>';
         return row;
     }).join('');
+
+    // Check if there are any high errors and show warning
+    const hasHighErrors = elements.truthTableBody.querySelectorAll('.error-high').length > 0;
+    let warningDiv = document.getElementById('training-warning');
+
+    if (hasHighErrors) {
+        if (!warningDiv) {
+            warningDiv = document.createElement('div');
+            warningDiv.id = 'training-warning';
+            warningDiv.className = 'training-warning';
+            warningDiv.innerHTML = '<strong>Tip:</strong> High errors detected. Training results depend on random initialization, epochs, and learning rate. Try adjusting these parameters or use a specific seed for reproducible results.';
+            truthTableSection.appendChild(warningDiv);
+        }
+        warningDiv.style.display = 'block';
+    } else if (warningDiv) {
+        warningDiv.style.display = 'none';
+    }
 }
 
 // Draw loss chart
@@ -905,6 +933,260 @@ function clearChart() {
     chartCtx.font = '16px sans-serif';
     chartCtx.textAlign = 'center';
     chartCtx.fillText('Training loss will appear here', chartWidth / 2, chartHeight / 2);
+}
+
+// ============== Network Visualization ==============
+
+// Draw network diagram with neurons and connections
+function drawNetworkDiagram() {
+    if (!currentNetwork || !currentExampleInfo) return;
+
+    const canvas = elements.networkDiagram;
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    const layers = currentExampleInfo.architecture;
+    const numLayers = layers.length;
+
+    // Get activations if available
+    let activations = null;
+    try {
+        activations = currentNetwork.getActivations();
+    } catch (e) {
+        // No activations yet (haven't evaluated)
+    }
+
+    // Layout parameters
+    const padding = 30;
+    const layerSpacing = (width - 2 * padding) / (numLayers - 1);
+    const maxNeurons = Math.max(...layers);
+    const neuronRadius = Math.min(15, (height - 2 * padding) / (maxNeurons * 2.5));
+
+    // Draw connections first (behind neurons)
+    ctx.strokeStyle = '#ddd';
+    ctx.lineWidth = 1;
+
+    for (let l = 0; l < numLayers - 1; l++) {
+        const x1 = padding + l * layerSpacing;
+        const x2 = padding + (l + 1) * layerSpacing;
+        const neurons1 = layers[l];
+        const neurons2 = layers[l + 1];
+        const ySpacing1 = (height - 2 * padding) / (neurons1 + 1);
+        const ySpacing2 = (height - 2 * padding) / (neurons2 + 1);
+
+        for (let i = 0; i < neurons1; i++) {
+            const y1 = padding + (i + 1) * ySpacing1;
+            for (let j = 0; j < neurons2; j++) {
+                const y2 = padding + (j + 1) * ySpacing2;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+        }
+    }
+
+    // Draw neurons
+    for (let l = 0; l < numLayers; l++) {
+        const x = padding + l * layerSpacing;
+        const neurons = layers[l];
+        const ySpacing = (height - 2 * padding) / (neurons + 1);
+
+        for (let i = 0; i < neurons; i++) {
+            const y = padding + (i + 1) * ySpacing;
+
+            // Get activation value for coloring
+            let activation = 0.5; // default gray
+            if (activations && activations[l] && activations[l][i] !== undefined) {
+                activation = activations[l][i];
+            }
+
+            // Color: blue (0) -> white (0.5) -> red (1)
+            const color = activationToColor(activation);
+
+            // Draw neuron
+            ctx.beginPath();
+            ctx.arc(x, y, neuronRadius, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw activation value if we have it
+            if (activations && activations[l]) {
+                ctx.fillStyle = activation > 0.5 ? '#fff' : '#333';
+                ctx.font = '9px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(activation.toFixed(2), x, y);
+            }
+        }
+    }
+
+    // Draw layer labels
+    ctx.fillStyle = '#666';
+    ctx.font = '11px sans-serif';
+    ctx.textAlign = 'center';
+    const layerNames = ['Input', ...Array(numLayers - 2).fill('Hidden'), 'Output'];
+    for (let l = 0; l < numLayers; l++) {
+        const x = padding + l * layerSpacing;
+        ctx.fillText(layerNames[l], x, height - 8);
+    }
+}
+
+// Convert activation value (0-1) to color
+function activationToColor(value) {
+    // Clamp to 0-1
+    value = Math.max(0, Math.min(1, value));
+
+    if (value < 0.5) {
+        // Blue to white
+        const t = value * 2;
+        const r = Math.round(100 + 155 * t);
+        const g = Math.round(149 + 106 * t);
+        const b = Math.round(237 + 18 * t);
+        return `rgb(${r}, ${g}, ${b})`;
+    } else {
+        // White to red
+        const t = (value - 0.5) * 2;
+        const r = 255;
+        const g = Math.round(255 - 100 * t);
+        const b = Math.round(255 - 100 * t);
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+}
+
+// Draw decision boundary for 2-input problems
+function drawDecisionBoundary() {
+    const canvas = elements.decisionBoundary;
+    const ctx = canvas.getContext('2d');
+    const noteElem = document.getElementById('decision-boundary-note');
+
+    // Only available for 2-input examples (can be visualized in 2D)
+    if (!currentExampleInfo || currentExampleInfo.architecture[0] !== 2) {
+        // Clear canvas and show explanation
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#f0f0f0';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#999';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('N/A for this example', canvas.width / 2, canvas.height / 2 - 10);
+        ctx.font = '10px sans-serif';
+        ctx.fillText('(requires 2 inputs for 2D plot)', canvas.width / 2, canvas.height / 2 + 10);
+        if (noteElem) noteElem.style.display = 'block';
+        return;
+    }
+
+    if (noteElem) noteElem.style.display = 'none';
+
+    if (!currentNetwork) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Resolution for sampling
+    const resolution = 50;
+    const cellWidth = width / resolution;
+    const cellHeight = height / resolution;
+
+    // Sample the network across input space
+    for (let i = 0; i < resolution; i++) {
+        for (let j = 0; j < resolution; j++) {
+            // Map to input space [0, 1]
+            const x = i / (resolution - 1);
+            const y = 1 - j / (resolution - 1); // Flip y so 0 is at bottom
+
+            try {
+                const output = currentNetwork.evaluate([x, y]);
+                // For single output, use directly; for multi-output, use max
+                let value;
+                if (output.length === 1) {
+                    value = output[0];
+                } else {
+                    value = output.indexOf(Math.max(...output)) / (output.length - 1);
+                }
+
+                // Color based on output
+                ctx.fillStyle = activationToColor(value);
+                ctx.fillRect(i * cellWidth, j * cellHeight, cellWidth + 1, cellHeight + 1);
+            } catch (e) {
+                // Skip on error
+            }
+        }
+    }
+
+    // Draw training points
+    const exampleName = elements.exampleSelect.value;
+    const example = window.exampleCache?.[exampleName];
+    if (example && example.inputs) {
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < example.inputs.length; i++) {
+            const input = example.inputs[i];
+            const target = example.targets[i];
+
+            const px = input[0] * width;
+            const py = (1 - input[1]) * height;
+
+            // Draw point
+            ctx.beginPath();
+            ctx.arc(px, py, 8, 0, Math.PI * 2);
+
+            // Color by expected output
+            const expectedValue = target.length === 1 ? target[0] : target.indexOf(1) / (target.length - 1);
+            ctx.fillStyle = activationToColor(expectedValue);
+            ctx.fill();
+            ctx.stroke();
+
+            // Draw expected value label
+            ctx.fillStyle = expectedValue > 0.5 ? '#fff' : '#000';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(expectedValue.toFixed(0), px, py);
+        }
+    }
+
+    // Draw axis labels
+    ctx.fillStyle = '#666';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Input 1', width / 2, height - 2);
+    ctx.save();
+    ctx.translate(10, height / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Input 2', 0, 0);
+    ctx.restore();
+}
+
+// Update all visualizations
+function updateVisualizations() {
+    drawNetworkDiagram();
+    drawDecisionBoundary();
+}
+
+// Initialize visualizations (before training)
+function initializeVisualizations() {
+    // Draw empty network diagram structure
+    if (currentExampleInfo) {
+        const canvas = elements.networkDiagram;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#999';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Train network to see activations', canvas.width / 2, canvas.height / 2);
+    }
+
+    // Update decision boundary (will show N/A for non-2-input)
+    drawDecisionBoundary();
 }
 
 // Update status message

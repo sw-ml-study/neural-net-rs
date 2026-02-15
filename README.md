@@ -264,8 +264,16 @@ The neural-net-server provides a REST API for training and evaluating neural net
 
 ### Starting the Server
 
+**Recommended:** Use the run script which builds WASM, updates cache-busting, and starts the server:
+
 ```bash
-# Start the server on default port 3000 (localhost only)
+./scripts/run.sh
+```
+
+Alternative direct commands:
+
+```bash
+# Start the server on default port 2421 (localhost only)
 cargo run --bin neural-net-server
 
 # Specify custom port
@@ -282,7 +290,7 @@ cargo run --bin neural-net-server -- --help
 - `-H, --host <HOST>`: Host address to bind to (default: `127.0.0.1`)
   - Use `127.0.0.1` for localhost only
   - Use `0.0.0.0` to allow external connections
-- `-p, --port <PORT>`: Port number to listen on (default: `3000`)
+- `-p, --port <PORT>`: Port number to listen on (default: `2421`)
 - `-h, --help`: Print help information
 - `-V, --version`: Print version
 
@@ -406,25 +414,25 @@ Using `curl`:
 
 ```bash
 # List examples
-curl http://localhost:3000/api/examples
+curl http://localhost:2421/api/examples
 
 # Train a model (blocking)
-curl -X POST http://localhost:3000/api/train \
+curl -X POST http://localhost:2421/api/train \
   -H "Content-Type: application/json" \
   -d '{"example": "xor", "epochs": 10000, "learning_rate": 0.5}'
 
 # Train with SSE streaming
-curl -N http://localhost:3000/api/train/stream \
+curl -N http://localhost:2421/api/train/stream \
   -H "Content-Type: application/json" \
   -d '{"example": "xor", "epochs": 10000, "learning_rate": 0.5}'
 
 # Evaluate model
-curl -X POST http://localhost:3000/api/eval \
+curl -X POST http://localhost:2421/api/eval \
   -H "Content-Type: application/json" \
   -d '{"model_id": "YOUR-MODEL-ID", "input": [1.0, 0.0]}'
 
 # Get model info
-curl http://localhost:3000/api/models/YOUR-MODEL-ID
+curl http://localhost:2421/api/models/YOUR-MODEL-ID
 ```
 
 ### Technical Implementation
@@ -469,10 +477,10 @@ The project includes a modern, interactive web interface for training and evalua
 cargo run --bin neural-net-server
 
 # Open your browser
-open http://localhost:3000
+open http://localhost:2421
 ```
 
-The web UI will load at `http://localhost:3000` and provide:
+The web UI will load at `http://localhost:2421` and provide:
 1. **Training Configuration Panel**: Select examples, configure parameters, choose training mode
 2. **Training Progress Visualization**: Real-time loss chart and metrics
 3. **Network Testing**: Interactive input/output testing
@@ -1189,6 +1197,10 @@ This is an educational project demonstrating neural network concepts. When contr
 3. Keep clippy warnings at zero
 4. Add tests for all new features
 5. Update documentation
+
+## Acknowledgements
+
+This project was forked from [codemoonsxyz/neural-net-rs](https://github.com/codemoonsxyz/neural-net-rs) and significantly extended with additional features including the web server, WASM compilation, interactive UI, and educational content.
 
 ## License
 

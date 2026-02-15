@@ -427,6 +427,40 @@ export class NeuralNetwork {
         return ret >>> 0;
     }
     /**
+     * Get all layer activations from the last evaluate() call
+     * Returns array of arrays, one per layer (including input)
+     * @returns {any}
+     */
+    getActivations() {
+        const ret = wasm.neuralnetwork_getActivations(this.__wbg_ptr);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return takeFromExternrefTable0(ret[0]);
+    }
+    /**
+     * Get weight matrices as flat arrays
+     * @returns {any}
+     */
+    getWeights() {
+        const ret = wasm.neuralnetwork_getWeights(this.__wbg_ptr);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return takeFromExternrefTable0(ret[0]);
+    }
+    /**
+     * Get weight matrix shapes [(rows, cols), ...]
+     * @returns {any}
+     */
+    getWeightShapes() {
+        const ret = wasm.neuralnetwork_getWeightShapes(this.__wbg_ptr);
+        if (ret[2]) {
+            throw takeFromExternrefTable0(ret[1]);
+        }
+        return takeFromExternrefTable0(ret[0]);
+    }
+    /**
      * Serialize the network to JSON string
      * @returns {string}
      */

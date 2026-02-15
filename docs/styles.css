@@ -604,3 +604,78 @@ footer {
     font-size: 0.85em;
     font-weight: 600;
 }
+
+/* Network Visualization */
+.visualization-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.viz-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.viz-section h3 {
+    font-size: 0.95rem;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.viz-section .help-text {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+}
+
+#network-diagram,
+#decision-boundary {
+    background-color: #fafafa;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    display: block;
+    max-width: 100%;
+}
+
+#decision-boundary {
+    image-rendering: pixelated;
+}
+
+/* Legend for decision boundary */
+.viz-legend {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+}
+
+.viz-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.viz-legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/* Training warning message */
+.training-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    border-left: 4px solid #ffc107;
+    color: #856404;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-size: 0.85rem;
+}
+
+.training-warning strong {
+    color: #664d03;
+}

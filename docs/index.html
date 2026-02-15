@@ -153,11 +153,28 @@
                 </div>
             </section>
 
-            <!-- Network Info Panel -->
+            <!-- Network Visualization Panel -->
             <section class="panel">
-                <h2>Network Architecture</h2>
+                <h2>Network Visualization</h2>
                 <div id="architecture-display">
                     <p class="help-text">Select an example to see architecture</p>
+                </div>
+
+                <div class="visualization-container">
+                    <div class="viz-section">
+                        <h3>Network Diagram</h3>
+                        <p class="help-text">Neurons colored by activation (blue=0, red=1)</p>
+                        <canvas id="network-diagram" width="400" height="250"></canvas>
+                    </div>
+
+                    <div class="viz-section" id="decision-boundary-section">
+                        <h3>Decision Boundary</h3>
+                        <p class="help-text">Network output across input space</p>
+                        <canvas id="decision-boundary" width="250" height="250"></canvas>
+                        <p id="decision-boundary-note" class="help-text" style="display: none; margin-top: 8px; font-style: italic;">
+                            Only available for 2-input examples (can be plotted in 2D)
+                        </p>
+                    </div>
                 </div>
             </section>
         </main>
@@ -168,10 +185,12 @@
             <p class="footer-links">
                 <a href="https://github.com/wrightmikea/neural-net-rs" target="_blank">View on GitHub</a>
                 <span>•</span>
+                <a href="https://github.com/codemoonsxyz/neural-net-rs" target="_blank">Forked from codemoonsxyz</a>
+                <span>•</span>
                 <a href="/api/examples" target="_blank">API Documentation</a>
             </p>
             <p class="build-info">
-                <small>Build: 909a0f6 | Host: mighty | 2026-02-15 13:15:12 UTC</small>
+                <small>Build: 597de77 | Host: mighty | 2026-02-15 13:33:47 UTC</small>
             </p>
         </footer>
     </div>
@@ -189,6 +208,6 @@
         </div>
     </div>
 
-    <script type="module" src="app.js?ts=1771161312000"></script>
+    <script type="module" src="app.js?ts=1771162427000"></script>
 </body>
 </html>
